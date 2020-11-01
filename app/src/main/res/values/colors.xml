@@ -3,4 +3,25 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+
+
+    <!-- App color -->
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="defaultBackground">#242732</color>
+    <color name="defaultFormBackground">#2f3341</color>
+    <color name="defaultFormBorders">#343949</color>
+
+    <!-- Button color -->
+    <color name="btnBlue">#4979e4</color>
+    <!-- Text color -->
+    <color name="colorAppText">#99DBE6FF</color>
+
+    <!-- TitleEditText color -->
+    <color name="editTextBackground">#242732</color>
+    <color name="editTextBorder">#1f1f1f</color>
+
+    <!-- Other -->
+    <color name="colorDivider">#dbe6ff</color>
 </resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App dimens -->
+    <!-- margin -->
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="default_margin">16dp</dimen>
+    <dimen name="margin_middle">24dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_extra_large">64dp</dimen>
+    <!-- padding -->
+    <dimen name="padding_extra_small">4dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="default_padding">16dp</dimen>
+    <dimen name="padding_large">32dp</dimen>
+    <!-- text -->
+    <dimen name="textSize_extra_small">12dp</dimen>
+    <dimen name="textSize_small">14dp</dimen>
+    <dimen name="default_textSize">16dp</dimen>
+    <dimen name="textSize_middle">24dp</dimen>
+    <dimen name="textSize_large">32dp</dimen>
+    <!-- corner radius -->
+    <dimen name="radius_small">4dp</dimen>
+    <dimen name="default_radius">8dp</dimen>
+    <dimen name="radius_large">16dp</dimen>
+    <!-- project icon -->
+    <dimen name="default_icon_width">32dp</dimen>
+    <dimen name="default_icon_height">32dp</dimen>
+
+    <!-- Other -->
+    <dimen name="alpha_translucent">0.6</dimen>
+    <dimen name="default_border">1dp</dimen>
+
+
+    <!-- TitleEditText dimens -->
+
+
+
+
+
+    <!-- new dimen -->
+    <dimen name="edit_text_height">32dp</dimen>
+    <dimen name="divider_height">2dp</dimen>
+
+</resources>
