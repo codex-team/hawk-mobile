@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorPrimaryDark">@color/colorBlack</color>
     <color name="colorAccent">#03DAC5</color>
 
 
@@ -15,7 +15,7 @@
     <!-- Button color -->
     <color name="btnBlue">#4979e4</color>
     <!-- Text color -->
-    <color name="colorAppText">#99DBE6FF</color>
+    <color name="colorAppText">#DBE6FF</color>
     <color name="colorTextTranslucent">#99DBE6FF</color>
     <color name="colorDefaultTitleEditText">#99DBE6FF</color>
 
@@ -24,5 +24,6 @@
     <color name="editTextBorder">#1f1f1f</color>
 
     <!-- Other -->
-    <color name="colorDivider">#dbe6ff</color>
+    <color name="colorDivider">#1CDBE6FF</color>
+    <color name="colorRippleEffect">#424556</color>
 </resources>
