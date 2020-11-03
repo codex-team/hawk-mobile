@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Hawk</string>
+    <string name="app_snippet">Time for quality</string>
+    <string name="app_team">Made by CodeX</string>
+    <string name="fast_auth">Fast auth</string>
+    <string name="sign_up">Sign up</string>
+    <string name="email_title">EMAIL ADDRESS</string>
+    <string name="password_title">PASSWORD</string>
+    <string name="btn_enter">Enter</string>
+    <string name="recover_title">Recover</string>
 </resources>

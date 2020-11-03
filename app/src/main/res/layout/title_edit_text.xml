@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:background="#2f3341">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:textColor="@color/colorAppText"
+        android:textSize="@dimen/textSize_small"
+        tools:text="EMAIL ADDRESS" />
+
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_text_height"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:background="@drawable/edit_text_back"
+        android:paddingStart="@dimen/padding_small"
+        android:textColor="@color/colorWhite"
+        tools:ignore="RtlSymmetry" />
+</LinearLayout>
