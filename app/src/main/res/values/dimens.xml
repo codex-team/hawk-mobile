@@ -1,42 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- App dimens -->
+    <!--  * Main dimensions *  -->
     <!-- margin -->
     <dimen name="margin_small">8dp</dimen>
-    <dimen name="default_margin">16dp</dimen>
-    <dimen name="margin_middle">24dp</dimen>
-    <dimen name="margin_large">32dp</dimen>
-    <dimen name="margin_extra_large">64dp</dimen>
+    <dimen name="margin_default">16dp</dimen>
+
     <!-- padding -->
-    <dimen name="padding_extra_small">4dp</dimen>
     <dimen name="padding_small">8dp</dimen>
     <dimen name="default_padding">16dp</dimen>
-    <dimen name="padding_large">32dp</dimen>
+
     <!-- text -->
-    <dimen name="textSize_extra_small">12dp</dimen>
-    <dimen name="textSize_small">14dp</dimen>
-    <dimen name="default_textSize">16dp</dimen>
-    <dimen name="textSize_middle">24dp</dimen>
-    <dimen name="textSize_large">32dp</dimen>
+    <dimen name="text_size_extra_small">12dp</dimen>
+    <dimen name="text_size_small">14dp</dimen>
+
     <!-- corner radius -->
     <dimen name="radius_small">4dp</dimen>
-    <dimen name="default_radius">8dp</dimen>
-    <dimen name="radius_large">16dp</dimen>
+    <dimen name="radius_default">8dp</dimen>
+
     <!-- project icon -->
     <dimen name="default_icon_width">32dp</dimen>
     <dimen name="default_icon_height">32dp</dimen>
 
     <!-- Other -->
-    <dimen name="alpha_translucent">0.6</dimen>
     <dimen name="default_border">1dp</dimen>
+    <dimen name="min_btn_width">110dp</dimen>
 
+    <!-- * activity_login *  -->
+    <!-- margin -->
+    <dimen name="margin_extra_small">4dp</dimen>
+    <dimen name="auth_margin_small">9dp</dimen>
+    <dimen name="auth_margin_default">14dp</dimen>
+    <dimen name="auth_margin_middle">20dp</dimen>
 
-    <!-- TitleEditText dimens -->
+    <!-- padding   -->
+    <dimen name="auth_padding_form">20dp</dimen>
 
+    <!--  text_size  -->
+    <dimen name="text_size_app_name">30dp</dimen>
+    <dimen name="text_size_snippet">14dp</dimen>
+    <dimen name="text_size_edit_text">14dp</dimen>
+    <dimen name="text_size_btn">16dp</dimen>
+    <dimen name="text_size_label">12dp</dimen>
 
-    <!-- new dimen -->
-    <dimen name="edit_text_height">32dp</dimen>
-    <dimen name="divider_height">2dp</dimen>
+    <!--  Other  -->
+    <dimen name="auth_edit_text_height">40dp</dimen>
+    <dimen name="auth_divider_height">1dp</dimen>
+    <integer name="auth_form_default_width">320</integer>
 
 </resources>

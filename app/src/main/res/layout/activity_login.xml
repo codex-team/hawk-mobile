@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/background"
+        android:scaleType="centerCrop"
+        android:src="@drawable/auth_bg" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/form_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <TextView
+                android:id="@+id/tv_appname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/app_name"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_app_name" />
+
+            <TextView
+                android:id="@+id/tv_snippet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_extra_small"
+                android:fontFamily="@font/roboto"
+                android:text="@string/app_snippet"
+                android:textColor="@color/colorTextTranslucent"
+                android:textSize="@dimen/text_size_snippet" />
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:id="@+id/form_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/auth_margin_middle"
+            android:paddingHorizontal="@dimen/default_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header">
+
+            <RelativeLayout
+                android:id="@+id/auth_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/auth_form_back"
+                android:paddingStart="@dimen/auth_padding_form"
+                android:paddingTop="@dimen/auth_padding_form"
+                android:paddingEnd="@dimen/auth_padding_form"
+                android:paddingBottom="@dimen/auth_padding_form">
+
+                <TextView
+                    android:id="@+id/tv_fast_auth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/login"
+                    android:textColor="@color/colorAppText"
+                    android:textSize="@dimen/text_size_btn" />
+
+                <TextView
+                    android:id="@+id/tv_sign_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/sign_up"
+                    android:textColor="@color/colorTextTranslucent"
+                    android:textSize="@dimen/text_size_btn" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/auth_divider_height"
+                    android:layout_below="@id/tv_fast_auth"
+                    android:layout_marginTop="@dimen/auth_margin_default"
+                    android:background="@color/colorDivider" />
+
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider"
+                    android:layout_marginTop="@dimen/auth_margin_default"
+                    android:fontFamily="@font/roboto_bold"
+                    android:labelFor="@id/edit_text_email"
+                    android:letterSpacing="0.05"
+                    android:text="@string/email_title"
+                    android:textColor="@color/colorTextTranslucent"
+                    android:textSize="@dimen/text_size_label" />
+
+                <EditText
+                    android:id="@+id/edit_text_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/auth_edit_text_height"
+                    android:layout_below="@id/tv_email"
+                    android:layout_marginTop="@dimen/auth_margin_small"
+                    android:background="@drawable/edit_text_back"
+                    android:inputType="textEmailAddress"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    android:textColor="@color/colorAppText"
+                    android:textSize="@dimen/text_size_edit_text" />
+
+                <TextView
+                    android:id="@+id/tv_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edit_text_email"
+                    android:layout_marginTop="@dimen/auth_margin_middle"
+                    android:fontFamily="@font/roboto_bold"
+                    android:letterSpacing="0.05"
+                    android:text="@string/password_title"
+                    android:textColor="@color/colorTextTranslucent"
+                    android:textSize="@dimen/text_size_label" />
+
+                <EditText
+                    android:id="@+id/edit_text_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/auth_edit_text_height"
+                    android:layout_below="@id/tv_password"
+                    android:layout_marginTop="@dimen/auth_margin_small"
+                    android:background="@drawable/edit_text_back"
+                    android:inputType="textPassword"
+                    android:paddingStart="@dimen/padding_small"
+                    android:paddingEnd="@dimen/padding_small"
+                    android:textColor="@color/colorAppText"
+                    android:textSize="@dimen/text_size_edit_text" />
+
+                <Button
+                    android:id="@+id/btn_enter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edit_text_password"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="@dimen/auth_margin_middle"
+                    android:background="@drawable/btn_blue_back"
+                    android:fontFamily="@font/roboto_medium"
+                    android:minWidth="@dimen/min_btn_width"
+                    android:text="@string/btn_enter"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_size_small" />
+
+                <TextView
+                    android:id="@+id/tv_recover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/btn_enter"
+                    android:layout_alignBottom="@id/btn_enter"
+                    android:layout_alignParentEnd="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:text="@string/recover_title"
+                    android:textColor="@color/colorTextTranslucent"
+                    android:textSize="@dimen/text_size_extra_small" />
+            </RelativeLayout>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_default"
+            android:fontFamily="@font/roboto"
+            android:gravity="bottom"
+            android:text="@string/app_team"
+            android:textColor="@color/colorAppText"
+
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/barrier"
+            app:layout_constraintVertical_bias="0.85" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="header,form_container"
+            tools:layout_editor_absoluteY="245dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
