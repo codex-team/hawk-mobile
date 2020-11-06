@@ -17,6 +17,8 @@
     <color name="btnBlue">#4979e4</color>
     <!-- Text color -->
     <color name="colorAppText">#99DBE6FF</color>
+    <color name="colorTextTranslucent">#99DBE6FF</color>
+    <color name="colorDefaultTitleEditText">#99DBE6FF</color>
 
     <!-- TitleEditText color -->
     <color name="editTextBackground">#242732</color>
