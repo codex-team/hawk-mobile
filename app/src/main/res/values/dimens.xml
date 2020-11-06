@@ -35,9 +35,6 @@
     <!-- TitleEditText dimens -->
 
 
-
-
-
     <!-- new dimen -->
     <dimen name="edit_text_height">32dp</dimen>
     <dimen name="divider_height">2dp</dimen>
