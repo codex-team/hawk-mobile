@@ -1,5 +1,5 @@
-# HAWK
-It is mobile adaptation of web site for [hawk.so](https://hawk.so)
+# Hawk Android
+This is a mobile client for the [Hawk](https://hawk.so) errors monitoring system
 
 The app is written in Kotlin
 
@@ -16,12 +16,13 @@ If you have a phone with the android OS:
   * Download the application from releases on github or telegram channel.
   * Allow the app to be installed from an unknown source in settings. ([link](https://www.androidinfotech.com/unknown-sources-app-installation-android/))
   * Disable system protector in google play, if it need. ([link](https://support.mobile-tracker-free.com/hc/en-us/articles/360005346953-How-to-disable-Google-Play-Protect-))
-  * Download apk from releases in github or telegram channel
-  * Install and launch the application
 
-If you don't have any devices with android OS:
-  * Download and install [BlueStack](https://www.bluestacks.com/ru/index.html) or you can try to install "Command line tools" from Android studio with out development enviroment and use sdk manager for install android virtual devices and use them for testing the application.
-  * Download apk from releases in github or telegram channel
-  * Drag apk on emulator, waiting after install
-  * Launch the application
+If you don't have any devices with android OS you can:
+  * Download and install [BlueStack](https://www.bluestacks.com/ru/index.html) 
+  * Download the APK from GitHub releases or telegram channel
+  * If you use:
+    * Device: Install the application
+    * Emulator: Drag the APK to the emulator, wait for the installation
+  *  Launch the application 
+  
 You can download apk on your android phone or you can download the emulator and run the app on it
