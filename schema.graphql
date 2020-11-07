@@ -1,0 +1,916 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+"All available payload types for different types of operations"
+union BusinessOperationPayload = PayloadOfDepositByUser | PayloadOfWorkspacePlanPurchase
+
+"Represents two types of Members in workspace's team"
+union Member = ConfirmedMember | PendingMember
+
+"Payment link structure"
+type BillingSession {
+    "Total payment amount in kopecs"
+    amount: Long!
+    "URL to the payment page"
+    paymentURL: String!
+    "Payment status"
+    status: String!
+    "If the payment is successfull"
+    success: Boolean!
+}
+
+"Business operation object"
+type BusinessOperation {
+    "When the operation was registered"
+    dtCreated: DateTime!
+    "Id of operation"
+    id: String!
+    "Metadata related to the operation type"
+    payload: BusinessOperationPayload!
+    "Indicates current state of the operation"
+    status: BusinessOperationStatus!
+    "Business operation type"
+    type: BusinessOperationType!
+}
+
+type CardInfo {
+    "Card ID"
+    cardId: String!
+    "Card expiration date"
+    expDate: String!
+    "Card number (Pan)"
+    pan: String!
+}
+
+"Workspace tariff plan change mutation response"
+type ChangeWorkspacePlanResponse {
+    "Workspace balance"
+    balance: Long!
+    "Modified workspace object"
+    record: BusinessOperation
+    "Business operation id"
+    recordId: ID
+}
+
+type ChartDataItem {
+    "Amount of events"
+    count: Int
+    "Events timestamp"
+    timestamp: Int
+}
+
+"Confirmed member data in workspace"
+type ConfirmedMember {
+    "Member info id"
+    id: ID!
+    "True if user has admin permissions"
+    isAdmin: Boolean!
+    "If member accepts an invitation, the user id will be stored there"
+    user: User!
+}
+
+"Information about event per day"
+type DailyEventInfo {
+    "Event occurrence count"
+    count: Int!
+    "Event hash for grouping"
+    groupHash: String!
+    "Event occurrence datetime (in unixtime)"
+    groupingTimestamp: Float!
+    "Event's last repetition ID"
+    lastRepetitionId: ID
+    "Last event occurrence timestamp"
+    lastRepetitionTime: Float!
+}
+
+"Type representing Hawk single Event"
+type Event {
+    "User assigneed to the event"
+    assignee: User
+    "Catcher type"
+    catcherType: String!
+    "Return graph of the error rate for the last few days"
+    chartData(
+        "How many days we need to fetch for displaying in a chart"
+        days: Int! = 0,
+        "User's local timezone offset in minutes"
+        timezoneOffset: Int! = 0
+    ): [ChartDataItem!]!
+    "Event group hash"
+    groupHash: String!
+    "Event id"
+    id: ID!
+    "Event label for current user"
+    marks: EventMarks!
+    "Event payload"
+    payload: EventPayload!
+    "Event concrete repetition"
+    repetition(id: ID): Repetition
+    "Event repetitions"
+    repetitions(limit: Int = 10): [Repetition!]
+    "Event occurrence count"
+    totalCount: Int!
+    "How many users catch this error"
+    usersAffected: Int
+    "Array of users who visited event"
+    visitedBy: [User!]
+}
+
+"Event backtrace representation"
+type EventBacktraceFrame {
+    "Function arguments extracted from current stack frame"
+    arguments: [String]
+    "Called column"
+    column: Int
+    "Source filepath"
+    file: String
+    "Function name extracted from current stack frame"
+    function: String
+    "Called line"
+    line: Int
+    "Part of source code file near the called line"
+    sourceCode: [SourceCodeLine]
+}
+
+"Object returned in marks property of event object"
+type EventMarks {
+    ignored: Boolean!
+    resolved: Boolean!
+    starred: Boolean!
+}
+
+"Type representing Event payload"
+type EventPayload {
+    "Custom data provided by project users"
+    addons: EncodedJSON
+    "Event stack array from the latest call to the earliest"
+    backtrace: [EventBacktraceFrame]
+    "Any additional data of Event"
+    context: EncodedJSON
+    "Additional data about GET request"
+    get: JSONObject
+    "HTTP headers"
+    headers: JSONObject
+    "Event severity level"
+    level: Int
+    "Additional data about POST request"
+    post: JSONObject
+    "Source code version identifier"
+    release: String
+    "Event timestamp"
+    timestamp: Float!
+    "Event title"
+    title: String!
+    "Event type: TypeError, ReferenceError etc."
+    type: String
+    "Current authenticated user"
+    user: EventUser
+}
+
+"Event user representation"
+type EventUser {
+    "Internal user's identifier inside an app"
+    id: ID!
+    "User public name"
+    name: String
+    "User's public picture"
+    photo: String
+    "URL for user's details page"
+    url: String
+}
+
+type EventsMutations {
+    "Remove an assignee from the selected event"
+    removeAssignee(input: RemoveAssigneeInput!): RemoveAssigneeResponse!
+    "Set an assignee for the selected event"
+    updateAssignee(input: UpdateAssigneeInput!): UpdateAssigneeResponse!
+}
+
+"API mutations"
+type Mutation {
+    "Unused field to let extend this type"
+    _: Boolean
+    "Returns JSON data with payment link and initiate card attach procedure"
+    attachCard(language: String): BillingSession!
+    "Change user password"
+    changePassword(
+        "New user password"
+        newPassword: String!,
+        "Current user password"
+        oldPassword: String!
+    ): Boolean!
+    "Change user notifications channel settings"
+    changeUserNotificationsChannel(
+        "Channel data to update"
+        input: NotificationsChannelsInput!
+    ): changeUserNotificationsChannelResponse!
+    "Toggle user notifications receive type active status"
+    changeUserNotificationsReceiveType(
+        "Receive type with its new is-enabled value"
+        input: ChangeUserNotificationsReceiveTypeInput!
+    ): changeUserNotificationsReceiveTypeResponse!
+    """
+
+    Mutation in order to switch workspace tariff plan
+    Returns true if operation is successful
+    """
+    changeWorkspacePlan(input: ChangeWorkspacePlanInput): ChangeWorkspacePlanResponse!
+    """
+
+    Confirm invitation to workspace
+    Returns true if operation is successful
+    """
+    confirmInvitation(
+        "Hash from invitation link"
+        inviteHash: String,
+        "Id of the workspace to which the user was invited"
+        workspaceId: ID!
+    ): Boolean!
+    "Create project in given workspace"
+    createProject(
+        "Project image"
+        image: Upload,
+        "Project name"
+        name: String!,
+        "Workspace ID"
+        workspaceId: ID!
+    ): Project!
+    "Creates new notification rule and add it to start of the array of notifications rules"
+    createProjectNotificationsRule(
+        "Data for creating"
+        input: CreateProjectNotificationsRuleInput!
+    ): ProjectNotificationsRule
+    "Create new workspace"
+    createWorkspace(
+        "New workspace description"
+        description: String,
+        "New workspace image"
+        image: Upload,
+        "New workspace name"
+        name: String!
+    ): Workspace!
+    "Removes notifications rule from project"
+    deleteProjectNotificationsRule(
+        "Data for deleting"
+        input: ProjectNotificationRulePointer!
+    ): ProjectNotificationsRule
+    "Namespace that contains only mutations related to the events"
+    events: EventsMutations!
+    """
+
+    Grant admin permissions
+    Returns true if operation is successful
+    """
+    grantAdmin(
+        "Permissions state (true to grant, false to withdraw)"
+        state: Boolean = true,
+        "ID of user to grant permissions"
+        userId: ID!,
+        "Workspace ID"
+        workspaceId: ID!
+    ): Boolean!
+    """
+
+    Invite user to workspace
+    Returns true if operation is successful
+    """
+    inviteToWorkspace(
+        "Email of the user to invite"
+        userEmail: String!,
+        "id of the workspace to which the user is invited"
+        workspaceId: ID!
+    ): Boolean!
+    """
+
+    Mutation in order to leave workspace
+    Returns true if operation is successful
+    """
+    leaveWorkspace(
+        "Workspace ID"
+        workspaceId: ID!
+    ): Boolean!
+    "Login user with provided email and password"
+    login(
+        "User email"
+        email: String!,
+        "User password"
+        password: String!
+    ): Tokens!
+    "Initialize single payment"
+    payOnce(input: PayOnceInput!): BillingSession!
+    "Initialize recurrent payment"
+    payWithCard(
+        "Total payment amount in kopecs"
+        amount: Long!,
+        "Unique card identifier for recurrent payment. Omit this to pay with unattached card"
+        cardId: Int!,
+        "Payment form language"
+        language: String,
+        "Workspace id for which the payment will be made"
+        workspaceId: String!
+    ): Boolean!
+    "Update user's tokens pair"
+    refreshTokens(
+        "Refresh token for getting new token pair"
+        refreshToken: String!
+    ): Tokens!
+    "Remove card"
+    removeCard(cardNumber: String!): Boolean!
+    """
+
+    Remove member from workspace
+    Returns true if operation is successful
+    """
+    removeMemberFromWorkspace(
+        "Email of user to remove"
+        userEmail: String,
+        "ID of user to remove"
+        userId: ID,
+        "Workspace ID"
+        workspaceId: ID!
+    ): Boolean!
+    "Remove project"
+    removeProject(
+        "What project to remove"
+        projectId: ID!
+    ): Boolean!
+    "Reset user's password"
+    resetPassword(
+        "User email"
+        email: String!
+    ): Boolean!
+    "Register user with provided email. Returns true if registred"
+    signUp(
+        "Registration email"
+        email: String!
+    ): Boolean!
+    "Mutation sets or unsets passed mark to event"
+    toggleEventMark(
+        "EvenID of the event to set the mark"
+        eventId: ID!,
+        "Mark to set"
+        mark: EventMark!,
+        "ID of project event is related to"
+        project: ID!
+    ): Boolean!
+    "Toggles isEnabled field in in project notifications rule"
+    toggleProjectNotificationsRuleEnabledState(
+        "Data for toggling"
+        input: ProjectNotificationRulePointer
+    ): ProjectNotificationsRule
+    "Updates user's visit time on project"
+    updateLastProjectVisit(
+        "project ID"
+        projectId: ID!
+    ): DateTime!
+    "Update user's profile"
+    updateProfile(
+        "User email"
+        email: String!,
+        "User image file"
+        image: Upload,
+        "User name"
+        name: String!
+    ): Boolean!
+    "Update project settings"
+    updateProject(
+        "Project description"
+        description: String,
+        "What project to update"
+        id: ID!,
+        "Project image"
+        image: Upload,
+        "Project name"
+        name: String!
+    ): Project!
+    "Updates existing notifications rule"
+    updateProjectNotificationsRule(
+        "Data for updating"
+        input: UpdateProjectNotificationsRuleInput!
+    ): ProjectNotificationsRule
+    "Update workspace settings"
+    updateWorkspace(
+        "Workspace description"
+        description: String,
+        "Workspace image"
+        image: Upload,
+        "Workspace name"
+        name: String!,
+        "What workspace to update"
+        workspaceId: ID!
+    ): Boolean!
+    "Mutation marks event as visited for current user"
+    visitEvent(id: ID!, project: ID!): Boolean!
+}
+
+"Settings for notification channels"
+type NotificationsChannelSettings {
+    "Where to deliver messages"
+    endpoint: String!
+    "True if channel is enabled"
+    isEnabled: Boolean!
+    "How often to send event (one alert in 'minPeriod' secs)"
+    minPeriod: Int!
+}
+
+"All available notification channels"
+type NotificationsChannels {
+    "Push from Hawk Desktop app"
+    desktopPush: NotificationsChannelSettings
+    "Email channel"
+    email: NotificationsChannelSettings
+    "Slack channel"
+    slack: NotificationsChannelSettings
+    "Telegram channel"
+    telegram: NotificationsChannelSettings
+    "Webpush"
+    webPush: NotificationsChannelSettings
+}
+
+"Business operation payload type for 'DepositByUser' operation type"
+type PayloadOfDepositByUser {
+    "Amount of payment in US cents"
+    amount: Long!
+    "PAN of card which user made the payment"
+    cardPan: String
+    "User who made the payment"
+    user: User!
+    "Workspace to which the payment is credited"
+    workspace: Workspace!
+}
+
+"Business operation payload type for 'WorkspacePlanPurchase' operation type"
+type PayloadOfWorkspacePlanPurchase {
+    "Amount of payment in US cents"
+    amount: Long!
+    "Workspace to which the payment is debited"
+    workspace: Workspace!
+}
+
+"Pending member data in workspace"
+type PendingMember {
+    "Email to which the invitation was sent"
+    email: String!
+    "Member info id"
+    id: ID!
+}
+
+"Hawk tariff plan description"
+type Plan {
+    "Events limit for plan"
+    eventsLimit: Int!
+    "Plan id in MongoDB"
+    id: ID!
+    "True if plan is default one"
+    isDefault: Boolean!
+    "Monthly charge for plan"
+    monthlyCharge: Long!
+    "Plan name"
+    name: String!
+}
+
+"Project representation"
+type Project {
+    "Return events that occurred after a certain timestamp"
+    chartData(
+        "How many days we need to fetch for displaying in a chart"
+        days: Int! = 0,
+        "User's local timezone offset in minutes"
+        timezoneOffset: Int! = 0
+    ): [ChartDataItem]
+    "Project description"
+    description: String
+    "Project domain"
+    domain: String
+    "Project's Event"
+    event(id: ID!): Event
+    "Project events"
+    events(
+        "Maximum number of results"
+        limit: Int = 50,
+        "Certain number of documents to skip"
+        skip: Int = 0
+    ): [Event!]
+    "Project ID"
+    id: ID!
+    "Project image"
+    image: String
+    "Project name"
+    name: String!
+    "Project notification settings"
+    notifications: [ProjectNotificationsRule]
+    "Returns recent events grouped by day"
+    recentEvents(
+        "Event marks by which events should be sorted"
+        filters: EventsFiltersInput,
+        "Maximum number of results"
+        limit: Int! = 50,
+        "Certain number of documents to skip"
+        skip: Int! = 0,
+        "Events sort order"
+        sort: EventsSortOrder
+    ): RecentEvents
+    "Project token"
+    token: String!
+    "User who created project"
+    uidAdded: User!
+    "Returns number of unread events"
+    unreadCount: Int!
+    "Project URI"
+    uri: String
+}
+
+"Project notify settings"
+type ProjectNotificationsRule {
+    "Notification channels to recieve events"
+    channels: NotificationsChannels
+    "Words to exclude from notification"
+    excluding: [String!]!
+    "Notification settings id"
+    id: ID!
+    "Words to include in notification"
+    including: [String!]!
+    "True if settings is enabled"
+    isEnabled: Boolean!
+    "What events type to recieve"
+    whatToReceive: ReceiveTypes!
+}
+
+"API queries"
+type Query {
+    "Get workspace billing history"
+    businessOperations(
+        "Workspaces IDs"
+        ids: [ID!] = []
+    ): [BusinessOperation!]!
+    "Get attached cards"
+    cardList: [CardInfo!]!
+    "Healthcheck endpoint"
+    health: String!
+    "Returns authenticated user data"
+    me: User
+    "Gets available Hawk tariff plans"
+    plans: [Plan!]!
+    "Returns project info"
+    project(
+        "Project id"
+        id: ID!
+    ): Project
+    """
+
+    Returns workspace(s) info
+    If ids = [] returns all user's workspaces
+    """
+    workspaces(
+        "Workspace(s) id(s)"
+        ids: [ID] = []
+    ): [Workspace]
+}
+
+"Event information per day with these events"
+type RecentEvents {
+    "Information about occurred events per day"
+    dailyInfo: [DailyEventInfo]
+    "Occured events list"
+    events: [Event!]
+}
+
+type RemoveAssigneeResponse {
+    "Response status"
+    success: Boolean!
+}
+
+"Event's repetitions. Make Event unique by repetition's payload"
+type Repetition {
+    "Event's hash"
+    groupHash: String!
+    "Standalone repetition ID"
+    id: ID!
+    "Event's payload patch"
+    payload: RepetitionPayload!
+}
+
+"Type representing Event payload"
+type RepetitionPayload {
+    "Custom data provided by project users"
+    addons: EncodedJSON
+    "Event stack array from the latest call to the earliest"
+    backtrace: [EventBacktraceFrame!]
+    "Any additional data of Event"
+    context: EncodedJSON
+    "Additional data about GET request"
+    get: JSONObject
+    "HTTP headers"
+    headers: JSONObject
+    "Event severity level"
+    level: Int
+    "Additional data about POST request"
+    post: JSONObject
+    "Source code version identifier"
+    release: String
+    "Event timestamp"
+    timestamp: Float
+    "Current authenticated user"
+    user: EventUser
+}
+
+"Source code line representation"
+type SourceCodeLine {
+    "Line's content"
+    content: String
+    "Line number"
+    line: Int
+}
+
+type Subscription {
+    "Sends new events from all user projects"
+    eventOccurred: Event!
+}
+
+"Authentication token"
+type Tokens {
+    "User's access token"
+    accessToken: String!
+    "User's refresh token for getting new token pair"
+    refreshToken: String!
+}
+
+type UpdateAssigneeResponse {
+    "User assigned to the event"
+    record: User!
+    "Response status"
+    success: Boolean!
+}
+
+"Represent User type"
+type User {
+    "User's email"
+    email: String
+    "User's id"
+    id: ID!
+    "User's image"
+    image: String
+    "User's name"
+    name: String
+    "User notifications settings"
+    notifications: UserNotificationsSettings
+}
+
+"Available notify types with their active statuses"
+type UserNotificationsReceiveTypesSet {
+    "When user is assigned to the issue (event)"
+    IssueAssigning: Boolean
+    "Only important messages from Hawk team"
+    SystemMessages: Boolean
+    "Regular digest of what happened on the project for the week"
+    WeeklyDigest: Boolean
+}
+
+"This object stored in user.notifications field"
+type UserNotificationsSettings {
+    "Available channels with their data"
+    channels: NotificationsChannels!
+    "Available notify types with their active statuses"
+    whatToReceive: UserNotificationsReceiveTypesSet!
+}
+
+"Represent Workspace info"
+type Workspace {
+    "Workspace balance"
+    balance: Long
+    "Workspace description"
+    description: String
+    "Workspace id"
+    id: ID!
+    "Workspace logo image"
+    image: String
+    "Workspace name"
+    name: String
+    "Workspace tariff plan"
+    plan: Plan
+    "Workspace projects array"
+    projects(
+        "Project(s) id(s)"
+        ids: [ID!] = []
+    ): [Project!]
+    "Workspace team info"
+    team: [Member!]!
+}
+
+"This object will be returned to the changeUserNotificationsChannel mutation"
+type changeUserNotificationsChannelResponse {
+    notifications: UserNotificationsSettings
+}
+
+"This object will be returned to the changeUserNotificationsReceiveType mutation"
+type changeUserNotificationsReceiveTypeResponse {
+    notifications: UserNotificationsSettings
+}
+
+"Business operations statuses"
+enum BusinessOperationStatus {
+    "Business operation is confirmed"
+    CONFIRMED
+    "Business operation is pending"
+    PENDING
+    "Business operation is rejected"
+    REJECTED
+}
+
+"Types of business operations"
+enum BusinessOperationType {
+    "Workspace deposit balance by user"
+    DEPOSIT_BY_USER
+    "Workspace plan purchase by payment worker"
+    WORKSPACE_PLAN_PURCHASE
+}
+
+enum CacheControlScope {
+    PRIVATE
+    PUBLIC
+}
+
+"Possible event marks"
+enum EventMark {
+    ignored
+    resolved
+    starred
+}
+
+"Possible events order"
+enum EventsSortOrder {
+    BY_COUNT
+    BY_DATE
+}
+
+"Supported languages for data"
+enum Languages {
+    EN
+    RU
+}
+
+"What events to receive"
+enum ReceiveTypes {
+    "Receive all events"
+    ALL
+    "Receive only new events"
+    ONLY_NEW
+}
+
+"Languages supported by the Tinkoff"
+enum SupportedBillingLanguages {
+    EN
+    RU
+}
+
+enum UserNotificationType {
+    "When user is assigned to the issue (event)"
+    IssueAssigning
+    "Only important messages from Hawk team"
+    SystemMessages
+    "Regular digest of what happened on the project for the week"
+    WeeklyDigest
+}
+
+"The structure represents payload for toggling receive type"
+input ChangeUserNotificationsReceiveTypeInput {
+    IssueAssigning: Boolean
+    WeeklyDigest: Boolean
+}
+
+"Payload for changing workspace tariff plan"
+input ChangeWorkspacePlanInput {
+    "Tariff plan ID"
+    planId: ID!
+    "Workspace ID"
+    workspaceId: ID!
+}
+
+"Input type for creating new notification rule"
+input CreateProjectNotificationsRuleInput {
+    "Notification channels to recieve events"
+    channels: NotificationsChannelsInput!
+    "Words to exclude from notification"
+    excluding: [String!]! = []
+    "Words to include in notification"
+    including: [String!]! = []
+    "True if settings is enabled"
+    isEnabled: Boolean! = true
+    "Project id to setup"
+    projectId: ID!
+    "What events type to recieve"
+    whatToReceive: ReceiveTypes! = ONLY_NEW
+}
+
+"Events filters input type"
+input EventsFiltersInput {
+    "If True, includes events with ignored mark to the output"
+    ignored: Boolean
+    "If True, includes events with resolved mark to the output"
+    resolved: Boolean
+    "If True, includes events with starred mark to the output"
+    starred: Boolean
+}
+
+"Input type for updateting channel settings"
+input NotificationsChannelSettingsInput {
+    "Where to deliver messages"
+    endpoint: String!
+    "True if channel is enabled"
+    isEnabled: Boolean! = true
+    "How often to send event (one alert in 'minPeriod' secs)"
+    minPeriod: Int! = 60
+}
+
+"Input type for creating and updating notification channels"
+input NotificationsChannelsInput {
+    "Desktop push"
+    desktopPush: NotificationsChannelSettingsInput
+    "Email channel"
+    email: NotificationsChannelSettingsInput
+    "Slack channel"
+    slack: NotificationsChannelSettingsInput
+    "Telegram channel"
+    telegram: NotificationsChannelSettingsInput
+    "Web push"
+    webPush: NotificationsChannelSettingsInput
+}
+
+"Input for single payment"
+input PayOnceInput {
+    "Total payment amount in kopecs"
+    amount: Long!
+    "Payment form language"
+    language: SupportedBillingLanguages = RU
+    "Workspace id for which the payment will be made"
+    workspaceId: ID!
+}
+
+"Input type for specifying project notifications rule"
+input ProjectNotificationRulePointer {
+    "Project id which owns the rule"
+    projectId: ID!
+    "Rule id to delete"
+    ruleId: ID!
+}
+
+input RemoveAssigneeInput {
+    "ID of the selected event"
+    eventId: ID!
+    "ID of project event is related to"
+    projectId: ID!
+}
+
+input UpdateAssigneeInput {
+    "Assignee id to set"
+    assignee: ID!
+    "ID of the selected event"
+    eventId: ID!
+    "ID of project event is related to"
+    projectId: ID!
+}
+
+"Input type for updating exsiting notification rule"
+input UpdateProjectNotificationsRuleInput {
+    "Notification channels to recieve events"
+    channels: NotificationsChannelsInput!
+    "Words to exclude from notification"
+    excluding: [String!]! = []
+    "Words to include in notification"
+    including: [String!]! = []
+    "True if settings is enabled"
+    isEnabled: Boolean! = true
+    "Project id to setup"
+    projectId: ID!
+    "Rule id to update"
+    ruleId: ID!
+    "What events type to recieve"
+    whatToReceive: ReceiveTypes! = ONLY_NEW
+}
+
+
+"The `BigInt` scalar type represents non-fractional signed whole numeric values."
+scalar Long
+
+"The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
+scalar JSONObject
+
+"Represents JSON objects encoded (or not) in string format"
+scalar EncodedJSON
+
+"A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
+scalar DateTime
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload
+
+"The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
+scalar JSON
+
+"Integers that will have a value greater than 0."
+scalar PositiveInt
