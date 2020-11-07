@@ -8,7 +8,8 @@ import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.title_edit_text.view.*
+import kotlinx.android.synthetic.main.title_edit_text.view.edit_text
+import kotlinx.android.synthetic.main.title_edit_text.view.tv_title
 import so.codex.hawk.R
 
 /**
@@ -28,7 +29,9 @@ class TitleEditText(context: Context, attrs: AttributeSet) : LinearLayout(contex
      *                                        This color will be set if there is no attribute to set
      *                                        the color in the xml markup.
      */
-    private val DEFAULT_TITLE_COLOR_RESOURCE = R.color.colorDefaultTitleEditText
+    companion object {
+        private val DEFAULT_TITLE_COLOR_RESOURCE = R.color.colorDefaultTitleEditText
+    }
 
     // Initializing internals on creation
     init {
