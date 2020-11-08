@@ -1,0 +1,34 @@
+name: "app-build"
+on: pull_request
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Clean code
+        run: |
+          ./gradlew clean
+      - name: Check lint
+        run: |
+          ./gradlew lint
+      - name: Check ktlint
+        run: |
+          ./gradlew ktlintCheck
+      - name: Build application
+        run: |
+          ./gradlew assembleDebug
+      - name: Logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2.2.0
+        with:
+          name: Failed build
+          path: | 
+            app/build/reports/ktlint/
+            app/build/reports/lint-results.html
+      - name: Build
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v2.2.0
+        with:
+          name: Failed build
+          path: app/build/outputs/apk/debug/app-debug.apk
