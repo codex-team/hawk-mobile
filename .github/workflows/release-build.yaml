@@ -8,11 +8,6 @@ on:
   pull_request:
     branches:
       - main
-    # Also trigger on page_build, as well as release created events
-    page_build:
-    release:
-      types: # This configuration does not affect the page_build event above
-        - created
 
 jobs:
   build-android:
@@ -89,7 +84,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: Build for branch *${{env.BRANCH_NAME}}* successful!
-          document: artifacts/"$ARTIFACT_NAME"
+          document: artifacts/${{ ARTIFACT_NAME }}
 
       - name: Submit
         if: ${{ needs.build-android.result != 'success' }}
@@ -101,4 +96,4 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: failed build!
-          document: artifacts/"$ARTIFACT_NAME"
+          document: artifacts/${{ ARTIFACT_NAME }}
