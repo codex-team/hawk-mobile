@@ -84,7 +84,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: Build for branch *${{env.BRANCH_NAME}}* successful!
-          document: '$ARTIFACT_NAME'
+          document: ${{ env.ARTIFACT_NAME }}
 
       - name: Submit
         if: ${{ needs.build-android.result != 'success' }}
@@ -96,4 +96,4 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: failed build!
-          document: $ARTIFACT_NAME
+          document: ${{ env.ARTIFACT_NAME }}
