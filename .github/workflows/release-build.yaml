@@ -96,4 +96,4 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: failed build!
-          document: ${{ ARTIFACT_NAME }}
+          document: $ARTIFACT_NAME
