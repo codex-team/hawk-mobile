@@ -51,6 +51,10 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     needs: build-android
+    env:
+      ARTIFACT_NAME: artifact-master-${{GITHUB_RUN_NUMBER}}.zip
+      DOWNLOAD_ARTIFACT_PATH: artifacts/
+      ARTIFACT_PATH: artifacts/artifact-master-${{GITHUB_RUN_NUMBER}}.zip
     steps:
       - name: download-apk-artifact
         id: apk
@@ -58,7 +62,7 @@ jobs:
         uses: actions/download-artifact@v2.0.5
         with:
           name: apk-artifact
-          path: artifacts/
+          path: ${{env.DOWNLOAD_ARTIFACT_PATH}}
 
       - name: download-logs-artifact
         id: logs
@@ -66,34 +70,28 @@ jobs:
         uses: actions/download-artifact@v2.0.5
         with:
           name: logs-artifact
-          path: artifacts/
+          path: ${{env.DOWNLOAD_ARTIFACT_PATH}}
 
       - name: Compress
-        env:
-          ARTIFACT_NAME: artifact-${{env.BRANCH_NAME}}.zip
-        run: pwd && zip artifact-"$BRANCH_NAME".zip . -r
-        working-directory: artifacts/
+        run: ls -R && pwd && zip ${{ env.ARTIFACT_NAME }} . -r
+        working-directory: ${{env.DOWNLOAD_ARTIFACT_PATH}}
 
       - name: Submit
         if: ${{ needs.build-android.result == 'success' }}
         uses: appleboy/telegram-action@master
-        env:
-          ARTIFACT_NAME: artifacts/artifact-${{env.BRANCH_NAME}}.zip
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
-          message: Build for branch *${{env.BRANCH_NAME}}* successful!
-          document: ${{ env.ARTIFACT_NAME }}
+          message: Build for branch *master* successful!
+          document: ${{ env.ARTIFACT_PATH }}
 
       - name: Submit
         if: ${{ needs.build-android.result != 'success' }}
         uses: appleboy/telegram-action@master
-        env:
-          ARTIFACT_NAME: artifacts/artifact-${{env.BRANCH_NAME}}.zip
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: failed build!
-          document: ${{ env.ARTIFACT_NAME }}
+          document: ${{ env.ARTIFACT_PATH }}
