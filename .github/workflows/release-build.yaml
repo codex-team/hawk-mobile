@@ -78,22 +78,22 @@ jobs:
         if: ${{ needs.build-android.result == 'success' }}
         uses: appleboy/telegram-action@master
         env:
-          ARTIFACT_NAME: artifact-${{env.BRANCH_NAME}}.zip
+          ARTIFACT_NAME: artifacts/artifact-${{env.BRANCH_NAME}}.zip
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: Build for branch *${{env.BRANCH_NAME}}* successful!
-          document: artifacts/${{ ARTIFACT_NAME }}
+          document: '$ARTIFACT_NAME'
 
       - name: Submit
         if: ${{ needs.build-android.result != 'success' }}
         uses: appleboy/telegram-action@master
         env:
-          ARTIFACT_NAME: artifact-${{env.BRANCH_NAME}}.zip
+          ARTIFACT_NAME: artifacts/artifact-${{env.BRANCH_NAME}}.zip
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: failed build!
-          document: artifacts/${{ ARTIFACT_NAME }}
+          document: ${{ ARTIFACT_NAME }}
