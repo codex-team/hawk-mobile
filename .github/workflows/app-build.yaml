@@ -64,26 +64,31 @@ jobs:
           path: artifacts/
 
       - name: Compress
-        if: ${{ needs.build-android.result != 'success' }}
-        run: pwd && zip artifact.zip . -r
-        working-directory: ${{ steps.logs.outputs.download-path }}
+        env:
+          ARTIFACT_NAME: artifact-${{env.BRANCH_NAME}}.zip
+        run: pwd && zip "$ARTIFACT_NAME" . -r
+        working-directory: artifacts/
 
       - name: Submit
         if: ${{ needs.build-android.result == 'success' }}
+        env:
+          ARTIFACT_NAME: artifact-${{env.BRANCH_NAME}}.zip
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO_BUILD }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: Build
-          document: artifacts/artifact.zip
+          document: artifacts/"$ARTIFACT_NAME"
 
       - name: Submit
         if: ${{ needs.build-android.result != 'success' }}
+        env:
+          ARTIFACT_NAME: artifact-${{env.BRANCH_NAME}}.zip
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO_BUILD }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: failed build!
-          document: artifacts/artifact.zip
+          document: artifacts/"$ARTIFACT_NAME"

@@ -62,7 +62,7 @@ jobs:
         if: ${{ needs.build-android.result == 'success' }}
         uses: actions/download-artifact@v2.0.5
         with:
-          name: apk_artifact
+          name: apk-artifact
           path: artifacts/
 
       - name: download-logs-artifact
@@ -70,30 +70,35 @@ jobs:
         if: ${{ needs.build-android.result != 'success' }}
         uses: actions/download-artifact@v2.0.5
         with:
-          name: logs_artifact
+          name: logs-artifact
           path: artifacts/
 
       - name: Compress
-        if: ${{ needs.build-android.result != 'success' }}
-        run: pwd && zip artifact.zip . -r
-        working-directory: ${{ steps.logs.outputs.download-path }}
+        env:
+          ARTIFACT_NAME: artifact-${{env.BRANCH_NAME}}.zip
+        run: pwd && zip artifact-"$BRANCH_NAME".zip . -r
+        working-directory: artifacts/
 
       - name: Submit
         if: ${{ needs.build-android.result == 'success' }}
         uses: appleboy/telegram-action@master
+        env:
+          ARTIFACT_NAME: artifact-${{env.BRANCH_NAME}}.zip
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: Build for branch *${{env.BRANCH_NAME}}* successful!
-          document: artifacts/artifact.zip
+          document: artifacts/"$ARTIFACT_NAME"
 
       - name: Submit
         if: ${{ needs.build-android.result != 'success' }}
         uses: appleboy/telegram-action@master
+        env:
+          ARTIFACT_NAME: artifact-${{env.BRANCH_NAME}}.zip
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: failed build!
-          document: artifacts/artifact.zip
+          document: artifacts/"$ARTIFACT_NAME"
