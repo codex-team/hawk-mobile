@@ -6,24 +6,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
+        - 
       - name: Clean code
         run: |
           ./gradlew clean
+
       - name: Check lint
         run: |
           ./gradlew lint
+
       - name: Check ktlint
         run: |
           ./gradlew ktlintCheck
+
       - name: Build application
         run: |
           ./gradlew assembleDebug
+
       - name: Upload APK
         if: ${{ success() }}
         uses: actions/upload-artifact@v2.2.0
         with:
           name: apk-artifact
           path: app/build/outputs/apk/debug/app-debug.apk
+
       - name: Upload Logs
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2.2.0
@@ -32,6 +38,7 @@ jobs:
           path: |
             app/build/reports/ktlint/**/*.xml
             app/build/reports/lint-results.html
+
   submit-artifact:
     runs-on: ubuntu-latest
     if: always()
@@ -44,6 +51,7 @@ jobs:
         with:
           name: apk-artifact
           path: artifacts/
+
       - name: download-logs-artifact
         id: logs
         if: ${{ needs.build-android.result != 'success' }}
@@ -51,10 +59,11 @@ jobs:
         with:
           name: logs-artifact
           path: artifacts/
+
       - name: Compress
-          if: ${{ needs.build-android.result != 'success' }}
-          run: pwd && zip artifact.zip . -r
-          working-directory: ${{ steps.logs.outputs.download-path }}
+        if: ${{ needs.build-android.result != 'success' }}
+        run: pwd && zip artifact.zip . -r
+        working-directory: ${{ steps.logs.outputs.download-path }}
 
       - name: Submit
         if: ${{ needs.build-android.result == 'success' }}
