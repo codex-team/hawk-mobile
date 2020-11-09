@@ -18,17 +18,59 @@ jobs:
       - name: Build application
         run: |
           ./gradlew assembleDebug
-      - name: Logs
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2.2.0
-        with:
-          name: Failed build
-          path: | 
-            app/build/reports/ktlint/
-            app/build/reports/lint-results.html
-      - name: Build
+      - name: Upload APK
         if: ${{ success() }}
         uses: actions/upload-artifact@v2.2.0
         with:
-          name: Failed build
+          key: apk-artifact
           path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Upload Logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2.2.0
+        with:
+          name: logs-artifact
+          path: |
+            app/build/reports/ktlint/**/*.xml
+            app/build/reports/lint-results.html
+  submit-artifact:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: build-android
+    steps:
+      - name: download-apk-artifact
+        id: apk
+        if: ${{ needs.build-android.result == 'success' }}
+        uses: actions/download-artifact@v2.0.5
+        with:
+          name: apk-artifact
+          path: artifacts/
+      - name: download-logs-artifact
+        id: logs
+        if: ${{ needs.build-android.result != 'success' }}
+        uses: actions/download-artifact@v2.0.5
+        with:
+          name: logs-artifact
+          path: artifacts/
+      - name: Submit
+        if: ${{ needs.build-android.result == 'success' }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO_BUILD }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: Build
+          document: ${{ steps.apk.outputs.download-path }}
+
+      - name: Compress
+        if: ${{ needs.build-android.result != 'success' }}
+        run: pwd && zip artifact.zip . -r
+        working-directory: ${{ steps.logs.outputs.download-path }}
+      - name: Submit
+        if: ${{ needs.build-android.result != 'success' }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO_BUILD }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: failed build!
+          document: artifacts/artifact.zip
