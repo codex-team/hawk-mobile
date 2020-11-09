@@ -1,29 +1,48 @@
 name: "app-build"
-on: pull_request
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    # Also trigger on page_build, as well as release created events
+    page_build:
+    release:
+      types: # This configuration does not affect the page_build event above
+        - created
 
 jobs:
   build-android:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.4
+
       - name: Clean code
         run: |
           ./gradlew clean
+
       - name: Check lint
         run: |
           ./gradlew lint
+
       - name: Check ktlint
         run: |
           ./gradlew ktlintCheck
+
       - name: Build application
         run: |
           ./gradlew assembleDebug
+
       - name: Upload APK
         if: ${{ success() }}
         uses: actions/upload-artifact@v2.2.0
         with:
           name: apk-artifact
           path: app/build/outputs/apk/debug/app-debug.apk
+
       - name: Upload Logs
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2.2.0
@@ -32,6 +51,7 @@ jobs:
           path: |
             app/build/reports/ktlint/**/*.xml
             app/build/reports/lint-results.html
+
   submit-artifact:
     runs-on: ubuntu-latest
     if: always()
@@ -42,35 +62,37 @@ jobs:
         if: ${{ needs.build-android.result == 'success' }}
         uses: actions/download-artifact@v2.0.5
         with:
-          name: apk-artifact
+          name: apk_artifact
           path: artifacts/
+
       - name: download-logs-artifact
         id: logs
         if: ${{ needs.build-android.result != 'success' }}
         uses: actions/download-artifact@v2.0.5
         with:
-          name: logs-artifact
+          name: logs_artifact
           path: artifacts/
+
       - name: Compress
-          if: ${{ needs.build-android.result != 'success' }}
-          run: pwd && zip artifact.zip . -r
-          working-directory: ${{ steps.logs.outputs.download-path }}
+        if: ${{ needs.build-android.result != 'success' }}
+        run: pwd && zip artifact.zip . -r
+        working-directory: ${{ steps.logs.outputs.download-path }}
 
       - name: Submit
         if: ${{ needs.build-android.result == 'success' }}
         uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO_BUILD }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
-          message: Build
-          document: artifacts/artifact.zip
+          with:
+            to: ${{ secrets.TELEGRAM_TO }}
+            token: ${{ secrets.TELEGRAM_TOKEN }}
+            format: markdown
+            message: Build for branch *${{env.BRANCH_NAME}}* successful!
+            document: artifacts/artifact.zip
 
       - name: Submit
         if: ${{ needs.build-android.result != 'success' }}
         uses: appleboy/telegram-action@master
         with:
-          to: ${{ secrets.TELEGRAM_TO_BUILD }}
+          to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: failed build!
