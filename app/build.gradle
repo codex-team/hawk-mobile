@@ -55,4 +55,7 @@ dependencies {
     // Apollo
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
     implementation "com.apollographql.apollo:apollo-rx3-support:$apollo_version"
+    // okHttp
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
+
 }
