@@ -13,13 +13,3 @@
     }
   }
 }
-./gradlew downloadApolloSchema --endpoint="https://api.beta.hawk.so/graphql" --schema="src/graphql/so/codex/hawk" --header="Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjIxMTQxM2ZkYWM2MDRmNmU3MGIyNWEiLCJpYXQiOjE2MDQ3NDU3MTcsImV4cCI6MTYwNDc0NjYxN30.TaH8_H98ruq0IpR1zSWY2pjlrzTG3R6eJf1uwPu3iBU" --service --stacktrace
-
-
-
-./gradlew downloadApolloSchema \
---endpoint="https://api.beta.hawk.so/graphql" \
---schema="app/src/graphql/so/codex/hawk" \
---header="Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjIxMTQxM2ZkYWM2MDRmNmU3MGIyNWEiLCJpYXQiOjE2MDQ3NDU3MTcsImV4cCI6MTYwNDc0NjYxN30.TaH8_H98ruq0IpR1zSWY2pjlrzTG3R6eJf1uwPu3iBU"
-
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjIxMTQxM2ZkYWM2MDRmNmU3MGIyNWEiLCJpYXQiOjE2MDQ3NDU3MTcsImV4cCI6MTYwNDc0NjYxN30.TaH8_H98ruq0IpR1zSWY2pjlrzTG3R6eJf1uwPu3iBU
