@@ -47,9 +47,9 @@ jobs:
     if: always()
     needs: build-android
     env:
-      ARTIFACT_NAME: artifact-${{ GITHUB_RUN_NUMBER }}.zip
+      ARTIFACT_NAME: artifact-${{ github.run_number }}.zip
       DOWNLOAD_ARTIFACT_PATH: artifacts/
-      ARTIFACT_PATH: artifacts/artifact-${{ GITHUB_RUN_NUMBER }}.zip
+      ARTIFACT_PATH: artifacts/artifact-${{ github.run_number }}.zip
     steps:
       - name: download-apk-artifact
         id: apk
