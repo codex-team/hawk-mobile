@@ -29,7 +29,6 @@ class TokenInterceptor private constructor() : Interceptor {
      */
     var token: String = ""
 
-
     /**
      * The method that will be called upon request to the api
      * when the interceptor's turn in the chain comes.

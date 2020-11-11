@@ -35,5 +35,4 @@ object NetworkProvider {
     fun getApolloClient(): ApolloClient {
         return instance
     }
-
 }

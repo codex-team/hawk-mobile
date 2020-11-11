@@ -1,6 +1,5 @@
 package so.codex.hawk
 
-
 /**
  * Class containing application-level constants
  */
