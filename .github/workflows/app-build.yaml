@@ -1,0 +1,92 @@
+name: "app-build"
+on:
+  pull_request:
+    branches-ignore:
+      - main
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      
+      - name: Clean code
+        run: |
+          ./gradlew clean
+
+      - name: Check lint
+        run: |
+          ./gradlew lint
+
+      - name: Check ktlint
+        run: |
+          ./gradlew ktlintCheck
+
+      - name: Build application
+        run: |
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v2.2.0
+        with:
+          name: apk-artifact
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload Logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2.2.0
+        with:
+          name: logs-artifact
+          path: |
+            app/build/reports/ktlint/**/*.xml
+            app/build/reports/lint-results.html
+
+  submit-artifact:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: build-android
+    env:
+      ARTIFACT_NAME: artifact-${{ github.run_number }}.zip
+      DOWNLOAD_ARTIFACT_PATH: artifacts/
+      ARTIFACT_PATH: artifacts/artifact-${{ github.run_number }}.zip
+    steps:
+      - name: download-apk-artifact
+        id: apk
+        if: ${{ needs.build-android.result == 'success' }}
+        uses: actions/download-artifact@v2.0.5
+        with:
+          name: apk-artifact
+          path: ${{env.DOWNLOAD_ARTIFACT_PATH}}
+
+      - name: download-logs-artifact
+        id: logs
+        if: ${{ needs.build-android.result != 'success' }}
+        uses: actions/download-artifact@v2.0.5
+        with:
+          name: logs-artifact
+          path: ${{env.DOWNLOAD_ARTIFACT_PATH}}
+
+      - name: Compress
+        run: ls -R && pwd && zip ${{ env.ARTIFACT_NAME }} . -r
+        working-directory: ${{env.DOWNLOAD_ARTIFACT_PATH}}
+
+      - name: Submit
+        if: ${{ needs.build-android.result == 'success' }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO_BUILD }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: Build for branch *${{ github.ref }}* successful!
+          document: ${{ env.ARTIFACT_PATH }}
+
+      - name: Submit
+        if: ${{ needs.build-android.result != 'success' }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO_BUILD }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: failed build for branch *${{ github.ref }}*!
+          document: ${{ env.ARTIFACT_PATH }}
