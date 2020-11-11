@@ -2,7 +2,6 @@ package so.codex.hawk.network
 
 import okhttp3.Interceptor
 import okhttp3.Response
-import so.codex.hawk.network.LoggingInterceptor.Companion.instance
 
 /**
  * The class is the interceptor of the api request.
@@ -44,7 +43,7 @@ class TokenInterceptor private constructor() : Interceptor {
         val localToken = token
         return if (localToken.isNotEmpty()) {
             val request = origin.newBuilder()
-                .method(origin.method(), origin.body())
+                .method(origin.method, origin.body)
                 .addHeader(HEADER_NAME, "Bearer $localToken")
                 .build()
             chain.proceed(
