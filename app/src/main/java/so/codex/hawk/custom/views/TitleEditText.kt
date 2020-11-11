@@ -48,10 +48,10 @@ class TitleEditText(context: Context, attrs: AttributeSet) : LinearLayout(contex
      *              many attributes set in the xml view.
      */
     private fun initComponent(context: Context, attrs: AttributeSet) {
-        //inflating root view
+        // inflating root view
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.title_edit_text, this)
-        //Getting the set attributes in the xml
+        // Getting the set attributes in the xml
         val arrayAttrs = context.obtainStyledAttributes(
             attrs,
             R.styleable.TitleEditText,
@@ -78,7 +78,7 @@ class TitleEditText(context: Context, attrs: AttributeSet) : LinearLayout(contex
             InputType.TYPE_CLASS_TEXT
         )
         edit_text.inputType = inputType
-        //Releasing Attributes
+        // Releasing Attributes
         arrayAttrs.recycle()
     }
 
