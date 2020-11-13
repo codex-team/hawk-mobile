@@ -15,6 +15,13 @@ object AppData {
      */
     const val LOG_KEY_LOGGING_REQUESTS = "HAWK_REQUESTS_TO_API"
 
-    const val SIZE_LOG_FILE = 1024//1_048_576
+    /**
+     * @property SIZE_LOG_FILE contains the size in bytes for one log file. Default value 1 mb.
+     */
+    const val SIZE_LOG_FILE = 1_048_576
+
+    /**
+     * @property LIMIT_LOG_FILE contains the number of files to write logs.
+     */
     const val LIMIT_LOG_FILE = 3
 }
