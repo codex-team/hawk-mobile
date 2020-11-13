@@ -4,16 +4,12 @@ import android.app.Application
 import so.codex.hawk.logging.FileLoggingTree
 import so.codex.hawk.logging.LogcatFormatter
 import timber.log.Timber
-import java.io.File
-import java.io.FileReader
 
 /**
  * Heir to the Application class. Created by the system in a single copy when the application starts.
  * Used for one-time initialization of application components.
  */
 class HawkApp : Application() {
-
-
     /**
      * Method used for one-time initialization of components.
      */
@@ -21,6 +17,7 @@ class HawkApp : Application() {
         super.onCreate()
         // Initializing the class for working with the session
         SessionKeeper.init(applicationContext)
+        // Initializing the class for logging
         Timber.plant(FileLoggingTree(applicationInfo.dataDir, formatter = LogcatFormatter))
     }
 }
