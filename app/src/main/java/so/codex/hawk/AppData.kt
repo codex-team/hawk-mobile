@@ -14,4 +14,7 @@ object AppData {
      *                                    Used in LoggingInterceptor.
      */
     const val LOG_KEY_LOGGING_REQUESTS = "HAWK_REQUESTS_TO_API"
+
+    const val SIZE_LOG_FILE = 1024//1_048_576
+    const val LIMIT_LOG_FILE = 3
 }
