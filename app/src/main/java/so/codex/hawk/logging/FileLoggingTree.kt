@@ -15,7 +15,8 @@ class FileLoggingTree(
     private val logPath: String,
     private val logName: String = DEFAULT_LOG_NAME,
     sizeLimit: Int = AppData.SIZE_LOG_FILE,
-    fileLimit: Int = AppData.LIMIT_LOG_FILE
+    fileLimit: Int = AppData.LIMIT_LOG_FILE,
+    private val formatter: so.codex.hawk.logging.Formatter
 ) : Timber.DebugTree() {
     companion object {
         private const val LOGGER_NAME = "HAWK_LOGGER"
@@ -41,7 +42,7 @@ class FileLoggingTree(
         if (t == null) {
             logger.log(
                 fromPriorityToLevel(priority),
-                LogcatFormatter.format(priority, tag, message)
+                formatter.format(priority, tag, message)
             )
         } else {
             logger.log(fromPriorityToLevel(priority), "", t)

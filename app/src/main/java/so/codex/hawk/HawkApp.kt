@@ -2,6 +2,7 @@ package so.codex.hawk
 
 import android.app.Application
 import so.codex.hawk.logging.FileLoggingTree
+import so.codex.hawk.logging.LogcatFormatter
 import timber.log.Timber
 import java.io.File
 import java.io.FileReader
@@ -20,6 +21,6 @@ class HawkApp : Application() {
         super.onCreate()
         // Initializing the class for working with the session
         SessionKeeper.init(applicationContext)
-        Timber.plant(FileLoggingTree(applicationInfo.dataDir))
+        Timber.plant(FileLoggingTree(applicationInfo.dataDir, formatter = LogcatFormatter))
     }
 }
