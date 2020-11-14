@@ -22,12 +22,8 @@ import timber.log.Timber
  * @property logName Used to name log files.
  * @see [DEFAULT_LOG_NAME]
  *
- * @property formatter Accepts an instance that implements the [so.codex.hawk.logging.Formatter] interface.
+ * @property formatter Accepts an instance that implements the [LogcatFormatter] interface.
  *                    Used to format the output of messages to a file.
- *
- * @property logger contains an instance of the [Logger] class.
- *
- * @property NO_FORMATTER contains a stub to ignore the formatter from the [FileHandler].
  *
  * @param sizeLimit Accepts the maximum size in bytes for a single log file. [AppData.SIZE_LOG_FILE]
  *                  The default is set to the value from the AppData.SIZE_LOG_FILE.
@@ -38,15 +34,10 @@ import timber.log.Timber
 class FileLoggingTree(
     private val logPath: String,
     private val logName: String = DEFAULT_LOG_NAME,
-    private val formatter: so.codex.hawk.logging.Formatter,
+    private val formatter: LogcatFormatter,
     sizeLimit: Int = AppData.SIZE_LOG_FILE,
     fileLimit: Int = AppData.LIMIT_LOG_FILE
 ) : Timber.DebugTree() {
-    private val logger = Logger.getLogger(LOGGER_NAME)
-    private val NO_FORMATTER = object : Formatter() {
-        override fun format(record: LogRecord?) = record?.message ?: ""
-    }
-
     /**
      * @property LOGGER_NAME Name to receive the logger.
      *
@@ -55,12 +46,23 @@ class FileLoggingTree(
      *
      * @property DEFAULT_LOG_NAME contains the default name for log files. The log files will
      *                            be named as follows: log0, log1 and so on.
-     *
      */
     companion object {
         private const val LOGGER_NAME = "HAWK_LOGGER"
         private const val LOGS_SUBFOLDER = "/logs"
         private const val DEFAULT_LOG_NAME = "log"
+    }
+
+    /**
+     * @property logger contains an instance of the [Logger] class.
+     */
+    private val logger = Logger.getLogger(LOGGER_NAME)
+
+    /**
+     * @property NO_FORMATTER contains a stub to ignore the formatter from the [FileHandler].
+     */
+    private val NO_FORMATTER = object : Formatter() {
+        override fun format(record: LogRecord?) = record?.message ?: ""
     }
 
     /**
