@@ -1,7 +1,8 @@
-package so.codex.hawk
+package so.codex.hawk.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import so.codex.hawk.R
 
 /*
  Application launch class
