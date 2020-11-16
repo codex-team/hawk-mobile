@@ -9,6 +9,7 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
 import so.codex.hawk.domain.login.LoginInteractor
 import so.codex.hawk.domain.login.LoginInteractorImpl
+import so.codex.hawk.entity.UserAuthData
 import timber.log.Timber
 
 class LoginViewModel : ViewModel() {
@@ -23,7 +24,7 @@ class LoginViewModel : ViewModel() {
 
 
     fun login(email: String, password: String) {
-        loginInteractor.login(email, password)
+        loginInteractor.login(UserAuthData(email, password))
     }
 
     fun observeLoginEvent(): LiveData<LoginEvent> {
@@ -31,27 +32,16 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun subscribeLoginInteractor() {
-
-        loginInteractor.getLoginEventObservable().observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<LoginEvent> {
-                override fun onSubscribe(d: Disposable?) {
-                    loginEventDisposable = d!!
+        loginEventDisposable =
+            loginInteractor.getLoginEventObservable().observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    loginEvent.value = it
                 }
-
-                override fun onNext(t: LoginEvent?) {
-                    loginEvent.value = t
-                }
-
-                override fun onError(e: Throwable?) {
-                    Timber.e(e)
-                }
-
-                override fun onComplete() {}
-            })
     }
 
     override fun onCleared() {
         loginEventDisposable.dispose()
+        Timber.i("LoginEvent dispose!")
         super.onCleared()
     }
 }
