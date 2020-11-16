@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import so.codex.hawk.entity.Session
 import so.codex.hawk.entity.Token
+import timber.log.Timber
 
 /**
  * This class (singleton) is responsible for saving session data (accessToken,refreshToken, time).
@@ -66,6 +67,7 @@ object SessionKeeper {
      */
     fun init(context: Context) {
         if (!this::context.isInitialized) {
+            Timber.i("SessionKeeper initialization.")
             this.context = context
             val preferences = context.getSharedPreferences(KEY_SESSION_PREF, Context.MODE_PRIVATE)
             restoreSessionFromPref(preferences)
@@ -81,6 +83,7 @@ object SessionKeeper {
      *                   and last update time.
      */
     fun saveSession(newSession: Session) {
+        Timber.i("Saving a new session.")
         session = newSession
         saveToSharedPref(session)
         sessionSubject.onNext(session)
@@ -118,6 +121,7 @@ object SessionKeeper {
         val time = preferences.getLong(KEY_TIME_SESSION, 0)
         if (accessToken.isBlank() or refreshToken.isBlank()) return
         session = Session(Token(accessToken, refreshToken), time)
+        Timber.i("Session recovery from SharedPreferences.")
     }
 
     /**
@@ -131,5 +135,6 @@ object SessionKeeper {
         editor.putString(KEY_REFRESH_TOKEN, session.token.refreshToken)
         editor.putLong(KEY_TIME_SESSION, session.time)
         editor.apply()
+        Timber.i("Successful saving of session in SharedPreferences!")
     }
 }
