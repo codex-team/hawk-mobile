@@ -1,0 +1,8 @@
+query userInfo{
+    me{
+        id
+        email
+        name
+        image
+    }
+}

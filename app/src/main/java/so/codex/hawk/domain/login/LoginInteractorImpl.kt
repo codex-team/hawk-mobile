@@ -10,7 +10,6 @@ import so.codex.hawk.entity.Session
 import so.codex.hawk.entity.Token
 import so.codex.hawk.entity.UserAuthData
 import so.codex.hawk.network.NetworkProvider
-import so.codex.hawk.ui.login.LoginEvent
 import timber.log.Timber
 
 /**

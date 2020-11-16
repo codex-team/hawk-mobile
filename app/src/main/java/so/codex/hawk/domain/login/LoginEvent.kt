@@ -1,4 +1,4 @@
-package so.codex.hawk.ui.login
+package so.codex.hawk.domain.login
 
 /**
  * The class is an enumeration of various events that can occur during login.
