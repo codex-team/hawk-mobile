@@ -5,11 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <so.codex.hawk.custom.views.NotificationContainerView
+        android:id="@+id/notification_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/background"
         android:scaleType="centerCrop"
+        android:translationZ="-1dp"
         android:src="@drawable/auth_bg" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
