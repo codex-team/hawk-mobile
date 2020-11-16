@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
+import so.codex.hawk.domain.login.LoginEvent
 import so.codex.hawk.domain.login.LoginInteractor
 import so.codex.hawk.domain.login.LoginInteractorImpl
 import so.codex.hawk.entity.UserAuthData
@@ -52,6 +53,8 @@ class LoginViewModel : ViewModel() {
 
     /**
      * Method to provide LiveData [loginEvent] for observers.
+     *
+     * @return [LiveData] to monitor [LoginEvent].
      */
     fun observeLoginEvent(): LiveData<LoginEvent> {
         return loginEvent

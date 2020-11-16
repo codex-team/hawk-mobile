@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_login.btn_enter
 import kotlinx.android.synthetic.main.activity_login.edit_text_email
 import kotlinx.android.synthetic.main.activity_login.edit_text_password
 import so.codex.hawk.R
+import so.codex.hawk.domain.login.LoginEvent
 import so.codex.hawk.notification.domain.NotificationContainer
 import so.codex.hawk.ui.main.MainActivity
 
@@ -18,6 +19,9 @@ import so.codex.hawk.ui.main.MainActivity
  * Class for the login screen
  */
 class LoginActivity : AppCompatActivity() {
+    /**
+     * @property loginViewModel for handling view logic.
+     */
     private val loginViewModel by lazy {
         ViewModelProvider(
             this,

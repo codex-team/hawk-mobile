@@ -39,9 +39,14 @@ object SessionKeeper {
     private const val KEY_TIME_SESSION = "TIME_SESSION"
 
     /**
+     * @property EMPTY_TOKEN A stub Token instance in the absence of a valid token.
+     */
+    val EMPTY_TOKEN = Token("", "")
+
+    /**
      * @property EMPTY_SESSION A stub session instance in the absence of a valid session.
      */
-    private val EMPTY_SESSION = Session(Token("", ""), 0)
+    private val EMPTY_SESSION = Session(EMPTY_TOKEN, 0)
 
     /**
      * @property session Field for storing the [Session] instance while the application is running.
