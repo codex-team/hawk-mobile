@@ -1,15 +1,19 @@
-package so.codex.hawk.ui.login
+package so.codex.hawk.domain.login
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.rx3.rxMutate
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.SingleSource
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.LoginMutation
 import so.codex.hawk.SessionKeeper
 import so.codex.hawk.entity.Session
 import so.codex.hawk.entity.Token
 import so.codex.hawk.network.NetworkProvider
+import so.codex.hawk.ui.login.LoginEvent
 import timber.log.Timber
 
 class LoginInteractorImpl : LoginInteractor {
