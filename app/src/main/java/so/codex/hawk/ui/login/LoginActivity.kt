@@ -76,7 +76,10 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-            LoginEvent.LOGIN_ERROR, LoginEvent.APOLLO_ERROR -> {
+            LoginEvent.LOGIN_ERROR -> {
+                //show error
+            }
+            LoginEvent.INTERNET_ERROR -> {
                 //show error
             }
         }
