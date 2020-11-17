@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.Gravity
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_login.auth_form
 import kotlinx.android.synthetic.main.activity_login.btn_enter
@@ -19,7 +17,12 @@ import so.codex.hawk.ui.main.MainActivity
  * Class for the login screen
  */
 class LoginActivity : AppCompatActivity() {
-    private lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(LoginViewModel::class.java)
+    }
 
     /**
      * The method is designed to initialize the activity (setting the root view
@@ -34,14 +37,12 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         setAuthFormWidth()
         setListeners()
-        loginViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        ).get(LoginViewModel::class.java)
-
-        loginViewModel.observeLoginEvent().observe(this) { loginEventHandling(it) }
+        loginViewModel
+            .observeLoginEvent()
+            .observe(this) {
+                loginEventHandling(it)
+            }
     }
-
 
     /**
      * The method of adjusting the authorization form depending on the user's screen size.
@@ -61,7 +62,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * A method for setting various handlers on view elements.
+     */
     private fun setListeners() {
+        // Login button
         btn_enter.setOnClickListener {
             val email = edit_text_email.text.toString()
             val password = edit_text_password.text.toString()
@@ -69,6 +74,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Method to handle the login event.
+     *
+     * @param event One of the logon events. For a complete list of events, see [LoginEvent].
+     */
     private fun loginEventHandling(event: LoginEvent) {
         when (event) {
             LoginEvent.SUCCESSFUL_LOGIN -> {
@@ -77,10 +87,10 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
             LoginEvent.LOGIN_ERROR -> {
-                //show error
+                // show error
             }
             LoginEvent.INTERNET_ERROR -> {
-                //show error
+                // show error
             }
         }
     }
