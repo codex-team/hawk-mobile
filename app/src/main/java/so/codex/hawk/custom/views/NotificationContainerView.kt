@@ -30,7 +30,9 @@ import timber.log.Timber
  * Simple extension of [FrameLayout] for displaying notification
  */
 class NotificationContainerView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     /**
@@ -71,6 +73,8 @@ class NotificationContainerView @JvmOverloads constructor(
      * [WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS]
      *
      * @param context Use for getting attributes from [android.view.Window]
+     *
+     * @return return true if we cannot place items under status bar else false
      */
     private fun statusBarIsVisible(context: Context): Boolean {
         Timber.e("#info $fitsSystemWindows")
@@ -133,8 +137,8 @@ class NotificationContainerView @JvmOverloads constructor(
                 view.getDrawingRect(rect)
                 outline.setRoundRect(rect, 10.toDpFloat())
             }
-
         }
+
         notification!!.clipToOutline = true
         val message = TextView(context)
         message.text = model.text
