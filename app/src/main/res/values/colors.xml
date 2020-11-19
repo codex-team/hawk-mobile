@@ -12,6 +12,10 @@
     <color name="defaultFormBackground">#2f3341</color>
     <color name="defaultFormBorders">#343949</color>
 
+    <!-- Notification colors -->
+    <color name="notification_background_color">#13161e</color>
+    <color name="notification_text_error_color">#d94848</color>
+
     <!-- Button color -->
     <color name="btnBlue">#4979e4</color>
     <!-- Text color -->

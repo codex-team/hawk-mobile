@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_login.btn_enter
 import kotlinx.android.synthetic.main.activity_login.edit_text_email
 import kotlinx.android.synthetic.main.activity_login.edit_text_password
 import so.codex.hawk.R
+import so.codex.hawk.notification.domain.NotificationContainer
 import so.codex.hawk.ui.main.MainActivity
 
 /**
@@ -23,6 +24,12 @@ class LoginActivity : AppCompatActivity() {
             ViewModelProvider.NewInstanceFactory()
         ).get(LoginViewModel::class.java)
     }
+
+    /**
+     * @property notificationContainer A container that delegates logic for processing and displaying
+     * notifications
+     */
+    private val notificationContainer = NotificationContainer()
 
     /**
      * The method is designed to initialize the activity (setting the root view
@@ -42,6 +49,22 @@ class LoginActivity : AppCompatActivity() {
             .observe(this) {
                 loginEventHandling(it)
             }
+    }
+
+    /**
+     * Attach container for notification
+     */
+    override fun onStart() {
+        super.onStart()
+        notificationContainer.attach(this)
+    }
+
+    /**
+     * Detach container for notification
+     */
+    override fun onStop() {
+        super.onStop()
+        notificationContainer.detach()
     }
 
     /**
