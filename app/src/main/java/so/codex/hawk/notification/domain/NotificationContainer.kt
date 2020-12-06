@@ -8,7 +8,6 @@ import so.codex.hawk.custom.views.NotificationContainerView
 import so.codex.hawk.notification.model.NotificationModel
 import so.codex.hawk.notification.presenter.NotificationPresenterImpl
 import so.codex.hawk.notification.presenter.NotificationView
-import timber.log.Timber
 
 /**
  * The container to delegate responsibility for the processing to display notifications on the host
@@ -71,7 +70,6 @@ class NotificationContainer : NotificationView {
      * @param model data that contains information for showing notification
      */
     override fun show(model: NotificationModel) {
-        Timber.e("#info container is null $container")
         if (container == null) {
         } else {
             container?.updateNotification(model)
