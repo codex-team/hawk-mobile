@@ -16,8 +16,8 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/background"
         android:scaleType="centerCrop"
-        android:translationZ="-1dp"
-        android:src="@drawable/auth_bg" />
+        android:src="@drawable/auth_bg"
+        android:translationZ="-1dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -58,8 +58,7 @@
                 android:textSize="@dimen/text_size_14" />
         </LinearLayout>
 
-
-        <FrameLayout
+        <so.codex.hawk.custom.views.ConstraintFrameLayout
             android:id="@+id/form_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,8 +67,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header">
-
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:maxWidth="365dp"
+            >
             <RelativeLayout
                 android:id="@+id/auth_form"
                 android:layout_width="match_parent"
@@ -197,8 +197,7 @@
                     android:textColor="@color/colorTextTranslucent"
                     android:textSize="@dimen/text_size_12" />
             </RelativeLayout>
-
-        </FrameLayout>
+        </so.codex.hawk.custom.views.ConstraintFrameLayout>
 
         <TextView
             android:id="@+id/tv_team"
