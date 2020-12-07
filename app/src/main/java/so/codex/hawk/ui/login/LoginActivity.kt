@@ -2,11 +2,8 @@ package so.codex.hawk.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.activity_login.auth_form
 import kotlinx.android.synthetic.main.activity_login.btn_enter
 import kotlinx.android.synthetic.main.activity_login.edit_text_email
 import kotlinx.android.synthetic.main.activity_login.edit_text_password
@@ -46,7 +43,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        setAuthFormWidth()
         setListeners()
         loginViewModel
             .observeLoginEvent()
@@ -69,24 +65,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         notificationContainer.detach()
-    }
-
-    /**
-     * The method of adjusting the authorization form depending on the user's screen size.
-     */
-    private fun setAuthFormWidth() {
-        val defaultWidth = resources.getInteger(R.integer.auth_form_default_width)
-        val authWidth = (resources.displayMetrics.density * defaultWidth).toInt()
-        auth_form.post {
-            if (auth_form.width > authWidth) {
-                auth_form.layoutParams =
-                    FrameLayout.LayoutParams(
-                        authWidth,
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        Gravity.CENTER_HORIZONTAL
-                    )
-            }
-        }
     }
 
     /**

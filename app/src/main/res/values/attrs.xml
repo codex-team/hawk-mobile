@@ -6,4 +6,11 @@
         <attr name="android:textColor" />
     </declare-styleable>
 
+    <declare-styleable name="ConstraintFrameLayout">
+        <attr name="maxWidth" />
+        <attr name="maxHeight" />
+        <attr name="minWidth" />
+        <attr name="minHeight" />
+    </declare-styleable>
+
 </resources>
