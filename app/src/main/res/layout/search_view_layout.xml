@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/hawk_search_view_height"
+    android:background="@drawable/rectangle_rounded"
+    android:padding="@dimen/hawk_search_view_padding">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_baseline_search" />
+
+    <EditText
+        android:id="@+id/input_et"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hawk_search_view_height"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/hawk_search_view_margin_start"
+        android:background="@color/defaultBackground"
+        android:gravity="center_vertical"
+        android:hint="Search"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:textColor="#DBE6FF"
+        android:textColorHint="#DBE6FF" />
+
+</FrameLayout>
