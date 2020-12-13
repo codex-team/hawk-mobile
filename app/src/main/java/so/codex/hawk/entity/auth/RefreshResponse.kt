@@ -1,6 +1,7 @@
-package so.codex.hawk.entity
+package so.codex.hawk.entity.auth
 
 import com.apollographql.apollo.api.Error
+import so.codex.hawk.entity.auth.Token
 
 /**
  * Class containing information about the response to RefreshTokenMutation.

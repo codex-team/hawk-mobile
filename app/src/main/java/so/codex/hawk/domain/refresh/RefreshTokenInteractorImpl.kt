@@ -6,8 +6,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.RefreshMutation
 import so.codex.hawk.SessionKeeper
-import so.codex.hawk.entity.Session
-import so.codex.hawk.entity.Token
+import so.codex.hawk.entity.auth.Session
+import so.codex.hawk.entity.auth.Token
 import so.codex.hawk.extensions.apollo.toRefreshResponse
 import so.codex.hawk.network.NetworkProvider
 import timber.log.Timber

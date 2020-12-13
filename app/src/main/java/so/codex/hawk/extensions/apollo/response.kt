@@ -3,8 +3,8 @@ package so.codex.hawk.extensions.apollo
 import com.apollographql.apollo.api.Response
 import so.codex.hawk.RefreshMutation
 import so.codex.hawk.SessionKeeper
-import so.codex.hawk.entity.RefreshResponse
-import so.codex.hawk.entity.Token
+import so.codex.hawk.entity.auth.RefreshResponse
+import so.codex.hawk.entity.auth.Token
 
 /**
  * Extension method for converting [RefreshMutation] response models from Apollo to custom model.

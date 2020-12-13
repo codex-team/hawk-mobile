@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import so.codex.hawk.entity.Session
-import so.codex.hawk.entity.Token
+import so.codex.hawk.entity.auth.Session
+import so.codex.hawk.entity.auth.Token
 import timber.log.Timber
 
 /**

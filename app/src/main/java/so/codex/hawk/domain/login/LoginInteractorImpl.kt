@@ -6,9 +6,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.LoginMutation
 import so.codex.hawk.SessionKeeper
-import so.codex.hawk.entity.Session
-import so.codex.hawk.entity.Token
-import so.codex.hawk.entity.UserAuthData
+import so.codex.hawk.entity.auth.Session
+import so.codex.hawk.entity.auth.Token
+import so.codex.hawk.entity.auth.UserAuthData
 import so.codex.hawk.network.NetworkProvider
 import timber.log.Timber
 

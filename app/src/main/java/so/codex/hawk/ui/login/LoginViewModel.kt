@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import so.codex.hawk.domain.login.LoginEvent
 import so.codex.hawk.domain.login.LoginInteractor
 import so.codex.hawk.domain.login.LoginInteractorImpl
-import so.codex.hawk.entity.UserAuthData
+import so.codex.hawk.entity.auth.UserAuthData
 import timber.log.Timber
 
 /**
