@@ -2,6 +2,7 @@ package so.codex.hawk.network
 
 import okhttp3.Interceptor
 import okhttp3.Response
+import so.codex.hawk.SessionKeeper
 
 /**
  * The class is the interceptor of the api request.
@@ -24,12 +25,6 @@ class TokenInterceptor private constructor() : Interceptor {
     }
 
     /**
-     * @property token the field contains an access token that
-     *                 will be inserted into every api request.
-     */
-    var token: String = ""
-
-    /**
      * The method that will be called upon request to the api
      * when the interceptor's turn in the chain comes.
      *
@@ -39,7 +34,7 @@ class TokenInterceptor private constructor() : Interceptor {
      */
     override fun intercept(chain: Interceptor.Chain): Response {
         val origin = chain.request()
-        val localToken = token
+        val localToken = SessionKeeper.session.token.accessToken
         return if (localToken.isNotEmpty()) {
             val request = origin.newBuilder()
                 .method(origin.method, origin.body)

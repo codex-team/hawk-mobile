@@ -2,8 +2,10 @@ package so.codex.hawk.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.search_view
 import so.codex.hawk.R
+import so.codex.hawk.domain.main.MainEvent
 import so.codex.hawk.custom.views.search.HawkSearchViewModel
 import timber.log.Timber
 
@@ -12,6 +14,13 @@ import timber.log.Timber
  * Will be used only after successful authorization.
  */
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        ).get(MainViewModel::class.java)
+    }
 
     /**
      * The method is designed to initialize the activity (setting the root view element
@@ -32,5 +41,20 @@ class MainActivity : AppCompatActivity() {
                 Timber.i("text changed $it")
             }
         )
+
+        viewModel.observeMainEvent().observe(this) {
+            renderEvent(it)
+        }
+    }
+
+    private fun renderEvent(event: MainEvent) {
+        when (event) {
+            is MainEvent.ProfileEvent -> {
+                // do some staff
+            }
+            is MainEvent.WorkspacesSuccessEvent -> {
+                // do some staff too
+            }
+        }
     }
 }

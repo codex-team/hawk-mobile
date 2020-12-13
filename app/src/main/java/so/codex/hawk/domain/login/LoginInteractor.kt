@@ -1,7 +1,7 @@
 package so.codex.hawk.domain.login
 
 import io.reactivex.rxjava3.core.Observable
-import so.codex.hawk.entity.UserAuthData
+import so.codex.hawk.entity.auth.UserAuthData
 
 /**
  * An interface for interactor that will perform authorization.

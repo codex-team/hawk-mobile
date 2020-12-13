@@ -1,4 +1,4 @@
-package so.codex.hawk.entity
+package so.codex.hawk.entity.auth
 
 /**
  * Class containing information about access token and refresh token.
