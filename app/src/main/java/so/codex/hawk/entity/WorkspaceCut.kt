@@ -1,5 +1,9 @@
 package so.codex.hawk.entity
 
+/**
+ * The same class as [Workspace]
+ * but without projects
+ */
 data class WorkspaceCut(
     var id: String? = "",
     var name: String? = "",

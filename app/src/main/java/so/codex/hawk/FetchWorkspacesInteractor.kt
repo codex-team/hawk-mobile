@@ -8,7 +8,15 @@ import so.codex.hawk.entity.Project
 import so.codex.hawk.entity.Workspace
 import so.codex.hawk.network.NetworkProvider
 
+/**
+ * Class for fetching workspaces
+ * from server
+ */
 class FetchWorkspacesInteractor {
+    /**
+     * Method for fetching workspaces (non-cut)
+     * @return non-cut workspaces
+     */
     fun fetchWorkspaces(): Observable<List<Workspace>> {
         return NetworkProvider.getApolloClient().rxQuery(WorkspacesQuery())
             .subscribeOn(Schedulers.io())

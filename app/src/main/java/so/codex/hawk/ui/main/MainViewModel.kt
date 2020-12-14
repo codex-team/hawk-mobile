@@ -6,14 +6,24 @@ import androidx.lifecycle.ViewModel
 import so.codex.hawk.data_providers.WorkspaceProvider
 import so.codex.hawk.domain.main.MainEvent
 
+/**
+ * The ViewModel class for MainActivity.
+ * Designed to handle various processes associated with the specified activity.
+ */
 class MainViewModel : ViewModel() {
+    /**
+     * @property mainEvent A LiveData object to reactively pass a MainEvent to the View.
+     * @see LiveData
+     */
+    private val mainEvent: MutableLiveData<MainEvent> = MutableLiveData()
 
-    private val liveData: MutableLiveData<MainEvent> = MutableLiveData()
-
+    /**
+     * Initialization block. Called on creation.
+     */
     init {
         WorkspaceProvider.getWorkspaces().subscribe(
             {
-                liveData.value = MainEvent.WorkspacesSuccessEvent(it)
+                mainEvent.value = MainEvent.WorkspacesSuccessEvent(it)
             },
             {
                 it.printStackTrace()
@@ -21,7 +31,12 @@ class MainViewModel : ViewModel() {
         )
     }
 
+    /**
+     * Method to provide LiveData [mainEvent] for observers.
+     *
+     * @return [LiveData] to monitor [MainEvent].
+     */
     fun observeMainEvent(): LiveData<MainEvent> {
-        return liveData
+        return mainEvent
     }
 }

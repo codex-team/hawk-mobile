@@ -8,10 +8,20 @@ import so.codex.hawk.entity.Project
 import so.codex.hawk.entity.WorkspaceCut
 import so.codex.hawk.extensions.toCut
 
+/**
+ * Singleton which has only workspaces
+ */
 object WorkspaceProvider {
 
+    /**
+     * @property interactor to fetch all needed workspaces
+     */
     private val interactor = FetchWorkspacesInteractor()
 
+    /**
+     * Method for getting workspaces
+     * @return workspaces without projects inside
+     */
     fun getWorkspaces(): Observable<List<WorkspaceCut>> {
         return interactor.fetchWorkspaces()
             .subscribeOn(Schedulers.io())
