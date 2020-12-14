@@ -11,11 +11,14 @@ class MainViewModel : ViewModel() {
     private val liveData: MutableLiveData<MainEvent> = MutableLiveData()
 
     init {
-        WorkspaceProvider.getWorkspaces().subscribe({
-            liveData.value = MainEvent.WorkspacesSuccessEvent(it)
-        }, {
-            it.printStackTrace()
-        })
+        WorkspaceProvider.getWorkspaces().subscribe(
+            {
+                liveData.value = MainEvent.WorkspacesSuccessEvent(it)
+            },
+            {
+                it.printStackTrace()
+            }
+        )
     }
 
     fun observeMainEvent(): LiveData<MainEvent> {
