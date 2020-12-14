@@ -1,11 +1,10 @@
 package so.codex.hawk.ui.main
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import so.codex.hawk.domain.main.MainEvent
 import so.codex.hawk.R
+import so.codex.hawk.domain.main.MainEvent
 
 /**
  * Main application class.
@@ -35,16 +34,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.observeMainEvent().observe(this) {
             renderEvent(it)
         }
-
     }
 
     private fun renderEvent(event: MainEvent) {
         when (event) {
             is MainEvent.ProfileEvent -> {
-                //do some staff
+                // do some staff
             }
             is MainEvent.WorkspacesSuccessEvent -> {
-
+                // do some staff too
             }
         }
     }
