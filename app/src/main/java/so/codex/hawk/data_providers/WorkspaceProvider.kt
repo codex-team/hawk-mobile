@@ -1,12 +1,14 @@
 package so.codex.hawk.data_providers
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import com.apollographql.apollo.rx3.rxQuery
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import so.codex.hawk.FetchWorkspacesInteractor
-import so.codex.hawk.entity.Project
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import so.codex.hawk.WorkspacesQuery
+import so.codex.hawk.entity.Workspace
 import so.codex.hawk.entity.WorkspaceCut
 import so.codex.hawk.extensions.toCut
+import so.codex.hawk.network.NetworkProvider
 
 /**
  * Singleton which has only workspaces
@@ -14,25 +16,29 @@ import so.codex.hawk.extensions.toCut
 object WorkspaceProvider {
 
     /**
-     * @property interactor to fetch all needed workspaces
+     * Subject for emitting items
      */
-    private val interactor = FetchWorkspacesInteractor()
+    private val behaviorSubject: BehaviorSubject<List<WorkspaceCut>> = BehaviorSubject.create()
 
     /**
      * Method for getting workspaces
      * @return workspaces without projects inside
      */
     fun getWorkspaces(): Observable<List<WorkspaceCut>> {
-        return interactor.fetchWorkspaces()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map { list ->
-                val l = mutableListOf<Project>()
-                list.forEach {
-                    it.projects?.let { pl -> l.addAll(pl) }
-                }
-                ProjectProvider.supply(l)
-                list.map { it.toCut() }
+        return behaviorSubject.subscribeOn(Schedulers.io())
+            .switchMap {
+                NetworkProvider.getApolloClient().rxQuery(WorkspacesQuery())
+                    .subscribeOn(Schedulers.io())
+                    .map {
+                        it.data?.workspaces?.mapNotNull { w ->
+                            Workspace(
+                                w?.id,
+                                w?.name,
+                                w?.description,
+                                w?.balance.toString().toLong()
+                            ).toCut()
+                        }
+                    }
             }
     }
 }

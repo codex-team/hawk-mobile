@@ -6,7 +6,9 @@ query workspaces($ids: [ID] = []) {
         name,
         projects {
             id,
-            name
+            name,
+            unreadCount,
+            description
         }
     }
 }
