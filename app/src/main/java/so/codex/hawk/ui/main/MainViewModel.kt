@@ -32,7 +32,8 @@ class MainViewModel : ViewModel() {
             .subscribe(
                 {
                     mainEvent.value = MainEvent.WorkspacesSuccessEvent(it)
-                }, {
+                },
+                {
                     it.printStackTrace()
                 }
             )
