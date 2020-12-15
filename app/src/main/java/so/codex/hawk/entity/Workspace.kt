@@ -13,5 +13,5 @@ data class Workspace(
     var name: String? = "",
     var description: String? = "",
     var balance: Long? = 0,
-    var projects: List<Project>? = null
+    var projects: List<Project>? = listOf()
 )

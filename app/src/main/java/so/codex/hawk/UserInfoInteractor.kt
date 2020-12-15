@@ -22,8 +22,10 @@ class UserInfoInteractor {
             }
             .subscribeOn(Schedulers.io())
             .map {
-                val user = it!!.data!!.me!!
-                User(user.id, user.name, user.email, user.image)
+                it.data?.me?.let { u ->
+                    User(u.id, u.name, u.email, u.image)
+                }
+
             }
     }
 }

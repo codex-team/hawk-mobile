@@ -3,7 +3,8 @@ package so.codex.hawk.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import so.codex.hawk.data_providers.WorkspaceProvider
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import so.codex.hawk.FetchWorkspacesInteractor
 import so.codex.hawk.domain.main.MainEvent
 
 /**
@@ -18,17 +19,23 @@ class MainViewModel : ViewModel() {
     private val mainEvent: MutableLiveData<MainEvent> = MutableLiveData()
 
     /**
+     * @property interactor for getting workspaces
+     */
+    private val interactor = FetchWorkspacesInteractor()
+
+    /**
      * Initialization block. Called on creation.
      */
     init {
-        WorkspaceProvider.getWorkspaces().subscribe(
-            {
-                mainEvent.value = MainEvent.WorkspacesSuccessEvent(it)
-            },
-            {
-                it.printStackTrace()
-            }
-        )
+        interactor.fetchWorkspaces()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    mainEvent.value = MainEvent.WorkspacesSuccessEvent(it)
+                }, {
+                    it.printStackTrace()
+                }
+            )
     }
 
     /**
