@@ -25,7 +25,6 @@ class UserInfoInteractor {
                 it.data?.me?.let { u ->
                     User(u.id, u.name, u.email, u.image)
                 }
-
             }
     }
 }
