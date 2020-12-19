@@ -1,12 +1,14 @@
 query workspaces($ids: [ID] = []) {
     workspaces(ids: $ids) {
         id,
+        name,
         balance,
         description,
-        name,
+        image,
         projects {
             id,
             name,
+            image,
             unreadCount,
             description
         }

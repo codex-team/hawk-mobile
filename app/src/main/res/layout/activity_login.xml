@@ -44,18 +44,18 @@
                 android:fontFamily="@font/roboto_bold"
                 android:text="@string/app_name"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_size_app_name" />
+                android:textSize="@dimen/text_size_30" />
 
             <TextView
                 android:id="@+id/tv_snippet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/margin_very_small"
+                android:layout_marginTop="@dimen/margin_4"
                 android:fontFamily="@font/roboto"
                 android:text="@string/app_snippet"
                 android:textColor="@color/colorTextTranslucent"
-                android:textSize="@dimen/text_size_snippet" />
+                android:textSize="@dimen/text_size_14" />
         </LinearLayout>
 
 
@@ -63,7 +63,7 @@
             android:id="@+id/form_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/auth_margin_middle"
+            android:layout_marginTop="@dimen/margin_20"
             android:paddingHorizontal="@dimen/default_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,7 @@
                     android:fontFamily="@font/roboto_bold"
                     android:text="@string/login"
                     android:textColor="@color/colorAppText"
-                    android:textSize="@dimen/text_size_btn" />
+                    android:textSize="@dimen/text_size_default" />
 
                 <TextView
                     android:id="@+id/tv_sign_up"
@@ -105,14 +105,14 @@
                     android:fontFamily="@font/roboto_bold"
                     android:text="@string/sign_up"
                     android:textColor="@color/colorTextTranslucent"
-                    android:textSize="@dimen/text_size_btn" />
+                    android:textSize="@dimen/text_size_default" />
 
                 <View
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/auth_divider_height"
                     android:layout_below="@id/tv_fast_auth"
-                    android:layout_marginTop="@dimen/auth_margin_default"
+                    android:layout_marginTop="@dimen/margin_14"
                     android:background="@color/colorDivider" />
 
 
@@ -121,51 +121,51 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/divider"
-                    android:layout_marginTop="@dimen/auth_margin_default"
+                    android:layout_marginTop="@dimen/margin_14"
                     android:fontFamily="@font/roboto_bold"
                     android:labelFor="@id/edit_text_email"
                     android:letterSpacing="0.05"
                     android:text="@string/email_title"
                     android:textColor="@color/colorTextTranslucent"
-                    android:textSize="@dimen/text_size_label" />
+                    android:textSize="@dimen/text_size_12" />
 
                 <EditText
                     android:id="@+id/edit_text_email"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/auth_edit_text_height"
                     android:layout_below="@id/tv_email"
-                    android:layout_marginTop="@dimen/auth_margin_small"
+                    android:layout_marginTop="@dimen/margin_9"
                     android:background="@drawable/edit_text_back"
                     android:inputType="textEmailAddress"
-                    android:paddingStart="@dimen/padding_small"
-                    android:paddingEnd="@dimen/padding_small"
+                    android:paddingStart="@dimen/padding_8"
+                    android:paddingEnd="@dimen/padding_8"
                     android:textColor="@color/colorAppText"
-                    android:textSize="@dimen/text_size_edit_text" />
+                    android:textSize="@dimen/text_size_14" />
 
                 <TextView
                     android:id="@+id/tv_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/edit_text_email"
-                    android:layout_marginTop="@dimen/auth_margin_middle"
+                    android:layout_marginTop="@dimen/margin_20"
                     android:fontFamily="@font/roboto_bold"
                     android:letterSpacing="0.05"
                     android:text="@string/password_title"
                     android:textColor="@color/colorTextTranslucent"
-                    android:textSize="@dimen/text_size_label" />
+                    android:textSize="@dimen/text_size_12" />
 
                 <EditText
                     android:id="@+id/edit_text_password"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/auth_edit_text_height"
                     android:layout_below="@id/tv_password"
-                    android:layout_marginTop="@dimen/auth_margin_small"
+                    android:layout_marginTop="@dimen/margin_9"
                     android:background="@drawable/edit_text_back"
                     android:inputType="textPassword"
-                    android:paddingStart="@dimen/padding_small"
-                    android:paddingEnd="@dimen/padding_small"
+                    android:paddingStart="@dimen/padding_8"
+                    android:paddingEnd="@dimen/padding_8"
                     android:textColor="@color/colorAppText"
-                    android:textSize="@dimen/text_size_edit_text" />
+                    android:textSize="@dimen/text_size_14" />
 
                 <Button
                     android:id="@+id/btn_enter"
@@ -173,14 +173,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/edit_text_password"
                     android:layout_alignParentStart="true"
-                    android:layout_marginTop="@dimen/auth_margin_middle"
+                    android:layout_marginTop="@dimen/margin_20"
                     android:background="@drawable/btn_blue_back"
                     android:fontFamily="@font/roboto_medium"
                     android:minWidth="@dimen/min_btn_width"
                     android:text="@string/btn_enter"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_14" />
 
                 <TextView
                     android:id="@+id/tv_recover"
@@ -195,7 +195,7 @@
                     android:gravity="center"
                     android:text="@string/recover_title"
                     android:textColor="@color/colorTextTranslucent"
-                    android:textSize="@dimen/text_size_extra_small" />
+                    android:textSize="@dimen/text_size_12" />
             </RelativeLayout>
 
         </FrameLayout>
@@ -211,7 +211,7 @@
             android:text="@string/app_team"
             android:textColor="@color/colorAppText"
 
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_14"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

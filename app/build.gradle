@@ -52,19 +52,17 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.1.2"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
 
-    // Apollo
+
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
     implementation "com.apollographql.apollo:apollo-rx3-support:$apollo_version"
-    // okHttp
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
-    // RxJava 3
     implementation 'io.reactivex.rxjava3:rxjava:3.0.7'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
-    // Timber logging
+    implementation "io.reactivex.rxjava3:rxkotlin:3.0.1"
     implementation 'com.jakewharton.timber:timber:4.7.1'
-    // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.google.android.material:material:1.2.1'
 }

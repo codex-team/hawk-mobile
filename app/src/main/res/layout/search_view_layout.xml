@@ -13,7 +13,7 @@
         android:layout_height="14dp"
         android:layout_gravity="center_vertical"
         android:src="@drawable/ic_search"
-        android:layout_marginStart="@dimen/margin_very_small"
+        android:layout_marginStart="@dimen/margin_4"
         app:tint="@color/colorTextTranslucent"
         android:contentDescription="@string/search_icon_content_description" />
 
@@ -22,8 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@color/defaultBackground"
-        android:layout_marginStart="@dimen/margin_medium_half"
+        android:background="@color/defaultBackgroundDarker"
+        android:layout_marginStart="@dimen/margin_10"
         android:gravity="center_vertical"
         android:hint="@string/search_hint"
         android:singleLine="true"
@@ -31,7 +31,7 @@
         android:ellipsize="end"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        android:textSize="@dimen/text_size_search"
+        android:textSize="@dimen/text_size_14"
         android:textColor="@color/colorAppText"
         android:textColorHint="@color/colorTextTranslucent"
         android:importantForAutofill="no"

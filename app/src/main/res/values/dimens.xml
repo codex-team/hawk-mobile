@@ -2,48 +2,38 @@
 <resources>
     <!--  * Main dimensions *  -->
     <!-- margin -->
-    <dimen name="margin_very_small">4dp</dimen>
-    <dimen name="margin_small">8dp</dimen>
-    <dimen name="margin_medium_half">10dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_9">9dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
     <dimen name="margin_default">16dp</dimen>
-
+    <dimen name="margin_20">20dp</dimen>
     <!-- padding -->
-    <dimen name="padding_small">8dp</dimen>
+
+    <dimen name="padding_4">4dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
     <dimen name="default_padding">16dp</dimen>
 
     <!-- text -->
-    <dimen name="text_size_extra_small">12dp</dimen>
-    <dimen name="text_size_small">14dp</dimen>
+    <dimen name="text_size_12">12dp</dimen>
+    <dimen name="text_size_14">14dp</dimen>
+    <dimen name="text_size_30">30dp</dimen>
+    <dimen name="text_size_default">16dp</dimen>
 
     <!-- corner radius -->
     <dimen name="radius_small">4dp</dimen>
     <dimen name="radius_default">8dp</dimen>
 
-    <!-- project icon -->
-    <dimen name="default_icon_width">32dp</dimen>
-    <dimen name="default_icon_height">32dp</dimen>
+    <dimen name="project_icon_side">48dp</dimen>
 
     <!-- Other -->
     <dimen name="default_border">1dp</dimen>
     <dimen name="min_btn_width">110dp</dimen>
 
     <!-- * activity_login *  -->
-    <!-- margin -->
-    <dimen name="auth_margin_small">9dp</dimen>
-    <dimen name="auth_margin_default">14dp</dimen>
-    <dimen name="auth_margin_middle">20dp</dimen>
-
     <!-- padding   -->
     <dimen name="auth_padding_form">20dp</dimen>
-
-    <!--  text_size  -->
-    <dimen name="text_size_app_name">30dp</dimen>
-    <dimen name="text_size_snippet">14dp</dimen>
-    <dimen name="text_size_edit_text">14dp</dimen>
-    <dimen name="text_size_btn">16dp</dimen>
-    <dimen name="text_size_label">12dp</dimen>
-    <dimen name="text_size_search">14dp</dimen>
-
     <!--  Other  -->
     <dimen name="auth_edit_text_height">40dp</dimen>
     <dimen name="auth_divider_height">1dp</dimen>
@@ -51,5 +41,9 @@
 
     <!--  Search view  -->
     <dimen name="hawk_search_view_padding">10dp</dimen>
+    <dimen name="search_view_height">36dp</dimen>
+
+    <!-- Main drawer header -->
+    <dimen name="user_image_side">48dp</dimen>
 
 </resources>

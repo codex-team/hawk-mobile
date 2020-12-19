@@ -5,8 +5,9 @@ package so.codex.hawk.entity
  * but without projects
  */
 data class WorkspaceCut(
-    var id: String = "",
-    var name: String = "",
-    var description: String = "",
-    var balance: Long = 0
+    val id: String = "",
+    val name: String = "",
+    val image: String = "",
+    val description: String = "",
+    val balance: Long = 0
 )

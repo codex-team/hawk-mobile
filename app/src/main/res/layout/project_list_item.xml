@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_default"
+    android:layout_marginTop="@dimen/margin_default"
+    android:layout_marginEnd="@dimen/margin_default"
+    android:orientation="horizontal"
+    tools:background="@color/defaultBackgroundDarker">
+
+    <so.codex.hawk.custom.views.SquircleImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/project_icon_side"
+        android:layout_height="@dimen/project_icon_side"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_background" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto"
+            android:maxLines="1"
+            android:textColor="@color/colorAppText"
+            android:textSize="@dimen/text_size_14"
+            tools:text="Production vc.ru" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto"
+            android:maxLines="1"
+            android:textColor="@color/colorTextTranslucent"
+            android:textSize="@dimen/text_size_12"
+            tools:text="@tools:sample/lorem" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/event_back_blue"
+        android:paddingStart="@dimen/padding_8"
+        android:paddingTop="@dimen/padding_4"
+        android:paddingEnd="@dimen/padding_8"
+        android:paddingBottom="@dimen/padding_4"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_12"
+        android:visibility="invisible"
+        tools:text="1 320"
+        tools:visibility="visible" />
+</LinearLayout>

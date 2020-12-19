@@ -1,5 +1,6 @@
 package so.codex.hawk.ui.main
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,10 +10,13 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
 import io.reactivex.rxjava3.subjects.PublishSubject
-import so.codex.hawk.FetchWorkspacesInteractor
+import so.codex.hawk.domain.FetchProjectsInteractor
+import so.codex.hawk.domain.FetchWorkspacesInteractor
 import so.codex.hawk.notification.domain.NotificationManager
 import so.codex.hawk.notification.model.NotificationModel
 import so.codex.hawk.notification.model.NotificationType
+import so.codex.hawk.ui.data.UiMainViewModel
+import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.ui.data.UiWorkspace
 
 /**
@@ -20,6 +24,10 @@ import so.codex.hawk.ui.data.UiWorkspace
  * Designed to handle various processes associated with the specified activity.
  */
 class MainViewModel : ViewModel() {
+    /**
+     * @see Context
+     */
+    lateinit var context: Context
 
     /**
      * A LiveData of [UiMainViewModel] that should be inserted to the view
@@ -32,9 +40,14 @@ class MainViewModel : ViewModel() {
     private val eventSubject = PublishSubject.create<UiEvent>()
 
     /**
-     * @property interactor for getting workspaces
+     * @property fetchWorkspaceInteractor for getting workspaces
      */
-    private val interactor = FetchWorkspacesInteractor()
+    private val fetchWorkspaceInteractor = FetchWorkspacesInteractor()
+
+    /**
+     * @property fetchProjectInteractor for getting projects
+     */
+    private val fetchProjectInteractor = FetchProjectsInteractor()
 
     /**
      * Contain all disposable of sources
@@ -62,7 +75,7 @@ class MainViewModel : ViewModel() {
         return eventSubject.subscribe { event ->
             when (event) {
                 is UiEvent.Refresh -> {
-                    interactor.update()
+                    fetchWorkspaceInteractor.update()
                 }
             }
         }
@@ -77,7 +90,7 @@ class MainViewModel : ViewModel() {
     private fun subscribeOnData(): Disposable {
         return Observables.combineLatest(
             getRefreshedSubject(),
-            interactor.fetchWorkspaces()
+            fetchWorkspaceInteractor.fetchWorkspaces()
                 .map {
                     it.map { workspace ->
                         UiWorkspace(workspace.name)
@@ -85,13 +98,24 @@ class MainViewModel : ViewModel() {
                 }
                 .doAfterNext {
                     eventSubject.onNext(UiEvent.CompleteRefresh)
+                },
+            fetchProjectInteractor.fetchProjects()
+                .map { projectList ->
+                    projectList.map {
+                        val item =
+                            UiProject(it.id, it.name, it.description, it.image, it.unreadCount)
+                        if (item.image.isBlank()) {
+                            item.createDefaultLogo(context)
+                        }
+                        item
+                    }
                 }
         )
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { (isFetched, workspaceList) ->
+                { (isFetched, workspaceList, projectList) ->
                     uiModels.value =
-                        UiMainViewModel(workspaces = workspaceList, showLoading = isFetched)
+                        UiMainViewModel(workspaceList, projectList, showLoading = isFetched)
                 },
                 {
                     it.printStackTrace()

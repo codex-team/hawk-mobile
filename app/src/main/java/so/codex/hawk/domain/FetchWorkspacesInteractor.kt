@@ -1,4 +1,4 @@
-package so.codex.hawk
+package so.codex.hawk.domain
 
 import io.reactivex.rxjava3.core.Observable
 import so.codex.hawk.domain.providers.WorkspaceProvider
@@ -14,7 +14,7 @@ class FetchWorkspacesInteractor {
      * @return cut workspaces
      */
     fun fetchWorkspaces(): Observable<List<WorkspaceCut>> {
-        return WorkspaceProvider.getWorkspaces()
+        return WorkspaceProvider.getWorkspacesCut()
     }
 
     /**

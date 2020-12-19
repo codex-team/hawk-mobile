@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.WorkspacesQuery
 import so.codex.hawk.entity.Workspace
 import so.codex.hawk.entity.WorkspaceCut
+import so.codex.hawk.extensions.apollo.toWorkspace
 import so.codex.hawk.extensions.mapNotNull
 import so.codex.hawk.network.NetworkProvider
 import timber.log.Timber
@@ -34,11 +35,11 @@ object WorkspaceProvider {
     }
 
     /**
-     * Method for getting workspaces
+     * Method for getting workspaces cut.
      *
      * @return workspaces without projects inside
      */
-    fun getWorkspaces(): Observable<List<WorkspaceCut>> {
+    fun getWorkspacesCut(): Observable<List<WorkspaceCut>> {
         return responseSource
             .subscribeOn(Schedulers.io())
             .mapNotNull {
@@ -46,6 +47,15 @@ object WorkspaceProvider {
                     w.toCut()
                 }
             }
+    }
+
+    /**
+     * Method for getting workspaces
+     *
+     * @return full workspaces.
+     */
+    fun getWorkspaces(): Observable<List<Workspace>> {
+        return responseSource.hide()
     }
 
     /**
@@ -64,22 +74,18 @@ object WorkspaceProvider {
                 .subscribeOn(Schedulers.io())
                 .mapNotNull {
                     it.data?.workspaces?.mapNotNull { w ->
-                        w?.let {
-                            Workspace(
-                                w.id,
-                                w.name ?: "",
-                                w.description ?: "",
-                                w.balance.toString().toLong()
-                            )
-                        }
+                        w?.toWorkspace()
                     }
                 }
-                .doOnError {
+        }
+            .subscribe(
+                {
+                    responseSource.onNext(it)
+                },
+                {
                     Timber.e(it)
                 }
-        }.subscribe {
-            responseSource.onNext(it)
-        }
+            )
     }
 
     /**
@@ -87,6 +93,6 @@ object WorkspaceProvider {
      * @return Workspace without projects
      */
     private fun Workspace.toCut(): WorkspaceCut {
-        return WorkspaceCut(id, name, description, balance)
+        return WorkspaceCut(id, name, image, description, balance)
     }
 }
