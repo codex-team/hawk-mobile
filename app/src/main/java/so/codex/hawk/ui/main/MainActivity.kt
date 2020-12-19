@@ -3,10 +3,11 @@ package so.codex.hawk.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.activity_main.btn_refresh
-import kotlinx.android.synthetic.main.activity_main.search_view
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.recycler
 import so.codex.hawk.R
-import so.codex.hawk.custom.views.search.HawkSearchViewModel
+import so.codex.hawk.ui.data.UiMainViewModel
+import so.codex.hawk.ui.main.projectlist.ProjectAdapter
 import timber.log.Timber
 
 /**
@@ -14,15 +15,21 @@ import timber.log.Timber
  * Will be used only after successful authorization.
  */
 class MainActivity : AppCompatActivity() {
+    /**
+     * @property projectAdapter for projects list.
+     */
+    private val projectAdapter = ProjectAdapter()
 
     /**
      * ViewModel handle models from business logic and convert to ui models
      */
     private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(
+        val item = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(MainViewModel::class.java)
+        item.context = applicationContext
+        item
     }
 
     /**
@@ -36,19 +43,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        search_view.update(
-            HawkSearchViewModel(
-                hint = getString(R.string.search_hint),
-                text = "Hello",
-            ) {
-                Timber.i("text changed $it")
-            }
-        )
-
-        btn_refresh.setOnClickListener {
-            viewModel.submitEvent(MainViewModel.UiEvent.Refresh)
-        }
-
+        initUi()
         viewModel.observeUiModels().observe(this, ::handleUiModels)
     }
 
@@ -62,10 +57,17 @@ class MainActivity : AppCompatActivity() {
             // do some staff for showing loading
             Timber.i("show loading")
         } else {
-            // do some staff for workspace
-            model.workspaces.forEach {
-                Timber.i("workspace: $it")
-            }
+            projectAdapter.submitList(model.projects)
+            // Debug version
+            // projectAdapter.updateItems(FakeRepository.getUiProjects())
         }
+    }
+
+    /**
+     * Screen initialization.
+     */
+    private fun initUi() {
+        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.adapter = projectAdapter
     }
 }

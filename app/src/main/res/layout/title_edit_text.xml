@@ -13,7 +13,7 @@
         android:layout_marginStart="@dimen/margin_default"
         android:layout_marginTop="@dimen/margin_default"
         android:textColor="@color/colorAppText"
-        android:textSize="@dimen/text_size_small"
+        android:textSize="@dimen/text_size_14"
         tools:text="EMAIL ADDRESS" />
 
     <EditText
@@ -21,10 +21,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/auth_edit_text_height"
         android:layout_marginStart="@dimen/margin_default"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_8"
         android:layout_marginEnd="@dimen/margin_default"
         android:background="@drawable/edit_text_back"
-        android:paddingStart="@dimen/padding_small"
+        android:paddingStart="@dimen/padding_8"
         android:textColor="@color/colorWhite"
         tools:ignore="RtlSymmetry" />
 </LinearLayout>

@@ -8,9 +8,11 @@
     <!-- App color -->
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
-    <color name="defaultBackground">#242732</color>
-    <color name="defaultFormBackground">#2f3341</color>
+    <color name="defaultBackgroundDarker">#242732</color>
+    <color name="defaultBackground">#2f3341</color>
     <color name="defaultFormBorders">#343949</color>
+    <color name="navigation_bar">#1A1D26</color>
+    <color name="main_header">#1A1D26</color>
 
     <!-- Notification colors -->
     <color name="notification_background_color">#13161e</color>
@@ -30,4 +32,5 @@
     <!-- Other -->
     <color name="colorDivider">#1CDBE6FF</color>
     <color name="colorRippleEffect">#424556</color>
+    <color name="colorDefaultTextIcon">@color/colorWhite</color>
 </resources>

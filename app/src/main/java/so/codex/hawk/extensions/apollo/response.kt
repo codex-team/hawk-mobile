@@ -3,6 +3,9 @@ package so.codex.hawk.extensions.apollo
 import com.apollographql.apollo.api.Response
 import so.codex.hawk.RefreshMutation
 import so.codex.hawk.SessionKeeper
+import so.codex.hawk.WorkspacesQuery
+import so.codex.hawk.entity.Project
+import so.codex.hawk.entity.Workspace
 import so.codex.hawk.entity.auth.RefreshResponse
 import so.codex.hawk.entity.auth.Token
 
@@ -20,4 +23,37 @@ fun Response<RefreshMutation.Data>.toRefreshResponse(): RefreshResponse {
         val errors = this.errors ?: emptyList()
         RefreshResponse(SessionKeeper.EMPTY_TOKEN, hasError = true, errors)
     }
+}
+
+/**
+ * Extension method for converting [WorkspacesQuery] response models from Apollo to custom model.
+ *
+ * @return [Workspace] custom response model.
+ */
+fun WorkspacesQuery.Workspace.toWorkspace(): Workspace {
+    return Workspace(
+        id,
+        name ?: "",
+        image ?: "",
+        description ?: "",
+        balance.toString().toLong(),
+        projects?.map {
+            it.toProject()
+        } ?: emptyList()
+    )
+}
+
+/**
+ * Extension method for converting [WorkspacesQuery] response models from Apollo to custom model.
+ *
+ * @return [Project] custom response model.
+ */
+fun WorkspacesQuery.Project.toProject(): Project {
+    return Project(
+        id,
+        name,
+        description ?: "",
+        image ?: "",
+        unreadCount
+    )
 }

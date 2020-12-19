@@ -5,11 +5,13 @@ package so.codex.hawk.entity
  * @property id an id of project
  * @property name name of current project
  * @property description a description of project
+ * @property image url.
  * @property unreadCount returns number of unread events
  */
 data class Project(
-    var id: String = "",
-    var name: String = "",
-    var description: String = "",
-    var unreadCount: Int = 0
+    val id: String = "",
+    val name: String = "",
+    val description: String = "",
+    val image: String = "",
+    val unreadCount: Int = 0
 )
