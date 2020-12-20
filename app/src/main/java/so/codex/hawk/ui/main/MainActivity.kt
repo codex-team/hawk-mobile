@@ -49,9 +49,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun renderEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.ProfileEvent -> {
-                // do some staff
-            }
             is MainEvent.WorkspacesSuccessEvent -> {
                 // do some staff too
             }

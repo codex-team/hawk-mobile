@@ -3,7 +3,7 @@ package so.codex.hawk.data_providers
 import com.apollographql.apollo.rx3.rxQuery
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.WorkspacesQuery
 import so.codex.hawk.entity.Workspace
 import so.codex.hawk.entity.WorkspaceCut
@@ -15,17 +15,46 @@ import so.codex.hawk.network.NetworkProvider
  * Singleton which has only workspaces
  */
 object WorkspaceProvider {
-
     /**
-     * Subject for emitting items
+     * @property generalSource source for emitting items
      */
-    private val behaviorSubject: BehaviorSubject<List<WorkspaceCut>> =
-        BehaviorSubject.create()
+    var generalSource: PublishSubject<List<Workspace>> = PublishSubject.create()
+
 
     /**
      * Init block
      */
     init {
+        fetchWorks()
+    }
+
+    /**
+     * Method for getting workspaces
+     *
+     * @return workspaces without projects inside
+     */
+    fun getWorkspaces(): Observable<List<WorkspaceCut>> {
+        return generalSource
+            .subscribeOn(Schedulers.io())
+            .mapNotNull {
+                it?.map { w ->
+                    w.toCut()
+                }
+            }
+    }
+
+    /**
+     * Refresh fetching workspaces
+     */
+    fun update() {
+        fetchWorks()
+    }
+
+    /**
+     * Fetch workspaces and
+     * put them in [generalSource]
+     */
+    private fun fetchWorks() {
         NetworkProvider.getApolloClient().rxQuery(WorkspacesQuery())
             .subscribeOn(Schedulers.io())
             .mapNotNull {
@@ -35,18 +64,8 @@ object WorkspaceProvider {
                         w?.name,
                         w?.description,
                         w?.balance.toString().toLong()
-                    ).toCut()
+                    )
                 }
-            }.subscribe(behaviorSubject)
-
-    }
-
-    /**
-     * Method for getting workspaces
-     *
-     * @return workspaces without projects inside
-     */
-    fun getWorkspaces(): Observable<List<WorkspaceCut>> {
-        return behaviorSubject
+            }.subscribe(generalSource)
     }
 }
