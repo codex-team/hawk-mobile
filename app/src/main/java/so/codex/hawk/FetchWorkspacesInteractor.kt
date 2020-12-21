@@ -1,7 +1,7 @@
 package so.codex.hawk
 
 import io.reactivex.rxjava3.core.Observable
-import so.codex.hawk.data_providers.WorkspaceProvider
+import so.codex.hawk.domain.providers.WorkspaceProvider
 import so.codex.hawk.entity.WorkspaceCut
 
 /**
@@ -17,6 +17,9 @@ class FetchWorkspacesInteractor {
         return WorkspaceProvider.getWorkspaces()
     }
 
+    /**
+     * Update data in provider
+     */
     fun update() {
         WorkspaceProvider.update()
     }

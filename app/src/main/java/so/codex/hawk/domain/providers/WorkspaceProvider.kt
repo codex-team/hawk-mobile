@@ -1,4 +1,4 @@
-package so.codex.hawk.data_providers
+package so.codex.hawk.domain.providers
 
 import com.apollographql.apollo.rx3.rxQuery
 import io.reactivex.rxjava3.core.Observable
@@ -10,9 +10,6 @@ import so.codex.hawk.entity.Workspace
 import so.codex.hawk.entity.WorkspaceCut
 import so.codex.hawk.extensions.mapNotNull
 import so.codex.hawk.network.NetworkProvider
-import so.codex.hawk.notification.domain.NotificationManager
-import so.codex.hawk.notification.model.NotificationModel
-import so.codex.hawk.notification.model.NotificationType
 import timber.log.Timber
 
 /**
@@ -20,14 +17,17 @@ import timber.log.Timber
  */
 object WorkspaceProvider {
     /**
-     * @property generalSource source for emitting items
+     * Source for emitting response from api
      */
-    val responseSource: BehaviorSubject<List<Workspace>> = BehaviorSubject.create()
-
-    val updateSubject: PublishSubject<Unit> = PublishSubject.create()
+    private val responseSource: BehaviorSubject<List<Workspace>> = BehaviorSubject.create()
 
     /**
-     * Init block
+     * Event for fetching new data from api
+     */
+    private val updateSubject: PublishSubject<Unit> = PublishSubject.create()
+
+    /**
+     * Subscribe on main observable for sending and handling api response
      */
     init {
         fetchWorks()
@@ -56,8 +56,7 @@ object WorkspaceProvider {
     }
 
     /**
-     * Fetch workspaces and
-     * put them in [generalSource]
+     * Fetch workspaces and put them in [responseSource]
      */
     private fun fetchWorks() {
         updateSubject.switchMap {
@@ -77,12 +76,6 @@ object WorkspaceProvider {
                 }
                 .doOnError {
                     Timber.e(it)
-                    NotificationManager.showNotification(
-                        NotificationModel(
-                            text = it.message ?: "Unknown error in while getting workspace",
-                            type = NotificationType.ERROR
-                        )
-                    )
                 }
         }.subscribe {
             responseSource.onNext(it)

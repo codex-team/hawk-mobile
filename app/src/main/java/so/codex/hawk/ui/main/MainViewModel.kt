@@ -10,23 +10,25 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
 import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.FetchWorkspacesInteractor
-import so.codex.hawk.domain.main.MainEvent
+import so.codex.hawk.notification.domain.NotificationManager
+import so.codex.hawk.notification.model.NotificationModel
+import so.codex.hawk.notification.model.NotificationType
 import so.codex.hawk.ui.data.UiWorkspace
-import timber.log.Timber
 
 /**
  * The ViewModel class for MainActivity.
  * Designed to handle various processes associated with the specified activity.
  */
 class MainViewModel : ViewModel() {
-    /**
-     * @property mainEvent A LiveData object to reactively pass a MainEvent to the View.
-     * @see LiveData
-     */
-    private val mainEvent: MutableLiveData<MainEvent> = MutableLiveData()
 
+    /**
+     * A LiveData of [UiMainViewModel] that should be inserted to the view
+     */
     private val uiModels: MutableLiveData<UiMainViewModel> = MutableLiveData()
 
+    /**
+     * Subject of ui event for notify a component of a new event
+     */
     private val eventSubject = PublishSubject.create<UiEvent>()
 
     /**
@@ -34,13 +36,15 @@ class MainViewModel : ViewModel() {
      */
     private val interactor = FetchWorkspacesInteractor()
 
+    /**
+     * Contain all disposable of sources
+     */
     private val disposable = CompositeDisposable()
 
     /**
      * Initialization block. Called on creation.
      */
     init {
-        Timber.e("#info create viewModel")
         disposable.addAll(
             subscribeOnData(),
             subscribeOnEvent(),
@@ -49,6 +53,11 @@ class MainViewModel : ViewModel() {
         eventSubject.onNext(UiEvent.Refresh)
     }
 
+    /**
+     * Subscribe on events from ui and handle it
+     *
+     * @return [Disposable] for dispose of observer from source
+     */
     private fun subscribeOnEvent(): Disposable {
         return eventSubject.subscribe { event ->
             when (event) {
@@ -59,6 +68,12 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Subscribe on events from ui like as [UiEvent.Refresh] and data from the source of workspace.
+     * Map pair of ui event and workspace to ui model for showing on activity
+     *
+     * @return [Disposable] for dispose of observer from source
+     */
     private fun subscribeOnData(): Disposable {
         return Observables.combineLatest(
             getRefreshedSubject(),
@@ -80,10 +95,22 @@ class MainViewModel : ViewModel() {
                 },
                 {
                     it.printStackTrace()
+                    NotificationManager.showNotification(
+                        NotificationModel(
+                            text = it.message ?: "Unknown error in while getting workspace",
+                            type = NotificationType.ERROR
+                        )
+                    )
                 }
             )
     }
 
+    /**
+     * Get source of ui event and map if ui events is [UiEvent.Refresh]
+     *
+     * @return Observable of Boolean, if we receive ui event for refresh data then source contains
+     * true else false
+     */
     private fun getRefreshedSubject(): Observable<Boolean> {
         return eventSubject
             .filter { event ->
@@ -93,30 +120,42 @@ class MainViewModel : ViewModel() {
             }
     }
 
-    public fun submitEvent(event: UiEvent) {
+    /**
+     * Submit ui event to event source
+     *
+     * @param event is [UiEvent] for handle some of the action
+     */
+    fun submitEvent(event: UiEvent) {
         eventSubject.onNext(event)
     }
 
+    /**
+     * Dispose of all sources
+     */
     override fun onCleared() {
         super.onCleared()
         disposable.dispose()
     }
 
     /**
-     * Method to provide LiveData [mainEvent] for observers.
-     *
-     * @return [LiveData] to monitor [MainEvent].
+     * Provide source of model
      */
-    fun observeMainEvent(): LiveData<MainEvent> {
-        return mainEvent
-    }
-
     fun observeUiModels(): LiveData<UiMainViewModel> {
         return uiModels
     }
 
+    /**
+     * Common class for ui events
+     */
     sealed class UiEvent {
+        /**
+         * Ui event for refresh data (like as swipe to refresh)
+         */
         object Refresh : UiEvent()
+
+        /**
+         * An ui event that indicates an refresh has been completed
+         */
         object CompleteRefresh : UiEvent()
     }
 }

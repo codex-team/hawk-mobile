@@ -15,6 +15,9 @@ import timber.log.Timber
  */
 class MainActivity : AppCompatActivity() {
 
+    /**
+     * ViewModel handle models from business logic and convert to ui models
+     */
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(
             this,
@@ -49,14 +52,19 @@ class MainActivity : AppCompatActivity() {
         viewModel.observeUiModels().observe(this, ::handleUiModels)
     }
 
+    /**
+     * Handle ui models from ViewModel, show different views by [model]
+     *
+     * @param model Representation of model with information to display in views
+     */
     private fun handleUiModels(model: UiMainViewModel) {
         if (model.showLoading) {
             // do some staff for showing loading
-            Timber.i("#info loading")
+            Timber.i("show loading")
         } else {
             // do some staff for workspace
             model.workspaces.forEach {
-                Timber.i("#info $it")
+                Timber.i("workspace: $it")
             }
         }
     }
