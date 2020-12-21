@@ -202,7 +202,7 @@ class NotificationContainerView @JvmOverloads constructor(
         notification.setBackgroundColor(
             ContextCompat.getColor(
                 context,
-                R.color.notification_background_color
+                R.color.notificationBackgroundColor
             )
         )
         notification.elevation = 8.toDpFloat()
