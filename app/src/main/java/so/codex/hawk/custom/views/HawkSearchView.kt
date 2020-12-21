@@ -7,8 +7,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
-import androidx.appcompat.widget.SearchView
-import androidx.core.view.updatePadding
 import so.codex.hawk.R
 
 /**
@@ -21,42 +19,36 @@ class HawkSearchView(context: Context, attrs: AttributeSet) : FrameLayout(contex
     private val queryEditText: EditText
 
     /**
-     * @property listener current listener of the view
+     * @property textChangeCallback current listener of the view
      */
-    private var listener: SearchView.OnQueryTextListener? = null
+    private var textChangeCallback: (String) -> Unit = {}
 
     /**
      * Set listener for searching something
      *
-     * @param listener current listener of the view
+     * @param textChange current listener of the view
      */
-    fun setOnQueryTextListener(listener: SearchView.OnQueryTextListener) {
-        this.listener = listener
+    fun setOnQueryTextListener(textChange: (String) -> Unit) {
+        this.textChangeCallback = textChange
     }
 
     /**
-     * Init block
+     * Init block and add listeners
      */
     init {
         val view = View.inflate(context, R.layout.search_view_layout, this)
-        setOnApplyWindowInsetsListener { v, insets ->
-            v.updatePadding(top = insets.systemWindowInsetTop)
-            insets
-        }
 
-        queryEditText = view.findViewById(R.id.input_et)
+        queryEditText = view.findViewById(R.id.edit_input)
         queryEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                listener?.onQueryTextChange(s.toString())
+                textChangeCallback(s.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
-
         })
     }
-
 }

@@ -2,7 +2,9 @@
 <resources>
     <!--  * Main dimensions *  -->
     <!-- margin -->
+    <dimen name="margin_very_small">4dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium_half">10dp</dimen>
     <dimen name="margin_default">16dp</dimen>
 
     <!-- padding -->
@@ -27,7 +29,6 @@
 
     <!-- * activity_login *  -->
     <!-- margin -->
-    <dimen name="margin_extra_small">4dp</dimen>
     <dimen name="auth_margin_small">9dp</dimen>
     <dimen name="auth_margin_default">14dp</dimen>
     <dimen name="auth_margin_middle">20dp</dimen>
@@ -41,14 +42,14 @@
     <dimen name="text_size_edit_text">14dp</dimen>
     <dimen name="text_size_btn">16dp</dimen>
     <dimen name="text_size_label">12dp</dimen>
+    <dimen name="text_size_search">14dp</dimen>
 
     <!--  Other  -->
     <dimen name="auth_edit_text_height">40dp</dimen>
     <dimen name="auth_divider_height">1dp</dimen>
     <integer name="auth_form_default_width">320</integer>
 
+    <!--  Search view  -->
     <dimen name="hawk_search_view_padding">10dp</dimen>
-    <dimen name="hawk_search_view_height">36dp</dimen>
-    <dimen name="hawk_search_view_margin_start">32dp</dimen>
 
 </resources>
