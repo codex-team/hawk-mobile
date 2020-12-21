@@ -16,4 +16,8 @@ class FetchWorkspacesInteractor {
     fun fetchWorkspaces(): Observable<List<WorkspaceCut>> {
         return WorkspaceProvider.getWorkspaces()
     }
+
+    fun update() {
+        WorkspaceProvider.update()
+    }
 }

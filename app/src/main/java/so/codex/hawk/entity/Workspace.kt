@@ -9,9 +9,9 @@ package so.codex.hawk.entity
  * @property projects current projects of workspace
  */
 data class Workspace(
-    var id: String? = "",
-    var name: String? = "",
-    var description: String? = "",
-    var balance: Long? = 0,
-    var projects: List<Project>? = listOf()
+    var id: String = "",
+    var name: String = "",
+    var description: String = "",
+    var balance: Long = 0,
+    var projects: List<Project> = listOf()
 )

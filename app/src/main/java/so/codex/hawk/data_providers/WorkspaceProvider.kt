@@ -3,13 +3,17 @@ package so.codex.hawk.data_providers
 import com.apollographql.apollo.rx3.rxQuery
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.WorkspacesQuery
 import so.codex.hawk.entity.Workspace
 import so.codex.hawk.entity.WorkspaceCut
 import so.codex.hawk.extensions.mapNotNull
-import so.codex.hawk.extensions.toCut
 import so.codex.hawk.network.NetworkProvider
+import so.codex.hawk.notification.domain.NotificationManager
+import so.codex.hawk.notification.model.NotificationModel
+import so.codex.hawk.notification.model.NotificationType
+import timber.log.Timber
 
 /**
  * Singleton which has only workspaces
@@ -18,8 +22,9 @@ object WorkspaceProvider {
     /**
      * @property generalSource source for emitting items
      */
-    var generalSource: PublishSubject<List<Workspace>> = PublishSubject.create()
+    val responseSource: BehaviorSubject<List<Workspace>> = BehaviorSubject.create()
 
+    val updateSubject: PublishSubject<Unit> = PublishSubject.create()
 
     /**
      * Init block
@@ -34,10 +39,10 @@ object WorkspaceProvider {
      * @return workspaces without projects inside
      */
     fun getWorkspaces(): Observable<List<WorkspaceCut>> {
-        return generalSource
+        return responseSource
             .subscribeOn(Schedulers.io())
             .mapNotNull {
-                it?.map { w ->
+                it.map { w ->
                     w.toCut()
                 }
             }
@@ -47,7 +52,7 @@ object WorkspaceProvider {
      * Refresh fetching workspaces
      */
     fun update() {
-        fetchWorks()
+        updateSubject.onNext(Unit)
     }
 
     /**
@@ -55,17 +60,40 @@ object WorkspaceProvider {
      * put them in [generalSource]
      */
     private fun fetchWorks() {
-        NetworkProvider.getApolloClient().rxQuery(WorkspacesQuery())
-            .subscribeOn(Schedulers.io())
-            .mapNotNull {
-                it.data?.workspaces?.map { w ->
-                    Workspace(
-                        w?.id,
-                        w?.name,
-                        w?.description,
-                        w?.balance.toString().toLong()
+        updateSubject.switchMap {
+            NetworkProvider.getApolloClient().rxQuery(WorkspacesQuery())
+                .subscribeOn(Schedulers.io())
+                .mapNotNull {
+                    it.data?.workspaces?.mapNotNull { w ->
+                        w?.let {
+                            Workspace(
+                                w.id,
+                                w.name ?: "",
+                                w.description ?: "",
+                                w.balance.toString().toLong()
+                            )
+                        }
+                    }
+                }
+                .doOnError {
+                    Timber.e(it)
+                    NotificationManager.showNotification(
+                        NotificationModel(
+                            text = it.message ?: "Unknown error in while getting workspace",
+                            type = NotificationType.ERROR
+                        )
                     )
                 }
-            }.subscribe(generalSource)
+        }.subscribe {
+            responseSource.onNext(it)
+        }
+    }
+
+    /**
+     * Function for mapping to workspaces without projects
+     * @return Workspace without projects
+     */
+    private fun Workspace.toCut(): WorkspaceCut {
+        return WorkspaceCut(id, name, description, balance)
     }
 }

@@ -3,9 +3,9 @@ package so.codex.hawk.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.activity_main.btn_refresh
 import kotlinx.android.synthetic.main.activity_main.search_view
 import so.codex.hawk.R
-import so.codex.hawk.domain.main.MainEvent
 import so.codex.hawk.custom.views.search.HawkSearchViewModel
 import timber.log.Timber
 
@@ -42,15 +42,21 @@ class MainActivity : AppCompatActivity() {
             }
         )
 
-        viewModel.observeMainEvent().observe(this) {
-            renderEvent(it)
+        btn_refresh.setOnClickListener {
+            viewModel.submitEvent(MainViewModel.UiEvent.Refresh)
         }
+
+        viewModel.observeUiModels().observe(this, ::handleUiModels)
     }
 
-    private fun renderEvent(event: MainEvent) {
-        when (event) {
-            is MainEvent.WorkspacesSuccessEvent -> {
-                // do some staff too
+    private fun handleUiModels(model: UiMainViewModel) {
+        if (model.showLoading) {
+            // do some staff for showing loading
+            Timber.i("#info loading")
+        } else {
+            // do some staff for workspace
+            model.workspaces.forEach {
+                Timber.i("#info $it")
             }
         }
     }

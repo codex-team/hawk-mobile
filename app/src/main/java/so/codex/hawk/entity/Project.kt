@@ -8,8 +8,8 @@ package so.codex.hawk.entity
  * @property unreadCount returns number of unread events
  */
 data class Project(
-    var id: String? = "",
-    var name: String? = "",
-    var description: String? = "",
+    var id: String = "",
+    var name: String = "",
+    var description: String = "",
     var unreadCount: Int = 0
 )
