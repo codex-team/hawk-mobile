@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.search_view
 import so.codex.hawk.R
+import so.codex.hawk.custom.views.search.HawkSearchViewModel
 import timber.log.Timber
 
 /**
@@ -23,8 +24,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        search_view.setOnQueryTextListener { newText ->
-            Timber.e("text change $newText")
-        }
+        search_view.update(
+            HawkSearchViewModel(
+                hint = getString(R.string.search_hint),
+                text = "Hello",
+            ) {
+                Timber.i("text changed $it")
+            }
+        )
     }
 }

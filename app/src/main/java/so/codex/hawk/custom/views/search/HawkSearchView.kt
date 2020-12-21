@@ -1,4 +1,4 @@
-package so.codex.hawk.custom.views
+package so.codex.hawk.custom.views.search
 
 import android.content.Context
 import android.text.Editable
@@ -24,15 +24,6 @@ class HawkSearchView(context: Context, attrs: AttributeSet) : FrameLayout(contex
     private var textChangeCallback: (String) -> Unit = {}
 
     /**
-     * Set listener for searching something
-     *
-     * @param textChange current listener of the view
-     */
-    fun setOnQueryTextListener(textChange: (String) -> Unit) {
-        this.textChangeCallback = textChange
-    }
-
-    /**
      * Init block and add listeners
      */
     init {
@@ -50,5 +41,24 @@ class HawkSearchView(context: Context, attrs: AttributeSet) : FrameLayout(contex
             override fun afterTextChanged(s: Editable?) {
             }
         })
+    }
+
+    /**
+     * Set listener for searching something
+     *
+     * @param textChange current listener of the view
+     */
+    fun setOnQueryTextListener(textChange: (String) -> Unit) {
+        this.textChangeCallback = textChange
+    }
+
+    /**
+     * Update field in view by [model]
+     * @param model Model that contain information of search view
+     */
+    fun update(model: HawkSearchViewModel) {
+        queryEditText.setText(model.text)
+        queryEditText.hint = model.hint
+        textChangeCallback = model.listener
     }
 }
