@@ -1,0 +1,14 @@
+query workspaces($ids: [ID] = []) {
+    workspaces(ids: $ids) {
+        id,
+        balance,
+        description,
+        name,
+        projects {
+            id,
+            name,
+            unreadCount,
+            description
+        }
+    }
+}
