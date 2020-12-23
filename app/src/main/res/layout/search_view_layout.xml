@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_rounded"
+    android:orientation="horizontal"
+    android:padding="@dimen/hawk_search_view_padding">
+
+    <ImageView
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_search"
+        android:layout_marginStart="@dimen/margin_very_small"
+        app:tint="@color/colorTextTranslucent"
+        android:contentDescription="@string/search_icon_content_description" />
+
+    <EditText
+        android:id="@+id/edit_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@color/defaultBackground"
+        android:layout_marginStart="@dimen/margin_medium_half"
+        android:gravity="center_vertical"
+        android:hint="@string/search_hint"
+        android:singleLine="true"
+        android:lines="1"
+        android:ellipsize="end"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:textSize="@dimen/text_size_search"
+        android:textColor="@color/colorAppText"
+        android:textColorHint="@color/colorTextTranslucent"
+        android:importantForAutofill="no"
+        tools:ignore="SpUsage" />
+
+</LinearLayout>
