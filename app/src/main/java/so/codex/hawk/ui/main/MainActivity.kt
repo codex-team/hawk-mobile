@@ -3,8 +3,10 @@ package so.codex.hawk.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.recycler
+import kotlinx.android.synthetic.main.activity_main.search
 import so.codex.hawk.R
 import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.main.projectlist.ProjectAdapter
@@ -69,5 +71,8 @@ class MainActivity : AppCompatActivity() {
     private fun initUi() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = projectAdapter
+        search.setOnQueryTextListener {
+            projectAdapter.filter.filter(it)
+        }
     }
 }

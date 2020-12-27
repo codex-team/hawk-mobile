@@ -18,10 +18,10 @@ fun Response<RefreshMutation.Data>.toRefreshResponse(): RefreshResponse {
     return if (!hasErrors() && data != null) {
         val accessToken = data!!.refreshTokens.accessToken
         val refreshToken = data!!.refreshTokens.refreshToken
-        RefreshResponse(Token(accessToken, refreshToken), hasError = false, emptyList())
+        RefreshResponse(Token(accessToken, refreshToken), hasError = false, error = emptyList())
     } else {
         val errors = this.errors ?: emptyList()
-        RefreshResponse(SessionKeeper.EMPTY_TOKEN, hasError = true, errors)
+        RefreshResponse(SessionKeeper.EMPTY_TOKEN, hasError = true, error = errors)
     }
 }
 
