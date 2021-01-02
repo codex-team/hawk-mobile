@@ -233,7 +233,7 @@ class NotificationContainerView @JvmOverloads constructor(
         val message = TextView(context)
         message.text = model.text
         message.typeface = ResourcesCompat.getFont(context, R.font.roboto_medium)
-        message.setTextColor(ContextCompat.getColor(context, R.color.notification_text_error_color))
+        message.setTextColor(ContextCompat.getColor(context, R.color.notificationTextErrorColor))
         message.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14F)
         message.layoutParams = getNotificationTextLayoutParams()
         message.gravity = Gravity.CENTER
