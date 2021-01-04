@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
 import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.HawkApp
-import so.codex.hawk.custom.views.badge.BadgeViewModel
+import so.codex.hawk.custom.views.badge.UiBadgeViewModel
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.FetchWorkspacesInteractor
 import so.codex.hawk.notification.domain.NotificationManager
@@ -139,14 +139,14 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Extension for converting from number to [BadgeViewModel]
+     * Extension for converting from number to [UiBadgeViewModel]
      * @return Badge view model for current number
      */
-    private fun Int.toBadge(): BadgeViewModel {
+    private fun Int.toBadge(): UiBadgeViewModel {
         if (this == 0) {
-            return BadgeViewModel()
+            return UiBadgeViewModel()
         }
-        return BadgeViewModel(
+        return UiBadgeViewModel(
             ShortNumberUtils.convert(this.toLong()),
             this.toLong()
         )

@@ -43,11 +43,11 @@ class BadgeView @JvmOverloads constructor(
     }
 
     /**
-     * Update view by [BadgeViewModel] for update current information. If model have Default count,
+     * Update view by [UiBadgeViewModel] for update current information. If model have Default count,
      * then view is gone
      * @param model Model for displaying information
      */
-    fun update(model: BadgeViewModel) {
+    fun update(model: UiBadgeViewModel) {
         visibility = if (model.text.isEmpty() || model.count == UNDEFINED_COUNT) {
             Timber.w("Try to show badge without text or count is undefined")
             View.GONE

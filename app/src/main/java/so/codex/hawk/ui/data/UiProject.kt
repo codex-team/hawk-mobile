@@ -9,7 +9,7 @@ import android.graphics.Typeface
 import android.view.View
 import androidx.core.content.ContextCompat
 import so.codex.hawk.R
-import so.codex.hawk.custom.views.badge.BadgeViewModel
+import so.codex.hawk.custom.views.badge.UiBadgeViewModel
 import so.codex.hawk.extensions.domain.Utils
 
 /**
@@ -21,7 +21,7 @@ data class UiProject(
     val name: String,
     val description: String,
     val image: String = "",
-    val badgeModel: BadgeViewModel = BadgeViewModel()
+    val badgeModel: UiBadgeViewModel = UiBadgeViewModel()
 ) {
 
     /**

@@ -1,6 +1,6 @@
 package so.codex.hawk.ui.main
 
-import so.codex.hawk.custom.views.badge.BadgeViewModel
+import so.codex.hawk.custom.views.badge.UiBadgeViewModel
 import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.utils.ShortNumberUtils
 
@@ -154,8 +154,8 @@ object FakeRepository {
         )
     }
 
-    private fun Int.toBadge(): BadgeViewModel {
-        return BadgeViewModel(
+    private fun Int.toBadge(): UiBadgeViewModel {
+        return UiBadgeViewModel(
             ShortNumberUtils.convert(this.toLong()),
             this.toLong()
         )

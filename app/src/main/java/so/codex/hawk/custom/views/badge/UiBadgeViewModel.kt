@@ -9,7 +9,7 @@ import so.codex.hawk.R
  * @property count Number of short number. Default -1 [BadgeView.UNDEFINED_COUNT]
  * @property textColor Color of text. Default default color for badge [R.color.badgeTextColor]
  */
-data class BadgeViewModel(
+data class UiBadgeViewModel(
     val text: String = "",
     val count: Long = BadgeView.UNDEFINED_COUNT,
     @ColorRes
