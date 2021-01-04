@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.view.View
 import androidx.core.content.ContextCompat
 import so.codex.hawk.R
+import so.codex.hawk.custom.views.badge.BadgeViewModel
 import so.codex.hawk.extensions.domain.Utils
 
 /**
@@ -20,12 +21,8 @@ data class UiProject(
     val name: String,
     val description: String,
     val image: String = "",
-    val unreadCount: Int
+    val badgeModel: BadgeViewModel = BadgeViewModel()
 ) {
-    /**
-     * Abbreviated format of events ready for display.
-     */
-    val abbreviationEvents: String = Utils.getAbbreviationFromInt(unreadCount)
 
     /**
      * Abbreviated format of name ready for display.

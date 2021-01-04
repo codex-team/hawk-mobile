@@ -49,19 +49,11 @@
             tools:text="@tools:sample/lorem" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/events"
+    <so.codex.hawk.custom.views.badge.BadgeView
+        android:id="@+id/badge_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/event_back_blue"
-        android:paddingStart="@dimen/padding_8"
-        android:paddingTop="@dimen/padding_4"
-        android:paddingEnd="@dimen/padding_8"
-        android:paddingBottom="@dimen/padding_4"
-        android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_size_12"
-        android:visibility="invisible"
-        tools:text="1 320"
-        tools:visibility="visible" />
+        android:visibility="visible" />
 </LinearLayout>

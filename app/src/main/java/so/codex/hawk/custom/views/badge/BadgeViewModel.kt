@@ -10,7 +10,7 @@ import so.codex.hawk.R
  * @property textColor Color of text. Default default color for badge [R.color.badgeTextColor]
  */
 data class BadgeViewModel(
-    val text: String,
+    val text: String = "",
     val count: Long = BadgeView.UNDEFINED_COUNT,
     @ColorRes
     val textColor: Int = R.color.badgeTextColor
