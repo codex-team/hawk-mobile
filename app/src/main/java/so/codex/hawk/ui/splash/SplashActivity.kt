@@ -5,9 +5,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import so.codex.hawk.R
+import so.codex.hawk.SessionKeeper
 import so.codex.hawk.domain.splash.SplashEvent
+import so.codex.hawk.entity.auth.Session
+import so.codex.hawk.entity.auth.Token
 import so.codex.hawk.ui.login.LoginActivity
 import so.codex.hawk.ui.main.MainActivity
+import timber.log.Timber
 
 /**
  * Application launch class.
@@ -39,6 +43,10 @@ class SplashActivity : AppCompatActivity() {
             .observe(this) {
                 eventResponse(it)
             }
+        /*
+        Выполни один запуск чтобы стереть сохраненную сессию для демонстрации ветвления при входе.
+         */
+        //SessionKeeper.saveSession(Session(Token("",""),0))
         splashViewModel.checkingSessionFreshness()
     }
 

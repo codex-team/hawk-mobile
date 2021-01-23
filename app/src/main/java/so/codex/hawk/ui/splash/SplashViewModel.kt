@@ -8,6 +8,7 @@ import so.codex.hawk.domain.refresh.RefreshTokenInteractor
 import so.codex.hawk.domain.refresh.RefreshTokenInteractorImpl
 import so.codex.hawk.domain.splash.SplashEvent
 import so.codex.hawk.extensions.domain.toSplashEvent
+import timber.log.Timber
 
 /**
  * The ViewModel class for SplashActivity.

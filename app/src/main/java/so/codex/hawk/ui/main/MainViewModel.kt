@@ -10,6 +10,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
 import io.reactivex.rxjava3.subjects.PublishSubject
+import so.codex.hawk.HawkApp
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.FetchWorkspacesInteractor
 import so.codex.hawk.notification.domain.NotificationManager
@@ -18,6 +19,7 @@ import so.codex.hawk.notification.model.NotificationType
 import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.ui.data.UiWorkspace
+import timber.log.Timber
 
 /**
  * The ViewModel class for MainActivity.
@@ -105,7 +107,8 @@ class MainViewModel : ViewModel() {
                         val item =
                             UiProject(it.id, it.name, it.description, it.image, it.unreadCount)
                         if (item.image.isBlank()) {
-                            item.createDefaultLogo(context)
+                            Timber.e("createDefLogo")
+                            item.createDefaultLogo(HawkApp.context)
                         }
                         item
                     }

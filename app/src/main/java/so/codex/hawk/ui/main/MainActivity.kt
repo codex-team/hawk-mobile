@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider.NewInstanceFactory()
         ).get(MainViewModel::class.java)
         item.context = applicationContext
+        Timber.e("initVM")
         item
     }
 
@@ -57,9 +58,9 @@ class MainActivity : AppCompatActivity() {
             // do some staff for showing loading
             Timber.i("show loading")
         } else {
-            projectAdapter.submitList(model.projects)
+           // projectAdapter.submitList(model.projects)
             // Debug version
-            // projectAdapter.updateItems(FakeRepository.getUiProjects())
+            projectAdapter.submitList(FakeRepository.getUiProjects())
         }
     }
 
@@ -70,4 +71,6 @@ class MainActivity : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = projectAdapter
     }
+
+
 }

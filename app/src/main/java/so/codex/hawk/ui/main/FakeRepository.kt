@@ -46,14 +46,14 @@ object FakeRepository {
             ),
             UiProject(
                 "a",
-                "a",
+                "Editor config",
                 "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
                 "",
                 7,
             ),
             UiProject(
                 "a",
-                "a",
+                "Example unit project",
                 "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
                 "",
                 777777,
@@ -67,7 +67,7 @@ object FakeRepository {
             ),
             UiProject(
                 "e",
-                "e",
+                "Fake Project",
                 "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
                 "",
                 72346,
