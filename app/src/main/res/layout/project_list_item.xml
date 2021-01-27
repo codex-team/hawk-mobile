@@ -9,13 +9,12 @@
     android:orientation="horizontal"
     tools:background="@color/defaultBackgroundDarker">
 
-    <so.codex.hawk.custom.views.SquircleImageView
+    <ImageView
         android:id="@+id/icon"
         android:layout_width="@dimen/project_icon_side"
         android:layout_height="@dimen/project_icon_side"
         android:layout_gravity="center"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:layout_width="0dp"
