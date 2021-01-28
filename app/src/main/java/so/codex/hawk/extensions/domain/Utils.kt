@@ -1,7 +1,15 @@
 package so.codex.hawk.extensions.domain
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.Typeface
+import androidx.core.content.ContextCompat
 import java.util.Locale
+import so.codex.hawk.R
 
 /**
  * Helped variables and methods
@@ -88,5 +96,37 @@ object Utils {
             }
             "${valueStr.substring(0, valueStr.length - 3)}.${remainderStr}K"
         }
+    }
+
+    /**
+     * Method for creating a standard icon
+     */
+    fun createDefaultLogo(
+        context: Context,
+        projectId: String,
+        projectName: String,
+        logoSideId: Int
+    ): Bitmap {
+        val side = context.resources.getDimensionPixelSize(logoSideId)
+        val defaultIcon = Bitmap.createBitmap(
+            side,
+            side,
+            Bitmap.Config.ARGB_8888
+        )
+        val abbreviationName = getAbbreviationFromString(projectName)
+        val canvas = Canvas(defaultIcon!!)
+        val fontPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            textSize = 14f * context.resources.displayMetrics.density + 0.5f
+            typeface = Typeface.create("roboto", Typeface.BOLD)
+            color = ContextCompat.getColor(context, R.color.colorDefaultTextIcon)
+        }
+        val bounds = Rect()
+        fontPaint.getTextBounds(abbreviationName, 0, abbreviationName.length, bounds)
+        fontPaint.textAlign = Paint.Align.LEFT
+        canvas.drawColor(getColorById(projectId))
+        val centerX = side / 2f - bounds.exactCenterX()
+        val centerY = side.toFloat() / 2f - bounds.exactCenterY()
+        canvas.drawText(abbreviationName, centerX, centerY, fontPaint)
+        return defaultIcon
     }
 }

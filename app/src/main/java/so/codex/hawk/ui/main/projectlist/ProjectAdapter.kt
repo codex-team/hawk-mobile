@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.project_list_item.view.badge_count
 import kotlinx.android.synthetic.main.project_list_item.view.description
+import kotlinx.android.synthetic.main.project_list_item.view.events
 import kotlinx.android.synthetic.main.project_list_item.view.icon
 import kotlinx.android.synthetic.main.project_list_item.view.name
 import so.codex.hawk.R
+import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.ui.data.UiProject
 
 /**
@@ -47,10 +49,11 @@ class ProjectAdapter : ListAdapter<UiProject, ProjectAdapter.ViewHolder>(Project
             titleTextView.text = item.name
             descriptionTextView.text = item.description
             badgeView.update(item.badgeModel)
-            if (item.image.isNotEmpty()) {
-                Picasso.get().load(item.image).into(iconImageView)
+            iconImageView.setImageDrawable(item.imageDrawable)
+            eventsTextView.visibility = if (item.unreadCount == 0) {
+                View.INVISIBLE
             } else {
-                iconImageView.setImageBitmap(item.getDefaultIcon(iconImageView))
+                View.VISIBLE
             }
         }
     }

@@ -4,23 +4,26 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.squareup.picasso.Picasso
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.HawkApp
-import so.codex.hawk.custom.views.badge.UiBadgeViewModel
+import so.codex.hawk.R
+import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.FetchWorkspacesInteractor
+import so.codex.hawk.extensions.domain.Utils
 import so.codex.hawk.notification.domain.NotificationManager
 import so.codex.hawk.notification.model.NotificationModel
 import so.codex.hawk.notification.model.NotificationType
 import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.ui.data.UiWorkspace
-import so.codex.hawk.utils.ShortNumberUtils
 
 /**
  * The ViewModel class for MainActivity.
@@ -105,21 +108,36 @@ class MainViewModel : ViewModel() {
             fetchProjectInteractor.fetchProjects()
                 .map { projectList ->
                     projectList.map {
-                        val item =
+                        if (it.image.isNullOrBlank()) {
                             UiProject(
                                 it.id,
                                 it.name,
                                 it.description,
                                 it.image,
-                                it.unreadCount.toBadge()
+                                it.unreadCount,
+                                SquircleDrawable(
+                                    Utils.createDefaultLogo(
+                                        context,
+                                        it.id,
+                                        it.name,
+                                        R.dimen.project_icon_side
+                                    )
+                                )
                             )
-                        if (item.image.isBlank()) {
-                            item.createDefaultLogo(context)
+                        } else {
+                            UiProject(
+                                it.id,
+                                it.name,
+                                it.description,
+                                it.image,
+                                it.unreadCount,
+                                SquircleDrawable(Picasso.get().load(it.image).get())
+                            )
                         }
-                        item
                     }
                 }
         )
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { (isFetched, workspaceList, projectList) ->

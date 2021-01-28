@@ -30,7 +30,9 @@ class SquircleDrawable(bitmap: Bitmap) : Drawable() {
     /**
      * @property paintShader
      */
-    private val paintShader = Paint()
+    private val paintShader = Paint().apply {
+        isAntiAlias = true
+    }
 
     /**
      * @property bitmapShader used to draw a bitmap as a texture. The bitmap can be repeated or
@@ -79,7 +81,6 @@ class SquircleDrawable(bitmap: Bitmap) : Drawable() {
             Shader.TileMode.REPEAT
         )
         paintShader.shader = bitmapShader
-        paintShader.isAntiAlias = true
         return picture
     }
 
@@ -115,6 +116,7 @@ class SquircleDrawable(bitmap: Bitmap) : Drawable() {
     private fun createSquirclePath(side: Int): Path {
         val path = Path()
         val radius = (side / 2).toFloat()
+        if (n == 0 || (side / 2) == 0) return path
         path.moveTo(-radius, 0f)
         var x = -radius
         while (x <= radius) {
