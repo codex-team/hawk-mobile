@@ -1,163 +1,75 @@
 package so.codex.hawk.ui.main
 
-import so.codex.hawk.custom.views.badge.UiBadgeViewModel
 import so.codex.hawk.ui.data.UiProject
-import so.codex.hawk.utils.ShortNumberUtils
 
 /**
  * Debug object.
  */
 object FakeRepository {
+    private const val fakeImageUrlOne = "https://codex.so/public/app/img/external/codex2x.png"
+    private const val fakeImageUrlTwo =
+        "https://cdn.pixabay.com/photo/2015/07/30/11/04/bike-867229_960_720.jpg"
+    private const val fakeImageUrlThree =
+        "https://cdn.pixabay.com/photo/2018/01/25/16/18/pinterest-3d-3106488_960_720.jpg"
 
-    fun getUiProjects(): List<UiProject> {
+    fun getProjects(): List<Project> {
         return listOf(
-            UiProject(
-                "y",
-                "y",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "",
-                7.toBadge(),
-            ),
-            UiProject(
+            Project(
                 "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                0.toBadge(),
+                "Hawk",
+                "TypeError: Cannot read property 'indexOf'. Use getProperty().",
+                fakeImageUrlOne,
+                7.toBadge()
             ),
-            UiProject(
+            Project(
                 "b",
-                "b",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                77.toBadge(),
+                "Project B",
+                "TypeError: Cannot read property 'indexOf'. Use getProperty().",
+                "",
+                77.toBadge()
             ),
-            UiProject(
+            Project(
                 "c",
-                "c",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                777.toBadge(),
+                "Project C",
+                "TypeError: Cannot read property 'indexOf'. Use getProperty().",
+                fakeImageUrlTwo,
+                777.toBadge()
             ),
-            UiProject(
+            Project(
                 "d",
-                "d",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7777.toBadge(),
+                "Project D",
+                "TypeError: Cannot read property 'indexOf'. Use getProperty().",
+                fakeImageUrlThree,
+                7777.toBadge()
             ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
+            Project(
+                "f",
+                "Project F",
+                "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                7.toBadge(),
+                77777.toBadge()
             ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
+            Project(
+                "1",
+                "Project 1",
+                "TypeError: Cannot read property 'indexOf'. Use getProperty().",
+                fakeImageUrlOne,
+                1234567.toBadge()
+            ),
+            Project(
+                "5",
+                "Project 5",
+                "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                777777.toBadge(),
+                1234567.toBadge()
             ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                12345776.toBadge(),
-            ),
-            UiProject(
-                "e",
-                "e",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
+            Project(
+                "8",
+                "Project 8",
+                "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                72346.toBadge(),
-            ),
-            UiProject(
-                "7",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "",
-                7.toBadge(),
-            ),
-            UiProject(
-                "q",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "",
-                7.toBadge(),
-            ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7.toBadge(),
-            ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7.toBadge(),
-            ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7.toBadge(),
-            ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7.toBadge(),
-            ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7.toBadge(),
-            ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7.toBadge(),
-            ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7.toBadge(),
-            ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7.toBadge(),
-            ),
-            UiProject(
-                "a",
-                "a",
-                "Task :app:compileDebugJavaWithJavac UP-TO-DATE",
-                "https://codex.so/public/app/img/external/codex2x.png",
-                7.toBadge(),
+                11.toBadge()
             )
-        )
-    }
-
-    private fun Int.toBadge(): UiBadgeViewModel {
-        return UiBadgeViewModel(
-            ShortNumberUtils.convert(this.toLong()),
-            this.toLong()
         )
     }
 }

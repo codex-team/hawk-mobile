@@ -24,11 +24,10 @@ class MainActivity : AppCompatActivity() {
      * ViewModel handle models from business logic and convert to ui models
      */
     private val viewModel: MainViewModel by lazy {
-        val item = ViewModelProvider(
+        ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(MainViewModel::class.java)
-        item
     }
 
     /**
