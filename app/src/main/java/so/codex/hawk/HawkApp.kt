@@ -13,10 +13,7 @@ import timber.log.Timber
 class HawkApp : Application() {
 
     companion object {
-        private lateinit var context: Context
-        fun getContext(): Context {
-            return context
-        }
+        lateinit var context: Context
     }
 
     /**

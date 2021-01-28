@@ -2,8 +2,10 @@ package so.codex.hawk.domain.refresh
 
 import android.annotation.SuppressLint
 import com.apollographql.apollo.rx3.rxMutate
+import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.RefreshMutation
 import so.codex.hawk.SessionKeeper
@@ -19,29 +21,28 @@ import timber.log.Timber
  */
 class RefreshTokenInteractorImpl : RefreshTokenInteractor {
     /**
-     * @property publishSubject Subject allowing emitting items to subscribers.
+     * @property publishRelay Subject allowing emitting items to subscribers.
+     *                          Works according to the Observer pattern.
+     * @see PublishRelay
+     */
+    private val publishRelay: PublishRelay<Token> = PublishRelay.create()
+
+    /**
+     * @property refreshEventSubject Subject allowing emitting items to subscribers.
      *                          Works according to the Observer pattern.
      * @see PublishSubject
      */
-    private val publishSubject: PublishSubject<Token> = PublishSubject.create()
+    private val refreshEventSubject = BehaviorSubject.create<RefreshEvent>()
 
     /**
-     * @return Observable that allows you to monitor the [RefreshEvent] that occurs
-     *         when trying to refresh tokens.
+     * Subscribe on event, if need to refresh token and send request
      */
-    @SuppressLint("BinaryOperationInTimber")
-    override fun getRefreshEventObservable(): Observable<RefreshEvent> {
-        Timber.i(
-            "Creating a new instance of ObservableRefreshEvent. " +
-                Thread.currentThread().name
-        )
+    init {
         val client = NetworkProvider.getApolloClient()
-        return publishSubject.hide()
-            .doOnSubscribe {
-                Timber.i("RefreshObservable subscription. ${Thread.currentThread().name}")
-            }
-            .subscribeOn(Schedulers.io())
+
+        publishRelay
             .distinctUntilChanged()
+            .subscribeOn(Schedulers.io())
             .switchMapSingle {
                 Timber.i("Switch publish subject to RefreshObservable")
                 client.rxMutate(RefreshMutation(it.refreshToken))
@@ -54,14 +55,26 @@ class RefreshTokenInteractorImpl : RefreshTokenInteractor {
                     SessionKeeper.saveSession(Session(response.token, time))
                     RefreshEvent.REFRESH_SUCCESS
                 } else {
-                    Timber.i("Token refresh failed. Token is deprecated.")
+                    Timber.i("Token refresh failed. Token is invalidate.")
                     RefreshEvent.REFRESH_FAILED
                 }
             }
             .onErrorResumeNext {
                 Timber.e("The request was aborted. Network error.")
-                getRefreshEventObservable().startWithItem(RefreshEvent.NO_INTERNET)
+                Observable.just(RefreshEvent.NO_INTERNET)
             }
+            .subscribe {
+                refreshEventSubject.onNext(it)
+            }
+    }
+
+    /**
+     * @return Observable that allows you to monitor the [RefreshEvent] that occurs
+     *         when trying to refresh tokens.
+     */
+    override fun getRefreshEventObservable(): Observable<RefreshEvent> {
+        Timber.i("Creating a new instance of ObservableRefreshEvent.")
+        return refreshEventSubject
     }
 
     /**
@@ -69,6 +82,6 @@ class RefreshTokenInteractorImpl : RefreshTokenInteractor {
      */
     override fun refreshToken() {
         Timber.i("Attempting to refresh a token ${Thread.currentThread().name}")
-        publishSubject.onNext(SessionKeeper.session.token)
+        publishRelay.accept(SessionKeeper.session.token)
     }
 }

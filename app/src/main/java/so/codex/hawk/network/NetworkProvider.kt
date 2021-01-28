@@ -15,7 +15,7 @@ object NetworkProvider {
      */
     private val instance by lazy {
         val logging = HttpFileLoggingInterceptor()
-        logging.level = HttpFileLoggingInterceptor.Level.HEADERS
+        logging.level = HttpFileLoggingInterceptor.Level.BODY
         val okHttp = OkHttpClient
             .Builder()
             .addInterceptor(TokenInterceptor.instance)

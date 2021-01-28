@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             projectAdapter.submitList(model.projects)
             // Debug version
-            // projectAdapter.updateItems(FakeRepository.getUiProjects())
+//            projectAdapter.submitList(FakeRepository.getUiProjects())
         }
     }
 

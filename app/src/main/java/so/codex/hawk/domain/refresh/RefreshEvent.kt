@@ -19,5 +19,10 @@ enum class RefreshEvent {
      * @property NO_INTERNET the event is raised when the device has problems and
      *                       it is not possible to check the freshness of the token.
      */
-    NO_INTERNET
+    NO_INTERNET,
+
+    /**
+     * @property NO_AUTHORIZED The event is raised when cannot found information in storage
+     */
+    NO_AUTHORIZED
 }

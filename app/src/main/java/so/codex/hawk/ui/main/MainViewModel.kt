@@ -35,7 +35,7 @@ class MainViewModel : ViewModel() {
     /**
      * @see Context
      */
-    private var context: Context = HawkApp.getContext()
+    private var context: Context = HawkApp.context
 
     /**
      * A LiveData of [UiMainViewModel] that should be inserted to the view

@@ -39,6 +39,14 @@ class SplashActivity : AppCompatActivity() {
             .observe(this) {
                 eventResponse(it)
             }
+        /*
+        Выполни один запуск чтобы стереть сохраненную сессию для демонстрации ветвления при входе.
+         */
+        // SessionKeeper.saveSession(Session(Token("",""),0))
+    }
+
+    override fun onStart() {
+        super.onStart()
         splashViewModel.checkingSessionFreshness()
     }
 
