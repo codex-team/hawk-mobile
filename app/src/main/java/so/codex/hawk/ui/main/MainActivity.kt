@@ -1,10 +1,13 @@
 package so.codex.hawk.ui.main
 
 import android.os.Bundle
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.drawer
 import kotlinx.android.synthetic.main.activity_main.recycler
+import kotlinx.android.synthetic.main.activity_main.toolbar
 import so.codex.hawk.R
 import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.main.projectlist.ProjectAdapter
@@ -51,6 +54,7 @@ class MainActivity : AppCompatActivity() {
      * @param model Representation of model with information to display in views
      */
     private fun handleUiModels(model: UiMainViewModel) {
+        toolbar.title = model.title
         if (model.showLoading) {
             // do some staff for showing loading
             Timber.i("show loading")
@@ -67,5 +71,19 @@ class MainActivity : AppCompatActivity() {
     private fun initUi() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = projectAdapter
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawer,
+            toolbar,
+            R.string.app_name,
+            R.string.app_name
+        )
+        drawer.addDrawerListener(
+            toggle
+        )
+        toggle.syncState()
     }
 }

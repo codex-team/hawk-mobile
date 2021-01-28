@@ -143,8 +143,9 @@ class MainViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { (isFetched, workspaceList, projectList) ->
+                    val title = HawkApp.context.getString(R.string.project_list_default_title)
                     uiModels.value =
-                        UiMainViewModel(workspaceList, projectList, showLoading = isFetched)
+                        UiMainViewModel(title, workspaceList, projectList, showLoading = isFetched)
                 },
                 {
                     it.printStackTrace()
