@@ -96,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
             LoginEvent.LOGIN_ERROR -> {
                 notificationContainer.show(
                     NotificationModel(
-                        "Ошибка входа",
+                        baseContext.getString(R.string.notification_error_in_while_logging),
                         NotificationType.ERROR
                     )
                 )
@@ -104,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
             LoginEvent.INTERNET_ERROR -> {
                 notificationContainer.show(
                     NotificationModel(
-                        "Нет интернета",
+                        baseContext.getString(R.string.notification_error_no_internet),
                         NotificationType.ERROR
                     )
                 )

@@ -1,6 +1,5 @@
 package so.codex.hawk.domain.refresh
 
-import android.annotation.SuppressLint
 import com.apollographql.apollo.rx3.rxMutate
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
