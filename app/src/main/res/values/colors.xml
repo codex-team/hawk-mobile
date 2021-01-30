@@ -15,8 +15,13 @@
     <color name="main_header">#1A1D26</color>
 
     <!-- Notification colors -->
-    <color name="notification_background_color">#13161e</color>
-    <color name="notification_text_error_color">#d94848</color>
+    <color name="notificationBackgroundColor">#13161e</color>
+    <color name="notificationTextErrorColor">#d94848</color>
+
+    <!--  Badge color  -->
+    <color name="badgeBackgroundColor">#4979e4</color>
+    <color name="badgeTextColor">#DBE6FF</color>
+    <color name="badgeShadowColor">#A1254A83</color>
 
     <!-- Button color -->
     <color name="btnBlue">#4979e4</color>

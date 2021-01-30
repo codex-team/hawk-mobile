@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
             this,
             ViewModelProvider.NewInstanceFactory()
         ).get(MainViewModel::class.java)
-        item.context = applicationContext
         item
     }
 

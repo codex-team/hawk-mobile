@@ -10,6 +10,8 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
 import io.reactivex.rxjava3.subjects.PublishSubject
+import so.codex.hawk.HawkApp
+import so.codex.hawk.custom.views.badge.UiBadgeViewModel
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.FetchWorkspacesInteractor
 import so.codex.hawk.notification.domain.NotificationManager
@@ -18,6 +20,7 @@ import so.codex.hawk.notification.model.NotificationType
 import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.ui.data.UiWorkspace
+import so.codex.hawk.utils.ShortNumberUtils
 
 /**
  * The ViewModel class for MainActivity.
@@ -27,7 +30,7 @@ class MainViewModel : ViewModel() {
     /**
      * @see Context
      */
-    lateinit var context: Context
+    private var context: Context = HawkApp.getContext()
 
     /**
      * A LiveData of [UiMainViewModel] that should be inserted to the view
@@ -103,7 +106,13 @@ class MainViewModel : ViewModel() {
                 .map { projectList ->
                     projectList.map {
                         val item =
-                            UiProject(it.id, it.name, it.description, it.image, it.unreadCount)
+                            UiProject(
+                                it.id,
+                                it.name,
+                                it.description,
+                                it.image,
+                                it.unreadCount.toBadge()
+                            )
                         if (item.image.isBlank()) {
                             item.createDefaultLogo(context)
                         }
@@ -127,6 +136,20 @@ class MainViewModel : ViewModel() {
                     )
                 }
             )
+    }
+
+    /**
+     * Extension for converting from number to [UiBadgeViewModel]
+     * @return Badge view model for current number
+     */
+    private fun Int.toBadge(): UiBadgeViewModel {
+        if (this == 0) {
+            return UiBadgeViewModel()
+        }
+        return UiBadgeViewModel(
+            ShortNumberUtils.convert(this.toLong()),
+            this.toLong()
+        )
     }
 
     /**

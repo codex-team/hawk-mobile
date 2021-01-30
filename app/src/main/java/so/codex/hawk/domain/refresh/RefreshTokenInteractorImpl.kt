@@ -1,5 +1,6 @@
 package so.codex.hawk.domain.refresh
 
+import android.annotation.SuppressLint
 import com.apollographql.apollo.rx3.rxMutate
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -28,12 +29,16 @@ class RefreshTokenInteractorImpl : RefreshTokenInteractor {
      * @return Observable that allows you to monitor the [RefreshEvent] that occurs
      *         when trying to refresh tokens.
      */
+    @SuppressLint("BinaryOperationInTimber")
     override fun getRefreshEventObservable(): Observable<RefreshEvent> {
-        Timber.i("Creating a new instance of ObservableRefreshEvent.")
+        Timber.i(
+            "Creating a new instance of ObservableRefreshEvent. " +
+                Thread.currentThread().name
+        )
         val client = NetworkProvider.getApolloClient()
         return publishSubject.hide()
             .doOnSubscribe {
-                Timber.i("RefreshObservable subscription.")
+                Timber.i("RefreshObservable subscription. ${Thread.currentThread().name}")
             }
             .subscribeOn(Schedulers.io())
             .distinctUntilChanged()
@@ -63,7 +68,7 @@ class RefreshTokenInteractorImpl : RefreshTokenInteractor {
      * Token refresh method
      */
     override fun refreshToken() {
-        Timber.i("Attempting to refresh a token")
+        Timber.i("Attempting to refresh a token ${Thread.currentThread().name}")
         publishSubject.onNext(SessionKeeper.session.token)
     }
 }
