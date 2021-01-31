@@ -10,6 +10,8 @@ import android.graphics.Typeface
 import androidx.core.content.ContextCompat
 import java.util.Locale
 import so.codex.hawk.R
+import so.codex.hawk.custom.views.badge.UiBadgeViewModel
+import so.codex.hawk.utils.ShortNumberUtils
 
 /**
  * Helped variables and methods
@@ -128,5 +130,12 @@ object Utils {
         val centerY = side.toFloat() / 2f - bounds.exactCenterY()
         canvas.drawText(abbreviationName, centerX, centerY, fontPaint)
         return defaultIcon
+    }
+
+    fun Int.toBadge(): UiBadgeViewModel {
+        return UiBadgeViewModel(
+            ShortNumberUtils.convert(this.toLong()),
+            this.toLong()
+        )
     }
 }

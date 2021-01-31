@@ -15,6 +15,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.HawkApp
 import so.codex.hawk.R
 import so.codex.hawk.custom.views.SquircleDrawable
+import so.codex.hawk.custom.views.badge.UiBadgeViewModel
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.FetchWorkspacesInteractor
 import so.codex.hawk.extensions.domain.Utils
@@ -24,6 +25,7 @@ import so.codex.hawk.notification.model.NotificationType
 import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.ui.data.UiWorkspace
+import so.codex.hawk.utils.ShortNumberUtils
 
 /**
  * The ViewModel class for MainActivity.
@@ -114,7 +116,6 @@ class MainViewModel : ViewModel() {
                                 it.name,
                                 it.description,
                                 it.image,
-                                it.unreadCount,
                                 SquircleDrawable(
                                     Utils.createDefaultLogo(
                                         context,
@@ -122,7 +123,8 @@ class MainViewModel : ViewModel() {
                                         it.name,
                                         R.dimen.project_icon_side
                                     )
-                                )
+                                ),
+                                it.unreadCount.toBadge()
                             )
                         } else {
                             UiProject(
@@ -130,8 +132,8 @@ class MainViewModel : ViewModel() {
                                 it.name,
                                 it.description,
                                 it.image,
-                                it.unreadCount,
-                                SquircleDrawable(Picasso.get().load(it.image).get())
+                                SquircleDrawable(Picasso.get().load(it.image).get()),
+                                it.unreadCount.toBadge()
                             )
                         }
                     }
