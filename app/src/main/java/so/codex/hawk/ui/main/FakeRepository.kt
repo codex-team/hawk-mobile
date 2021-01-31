@@ -1,6 +1,6 @@
 package so.codex.hawk.ui.main
 
-import so.codex.hawk.ui.data.UiProject
+import so.codex.hawk.entity.Project
 
 /**
  * Debug object.
@@ -19,56 +19,56 @@ object FakeRepository {
                 "Hawk",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 fakeImageUrlOne,
-                7.toBadge()
+                7
             ),
             Project(
                 "b",
                 "Project B",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                77.toBadge()
+                77
             ),
             Project(
                 "c",
                 "Project C",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 fakeImageUrlTwo,
-                777.toBadge()
+                777
             ),
             Project(
                 "d",
                 "Project D",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 fakeImageUrlThree,
-                7777.toBadge()
+                7777
             ),
             Project(
                 "f",
                 "Project F",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                77777.toBadge()
+                77777
             ),
             Project(
                 "1",
                 "Project 1",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 fakeImageUrlOne,
-                1234567.toBadge()
+                1234567
             ),
             Project(
                 "5",
                 "Project 5",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                1234567.toBadge()
+                1234567
             ),
             Project(
                 "8",
                 "Project 8",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                11.toBadge()
+                11
             )
         )
     }
