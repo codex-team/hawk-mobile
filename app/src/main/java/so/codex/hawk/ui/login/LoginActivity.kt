@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.activity_login.edit_text_password
 import so.codex.hawk.R
 import so.codex.hawk.domain.login.LoginEvent
 import so.codex.hawk.notification.domain.NotificationContainer
+import so.codex.hawk.notification.model.NotificationModel
+import so.codex.hawk.notification.model.NotificationType
 import so.codex.hawk.ui.main.MainActivity
 
 /**
@@ -92,10 +94,20 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
             LoginEvent.LOGIN_ERROR -> {
-                // show error
+                notificationContainer.show(
+                    NotificationModel(
+                        baseContext.getString(R.string.notification_error_in_while_logging),
+                        NotificationType.ERROR
+                    )
+                )
             }
             LoginEvent.INTERNET_ERROR -> {
-                // show error
+                notificationContainer.show(
+                    NotificationModel(
+                        baseContext.getString(R.string.notification_error_no_internet),
+                        NotificationType.ERROR
+                    )
+                )
             }
         }
     }

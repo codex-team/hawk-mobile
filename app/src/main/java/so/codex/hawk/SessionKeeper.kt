@@ -46,7 +46,7 @@ object SessionKeeper {
     /**
      * @property EMPTY_SESSION A stub session instance in the absence of a valid session.
      */
-    private val EMPTY_SESSION = Session(EMPTY_TOKEN, 0)
+    val EMPTY_SESSION = Session(EMPTY_TOKEN, 0)
 
     /**
      * @property session Field for storing the [Session] instance while the application is running.

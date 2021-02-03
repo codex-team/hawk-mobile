@@ -7,6 +7,7 @@ package so.codex.hawk.ui.data
  * @param showLoading if need to show loading progress or not
  */
 data class UiMainViewModel(
+    val title: String,
     val workspaces: List<UiWorkspace>,
     val projects: List<UiProject>,
     val showLoading: Boolean
