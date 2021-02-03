@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             Timber.i("show loading")
         } else {
             projectAdapter.submitList(model.projects)
-            FilterProjectUtils.addList(model.projects)
+            FilterProjectUtils.filterableList = model.projects
             // Debug version
             // projectAdapter.updateItems(FakeRepository.getUiProjects())
         }
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = projectAdapter
         search.setOnQueryTextListener {
-            FilterProjectUtils.filter.filter(it)
+            FilterProjectUtils.filter(it)
         }
     }
 }
