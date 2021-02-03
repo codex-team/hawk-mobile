@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.recycler
 import kotlinx.android.synthetic.main.activity_main.search
 import so.codex.hawk.R
 import so.codex.hawk.ui.data.UiMainViewModel
+import so.codex.hawk.ui.main.projectlist.FilterProjectUtils
 import so.codex.hawk.ui.main.projectlist.ProjectAdapter
 import timber.log.Timber
 
@@ -47,6 +48,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initUi()
         viewModel.observeUiModels().observe(this, ::handleUiModels)
+        FilterProjectUtils.setOnListFilteredListener {
+            projectAdapter.submitList(it)
+        }
     }
 
     /**
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             Timber.i("show loading")
         } else {
             projectAdapter.submitList(model.projects)
+            FilterProjectUtils.addList(model.projects)
             // Debug version
             // projectAdapter.updateItems(FakeRepository.getUiProjects())
         }
@@ -72,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = projectAdapter
         search.setOnQueryTextListener {
-            projectAdapter.filter.filter(it)
+            FilterProjectUtils.filter.filter(it)
         }
     }
 }
