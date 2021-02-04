@@ -42,15 +42,18 @@ object Utils {
      * @return Color for that uuid, if that last char is not in hex
      */
     fun getColorById(id: String): Int {
-        return when (val ch = id.last()) {
+        val decimalCh = when (val ch = id.last()) {
             in '0'..'9' -> {
-                colors[(ch - '0') / 2]
+                ch - '0'
             }
             in 'a'..'f' -> {
-                colors[(ch - 'a')]
+                (ch - 'a') + 10
             }
-            else -> Color.WHITE
+            else -> {
+                return colors[(Math.random() * colors.size).toInt()]
+            }
         }
+        return colors[decimalCh / 2]
     }
 
     /**
