@@ -15,9 +15,9 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/MainToolbar" />
+            style="@style/MainToolbar"
+            app:navigationIcon="@drawable/ic_custom_hamburger"
+            tools:title="All projects" />
 
         <so.codex.hawk.custom.views.search.HawkSearchView
             android:id="@+id/search"

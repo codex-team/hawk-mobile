@@ -13,6 +13,7 @@
     <color name="defaultFormBorders">#343949</color>
     <color name="navigation_bar">#1A1D26</color>
     <color name="main_header">#1A1D26</color>
+    <color name="hamburger_color">#DBE6FF</color>
 
     <!-- Notification colors -->
     <color name="notificationBackgroundColor">#13161e</color>

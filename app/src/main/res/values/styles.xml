@@ -19,8 +19,15 @@
 
 
     <style name="MainToolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">@color/defaultBackgroundDarker</item>
         <item name="colorControlNormal">@color/colorWhite</item>
-        <item name="titleTextColor">@color/colorWhite</item>
+        <item name="titleTextAppearance">@style/MainToolbar.TitleText</item>
+        <item name="titleTextColor">@color/colorAppText</item>
+    </style>
+    <style name="MainToolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/text_size_default</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 </resources>
