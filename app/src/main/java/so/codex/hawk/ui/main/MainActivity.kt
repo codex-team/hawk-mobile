@@ -1,8 +1,8 @@
 package so.codex.hawk.ui.main
 
 import android.os.Bundle
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.drawer
@@ -60,8 +60,6 @@ class MainActivity : AppCompatActivity() {
             Timber.i("show loading")
         } else {
             projectAdapter.submitList(model.projects)
-            // Debug version
-//            projectAdapter.submitList(FakeRepository.getUiProjects())
         }
     }
 
@@ -71,19 +69,19 @@ class MainActivity : AppCompatActivity() {
     private fun initUi() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = projectAdapter
+        initToolbar()
+    }
+
+    /**
+     * init custom toolbar
+     */
+    private fun initToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawer,
-            toolbar,
-            R.string.app_name,
-            R.string.app_name
-        )
-        drawer.addDrawerListener(
-            toggle
-        )
-        toggle.syncState()
+        toolbar.setNavigationOnClickListener {
+            if (!drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.openDrawer(GravityCompat.START)
+            }
+        }
     }
 }
