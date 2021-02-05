@@ -1,6 +1,7 @@
 package so.codex.hawk.ui.main
 
 import so.codex.hawk.entity.Project
+import so.codex.hawk.entity.WorkspaceCut
 
 /**
  * Debug object.
@@ -69,6 +70,39 @@ object FakeRepository {
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
                 11
+            )
+        )
+    }
+
+    fun getWorkspaces(): List<WorkspaceCut> {
+        return listOf(
+            WorkspaceCut(
+                "1",
+                "Hawk workspace",
+                fakeImageUrlOne,
+                "something workspace",
+                9
+            ),
+            WorkspaceCut(
+                "f",
+                "Hawk workspace",
+                "",
+                "something workspace",
+                99
+            ),
+            WorkspaceCut(
+                "a",
+                "Hawk workspace",
+                fakeImageUrlTwo,
+                "something workspace",
+                999
+            ),
+            WorkspaceCut(
+                "9",
+                "Hawk workspace",
+                "",
+                "something workspace",
+                9999
             )
         )
     }

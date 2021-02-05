@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
+    tools:openDrawer="start"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -35,12 +36,11 @@
                     android:layout_margin="@dimen/margin_default" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler"
+                    android:id="@+id/project_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     tools:listitem="@layout/project_list_item" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
@@ -52,7 +52,20 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/defaultBackgroundDarker"
-        app:headerLayout="@layout/main_header"
-        app:itemTextColor="@color/colorWhite"
-        app:menu="@menu/drawer_menu" />
+        app:itemTextColor="@color/colorWhite">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/main_header" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/workspace_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/workspace_list_item" />
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
