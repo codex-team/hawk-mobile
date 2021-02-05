@@ -6,24 +6,33 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.drawer
-import kotlinx.android.synthetic.main.activity_main.recycler
-import kotlinx.android.synthetic.main.activity_main.search
+import kotlinx.android.synthetic.main.activity_main.project_recycler
 import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.android.synthetic.main.activity_main.view_navigation
+import kotlinx.android.synthetic.main.activity_main.workspace_recycler
+import kotlinx.android.synthetic.main.main_header.user_icon
+import kotlinx.android.synthetic.main.main_header.username
 import so.codex.hawk.R
+import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.ui.data.UiMainViewModel
-import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.ui.main.projectlist.ProjectAdapter
+import so.codex.hawk.ui.main.workspacelist.WorkspaceAdapter
 import timber.log.Timber
 
 /**
  * Main application class.
  * Will be used only after successful authorization.
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), WorkspaceAdapter.OnWorkspaceClickListener {
     /**
      * @property projectAdapter for projects list.
      */
     private val projectAdapter = ProjectAdapter()
+
+    /**
+     * @property workspaceAdapter for workspace list.
+     */
+    private val workspaceAdapter = WorkspaceAdapter(this)
 
     /**
      * ViewModel handle models from business logic and convert to ui models
@@ -62,12 +71,17 @@ class MainActivity : AppCompatActivity() {
      */
     private fun handleUiModels(model: UiMainViewModel) {
         toolbar.title = model.title
-        search.update(model.searchUiViewModel)
+        search.update(model.searchViewModel)
         if (model.showLoading) {
             // do some staff for showing loading
             Timber.i("show loading")
         } else {
-            Timber.i("hide loading")
+            projectAdapter.submitList(model.projects)
+            workspaceAdapter.submitList(model.workspaces)
+            // Debug version user account
+            val src = BitmapFactory.decodeResource(resources, R.drawable.auth_bg)
+            user_icon.setImageDrawable(SquircleDrawable(src))
+            username.text = "temnik15@bk.ru"
         }
     }
 
@@ -75,10 +89,12 @@ class MainActivity : AppCompatActivity() {
      * Screen initialization.
      */
     private fun initUi() {
-        recycler.layoutManager = LinearLayoutManager(this)
-        recycler.adapter = projectAdapter
+        project_recycler.layoutManager = LinearLayoutManager(this)
+        project_recycler.adapter = projectAdapter
         initToolbar()
+        initDrawer()
     }
+
 
     /**
      * init custom toolbar
@@ -91,5 +107,12 @@ class MainActivity : AppCompatActivity() {
                 drawer.openDrawer(GravityCompat.START)
             }
         }
+    }
+
+    private fun initDrawer() {
+        // This needs for show icon wihout black tint
+        view_navigation.itemIconTintList = null
+        workspace_recycler.layoutManager = LinearLayoutManager(this)
+        workspace_recycler.adapter = workspaceAdapter
     }
 }

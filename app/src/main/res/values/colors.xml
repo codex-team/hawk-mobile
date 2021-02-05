@@ -8,12 +8,10 @@
     <!-- App color -->
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorStandardLight">#DBE6FF</color>
     <color name="defaultBackgroundDarker">#242732</color>
     <color name="defaultBackground">#2f3341</color>
     <color name="defaultFormBorders">#343949</color>
-    <color name="navigation_bar">#1A1D26</color>
-    <color name="main_header">#1A1D26</color>
-    <color name="hamburger_color">#DBE6FF</color>
 
     <!-- Notification colors -->
     <color name="notificationBackgroundColor">#13161e</color>
@@ -21,20 +19,24 @@
 
     <!--  Badge color  -->
     <color name="badgeBackgroundColor">#4979e4</color>
-    <color name="badgeTextColor">#DBE6FF</color>
+    <color name="badgeTextColor">@color/colorStandardLight</color>
     <color name="badgeShadowColor">#A1254A83</color>
 
     <!-- Button color -->
     <color name="btnBlue">#4979e4</color>
     <!-- Text color -->
-    <color name="colorAppText">#DBE6FF</color>
+    <color name="colorAppText">@color/colorStandardLight</color>
     <color name="colorTextTranslucent">#99DBE6FF</color>
     <color name="colorDefaultTitleEditText">#99DBE6FF</color>
 
     <!-- TitleEditText color -->
-    <color name="editTextBackground">#242732</color>
+    <color name="editTextBackground">@color/defaultBackgroundDarker</color>
     <color name="editTextBorder">#1f1f1f</color>
 
+    <!-- Main drawer -->
+    <color name="navigation_bar">#1A1D26</color>
+    <color name="colorMainHeader">#1A1D26</color>
+    <color name="colorSelectedWorkspace">#1A1D26</color>
     <!-- Other -->
     <color name="colorDivider">#1CDBE6FF</color>
     <color name="colorRippleEffect">#424556</color>

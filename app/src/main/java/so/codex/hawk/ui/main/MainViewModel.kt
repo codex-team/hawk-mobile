@@ -17,7 +17,7 @@ import so.codex.hawk.HawkApp
 import so.codex.hawk.R
 import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.custom.views.badge.UiBadgeViewModel
-import so.codex.hawk.custom.views.search.HawkSearchUiViewModel
+import so.codex.hawk.custom.views.search.HawkSearchViewModel
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.FetchWorkspacesInteractor
 import so.codex.hawk.entity.Project
@@ -164,7 +164,22 @@ class MainViewModel : ViewModel() {
             fetchWorkspaceInteractor.fetchWorkspaces()
                 .map {
                     it.map { workspace ->
-                        UiWorkspace(workspace.name)
+                        UiWorkspace(
+                            workspace.id,
+                            workspace.name,
+                            SquircleDrawable(
+                                if (workspace.image.isBlank()) {
+                                    Utils.createDefaultLogo(
+                                        context,
+                                        workspace.id,
+                                        workspace.name,
+                                        R.dimen.workspace_image_side
+                                    )
+                                } else {
+                                    Picasso.get().load(workspace.image).get()
+                                }
+                            )
+                        )
                     }
                 }
                 .doAfterNext {
