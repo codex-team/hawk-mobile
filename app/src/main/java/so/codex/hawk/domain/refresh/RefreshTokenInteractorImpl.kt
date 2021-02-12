@@ -1,5 +1,6 @@
 package so.codex.hawk.domain.refresh
 
+import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx3.rxMutate
 import com.jakewharton.rxrelay3.PublishRelay
 import io.reactivex.rxjava3.core.Observable
@@ -11,14 +12,16 @@ import so.codex.hawk.SessionKeeper
 import so.codex.hawk.entity.auth.Session
 import so.codex.hawk.entity.auth.Token
 import so.codex.hawk.extensions.apollo.toRefreshResponse
-import so.codex.hawk.network.NetworkProvider
 import timber.log.Timber
 
 /**
  * Class that implements the RefreshTokenInteractor interface.
  * Allows you to make a request to the API to update tokens.
  */
-class RefreshTokenInteractorImpl : RefreshTokenInteractor {
+class RefreshTokenInteractorImpl(
+    private val client: ApolloClient,
+    private val sessionKeeper: SessionKeeper
+) : RefreshTokenInteractor {
     /**
      * @property publishRelay Subject allowing emitting items to subscribers.
      *                          Works according to the Observer pattern.
@@ -37,8 +40,6 @@ class RefreshTokenInteractorImpl : RefreshTokenInteractor {
      * Subscribe on event, if need to refresh token and send request
      */
     init {
-        val client = NetworkProvider.getApolloClient()
-
         publishRelay
             .distinctUntilChanged()
             .subscribeOn(Schedulers.io())
@@ -51,7 +52,7 @@ class RefreshTokenInteractorImpl : RefreshTokenInteractor {
                 val response = it.toRefreshResponse()
                 if (!response.hasError) {
                     val time = System.currentTimeMillis()
-                    SessionKeeper.saveSession(Session(response.token, time))
+                    sessionKeeper.saveSession(Session(response.token, time))
                     RefreshEvent.REFRESH_SUCCESS
                 } else {
                     Timber.i("Token refresh failed. Token is invalidate.")
@@ -81,6 +82,6 @@ class RefreshTokenInteractorImpl : RefreshTokenInteractor {
      */
     override fun refreshToken() {
         Timber.i("Attempting to refresh a token ${Thread.currentThread().name}")
-        publishRelay.accept(SessionKeeper.session.token)
+        publishRelay.accept(sessionKeeper.session.token)
     }
 }

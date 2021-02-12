@@ -1,5 +1,6 @@
 package so.codex.hawk.domain.providers
 
+import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx3.rxQuery
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -10,13 +11,15 @@ import so.codex.hawk.entity.Workspace
 import so.codex.hawk.entity.WorkspaceCut
 import so.codex.hawk.extensions.apollo.toWorkspace
 import so.codex.hawk.extensions.mapNotNull
-import so.codex.hawk.network.NetworkProvider
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Singleton which has only workspaces
  */
-object WorkspaceProvider {
+class WorkspaceProvider @Inject constructor(
+    private val client: ApolloClient
+) {
     /**
      * Source for emitting response from api
      */
@@ -70,7 +73,7 @@ object WorkspaceProvider {
      */
     private fun fetchWorks() {
         updateSubject.switchMap {
-            NetworkProvider.getApolloClient().rxQuery(WorkspacesQuery())
+            client.rxQuery(WorkspacesQuery())
                 .subscribeOn(Schedulers.io())
                 .mapNotNull {
                     it.data?.workspaces?.mapNotNull { w ->

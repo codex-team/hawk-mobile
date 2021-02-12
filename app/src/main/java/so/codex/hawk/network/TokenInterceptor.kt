@@ -8,16 +8,8 @@ import so.codex.hawk.SessionKeeper
  * The class is the interceptor of the api request.
  * An interceptor is required to insert a access token into a request.
  */
-class TokenInterceptor private constructor() : Interceptor {
+class TokenInterceptor(private val sessionKeeper: SessionKeeper) : Interceptor {
     companion object {
-        /**
-         * @property instance a field that holds a single instance of [TokenInterceptor].
-         *                    The field is lazy initialized  on the first call.
-         */
-        val instance by lazy {
-            TokenInterceptor()
-        }
-
         /**
          * @property HEADER_NAME A constant containing the header to insert into the request.
          */
@@ -34,7 +26,7 @@ class TokenInterceptor private constructor() : Interceptor {
      */
     override fun intercept(chain: Interceptor.Chain): Response {
         val origin = chain.request()
-        val localToken = SessionKeeper.session.token.accessToken
+        val localToken = sessionKeeper.session.token.accessToken
         return if (localToken.isNotEmpty()) {
             val request = origin.newBuilder()
                 .method(origin.method, origin.body)

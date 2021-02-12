@@ -8,7 +8,7 @@ import timber.log.Timber
 /**
  * The manager for showing notification on host, if host attached notification container
  */
-object NotificationManager : NotificationProvider {
+class NotificationManager : NotificationProvider {
     /**
      * @property notificationSubject subject to display notification
      */

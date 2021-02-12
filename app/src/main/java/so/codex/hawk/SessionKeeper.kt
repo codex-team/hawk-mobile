@@ -2,6 +2,7 @@ package so.codex.hawk
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import so.codex.hawk.entity.auth.Session
@@ -10,43 +11,42 @@ import timber.log.Timber
 
 /**
  * This class (singleton) is responsible for saving session data (accessToken,refreshToken, time).
+ *
+ * @property context An instance of the Context class. Used to access [SharedPreferences].
  */
-object SessionKeeper {
-    /**
-     * @property context An instance of the Context class. Used to access [SharedPreferences].
-     */
-    private lateinit var context: Context
+class SessionKeeper(private val context: Context) {
+    companion object {
+        /**
+         * @property KEY_SESSION_PREF Key to get sharedPreferences from context.
+         */
+        private const val KEY_SESSION_PREF = "SESSION_PREF"
 
-    /**
-     * @property KEY_SESSION_PREF Key to get sharedPreferences from context.
-     */
-    private const val KEY_SESSION_PREF = "SESSION_PREF"
+        /**
+         * @property KEY_ACCESS_TOKEN The key to get the access token value stored on the device.
+         */
+        private const val KEY_ACCESS_TOKEN = "ACCESS_TOKEN"
 
-    /**
-     * @property KEY_ACCESS_TOKEN The key to get the access token value stored on the device.
-     */
-    private const val KEY_ACCESS_TOKEN = "ACCESS_TOKEN"
+        /**
+         * @property KEY_REFRESH_TOKEN The key to get the refresh token value stored on the device.
+         */
+        private const val KEY_REFRESH_TOKEN = "REFRESH_TOKEN"
 
-    /**
-     * @property KEY_REFRESH_TOKEN The key to get the refresh token value stored on the device.
-     */
-    private const val KEY_REFRESH_TOKEN = "REFRESH_TOKEN"
+        /**
+         * @property KEY_TIME_SESSION A key for getting the value of the start time of
+         *                            the last session stored on the device.
+         */
+        private const val KEY_TIME_SESSION = "TIME_SESSION"
 
-    /**
-     * @property KEY_TIME_SESSION A key for getting the value of the start time of
-     *                            the last session stored on the device.
-     */
-    private const val KEY_TIME_SESSION = "TIME_SESSION"
+        /**
+         * @property EMPTY_TOKEN A stub Token instance in the absence of a valid token.
+         */
+        val EMPTY_TOKEN = Token("", "")
 
-    /**
-     * @property EMPTY_TOKEN A stub Token instance in the absence of a valid token.
-     */
-    val EMPTY_TOKEN = Token("", "")
-
-    /**
-     * @property EMPTY_SESSION A stub session instance in the absence of a valid session.
-     */
-    val EMPTY_SESSION = Session(EMPTY_TOKEN, 0)
+        /**
+         * @property EMPTY_SESSION A stub session instance in the absence of a valid session.
+         */
+        val EMPTY_SESSION = Session(EMPTY_TOKEN, 0)
+    }
 
     /**
      * @property session Field for storing the [Session] instance while the application is running.
@@ -70,14 +70,12 @@ object SessionKeeper {
      *
      * @param context Must be an applicationContext to avoid memory leaks.
      */
-    fun init(context: Context) {
-        if (!this::context.isInitialized) {
-            Timber.i("SessionKeeper initialization.")
-            this.context = context
-            val preferences = context.getSharedPreferences(KEY_SESSION_PREF, Context.MODE_PRIVATE)
-            restoreSessionFromPref(preferences)
-            sessionSubject.onNext(session)
-        }
+    init {
+        Timber.i("SessionKeeper initialization.")
+        val preferences =
+            context.getSharedPreferences(Companion.KEY_SESSION_PREF, Context.MODE_PRIVATE)
+        restoreSessionFromPref(preferences)
+        sessionSubject.onNext(session)
     }
 
     /**
@@ -135,11 +133,15 @@ object SessionKeeper {
      * @param session Session instance containing information about the new user session.
      */
     private fun saveToSharedPref(session: Session) {
-        val editor = context.getSharedPreferences(KEY_SESSION_PREF, Context.MODE_PRIVATE).edit()
-        editor.putString(KEY_ACCESS_TOKEN, session.token.accessToken)
-        editor.putString(KEY_REFRESH_TOKEN, session.token.refreshToken)
-        editor.putLong(KEY_TIME_SESSION, session.time)
-        editor.apply()
+        context.getSharedPreferences(
+            KEY_SESSION_PREF,
+            Context.MODE_PRIVATE
+        )
+            .edit {
+                putString(KEY_ACCESS_TOKEN, session.token.accessToken)
+                putString(KEY_REFRESH_TOKEN, session.token.refreshToken)
+                putLong(KEY_TIME_SESSION, session.time)
+            }
         Timber.i("Successful saving of session in SharedPreferences!")
     }
 }
