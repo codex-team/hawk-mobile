@@ -5,11 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
+import so.codex.hawk.HawkApp
 import so.codex.hawk.domain.login.LoginEvent
 import so.codex.hawk.domain.login.LoginInteractor
-import so.codex.hawk.domain.login.LoginInteractorImpl
 import so.codex.hawk.entity.auth.UserAuthData
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * The ViewModel class for LoginActivity.
@@ -19,7 +20,8 @@ class LoginViewModel : ViewModel() {
     /**
      * @property loginInteractor Interactor for handling authorization logic.
      */
-    private val loginInteractor: LoginInteractor = LoginInteractorImpl()
+    @Inject
+    lateinit var loginInteractor: LoginInteractor
 
     /**
      * @property loginEvent A LiveData object to reactively pass a LoginEvent to the View.
@@ -37,6 +39,7 @@ class LoginViewModel : ViewModel() {
      * Initialization block. Called on creation.
      */
     init {
+        HawkApp.mainComponent.inject(this)
         subscribeLoginInteractor()
     }
 

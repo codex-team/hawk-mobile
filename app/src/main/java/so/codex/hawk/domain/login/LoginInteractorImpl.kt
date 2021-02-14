@@ -1,5 +1,6 @@
 package so.codex.hawk.domain.login
 
+import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.rx3.rxMutate
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -9,14 +10,16 @@ import so.codex.hawk.SessionKeeper
 import so.codex.hawk.entity.auth.Session
 import so.codex.hawk.entity.auth.Token
 import so.codex.hawk.entity.auth.UserAuthData
-import so.codex.hawk.network.NetworkProvider
 import timber.log.Timber
 
 /**
  * Implementation class of the [LoginInteractor] interface.
  * Authorizes the user and allows you to reactively get the result.
  */
-class LoginInteractorImpl : LoginInteractor {
+class LoginInteractorImpl(
+    private val client: ApolloClient,
+    private val sessionKeeper: SessionKeeper
+) : LoginInteractor {
     /**
      * @property publishSubject Subject allowing emitting items to subscribers.
      *                          Works according to the Observer pattern.
@@ -31,7 +34,6 @@ class LoginInteractorImpl : LoginInteractor {
      * @see login method, you can get the result in the form of [LoginEvent].
      */
     override fun getLoginEventObservable(): Observable<LoginEvent> {
-        val client = NetworkProvider.getApolloClient()
         return publishSubject.hide()
             .doOnSubscribe {
                 Timber.i("LoginEvent subscription")
@@ -45,7 +47,7 @@ class LoginInteractorImpl : LoginInteractor {
                     val time = System.currentTimeMillis()
                     val accessToken = it.data!!.login.accessToken
                     val refreshToken = it.data!!.login.refreshToken
-                    SessionKeeper.saveSession(Session(Token(accessToken, refreshToken), time))
+                    sessionKeeper.saveSession(Session(Token(accessToken, refreshToken), time))
                     LoginEvent.SUCCESSFUL_LOGIN
                 } else {
                     for (error in it.errors ?: listOf()) {

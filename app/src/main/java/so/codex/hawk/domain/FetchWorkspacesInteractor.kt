@@ -8,19 +8,19 @@ import so.codex.hawk.entity.WorkspaceCut
  * Class for fetching workspaces
  * from server
  */
-class FetchWorkspacesInteractor {
+class FetchWorkspacesInteractor(private val provider: WorkspaceProvider) {
     /**
      * Method for fetching workspaces (non-cut)
      * @return cut workspaces
      */
     fun fetchWorkspaces(): Observable<List<WorkspaceCut>> {
-        return WorkspaceProvider.getWorkspacesCut()
+        return provider.getWorkspacesCut()
     }
 
     /**
      * Update data in provider
      */
     fun update() {
-        WorkspaceProvider.update()
+        provider.update()
     }
 }

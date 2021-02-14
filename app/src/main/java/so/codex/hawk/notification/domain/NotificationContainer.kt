@@ -3,20 +3,30 @@ package so.codex.hawk.notification.domain
 import android.app.Activity
 import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.disposables.Disposable
+import so.codex.hawk.HawkApp
 import so.codex.hawk.R
 import so.codex.hawk.custom.views.NotificationContainerView
 import so.codex.hawk.notification.model.NotificationModel
+import so.codex.hawk.notification.presenter.NotificationPresenter
 import so.codex.hawk.notification.presenter.NotificationPresenterImpl
 import so.codex.hawk.notification.presenter.NotificationView
+import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * The container to delegate responsibility for the processing to display notifications on the host
  */
 class NotificationContainer : NotificationView {
     /**
+     * Notification manager for
+     */
+    @Inject
+    lateinit var notificationManager: NotificationManager
+
+    /**
      * @property presenter Provide stream of notification to display
      */
-    private val presenter = NotificationPresenterImpl(this, NotificationManager)
+    private val presenter: NotificationPresenter
 
     /**
      * @property container View of the container where the notification is placed
@@ -27,6 +37,11 @@ class NotificationContainer : NotificationView {
      * @property disposable For dispose the resource of subscription from [presenter]
      */
     private var disposable: Disposable? = null
+
+    init {
+        HawkApp.mainComponent.inject(this)
+        presenter = NotificationPresenterImpl(this, notificationManager)
+    }
 
     /**
      * Try to get container that should be placed notification with content
@@ -71,6 +86,7 @@ class NotificationContainer : NotificationView {
      */
     override fun show(model: NotificationModel) {
         if (container == null) {
+            Timber.e("Not found container for show notification!")
         } else {
             container?.updateNotification(model)
         }

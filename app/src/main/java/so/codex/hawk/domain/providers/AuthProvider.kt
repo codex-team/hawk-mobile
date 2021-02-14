@@ -6,14 +6,14 @@ import so.codex.hawk.SessionKeeper
 /**
  * Provide information about user authorization
  */
-class AuthProvider {
+class AuthProvider(private val sessionKeeper: SessionKeeper) {
 
     /**
      * Check in storage if we have session or valid access token
      * @return Observable with boolean value if user authorized
      */
     fun isAuthorized(): Observable<Boolean> {
-        return SessionKeeper
+        return sessionKeeper
             .getSessionObservable()
             .map { session ->
                 session === SessionKeeper.EMPTY_SESSION ||

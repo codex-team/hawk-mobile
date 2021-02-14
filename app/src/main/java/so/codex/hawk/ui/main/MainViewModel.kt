@@ -18,6 +18,7 @@ import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.custom.views.badge.UiBadgeViewModel
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.FetchWorkspacesInteractor
+import so.codex.hawk.entity.Project
 import so.codex.hawk.extensions.domain.Utils
 import so.codex.hawk.notification.domain.NotificationManager
 import so.codex.hawk.notification.model.NotificationModel
@@ -26,6 +27,7 @@ import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.ui.data.UiWorkspace
 import so.codex.hawk.utils.ShortNumberUtils
+import javax.inject.Inject
 
 /**
  * The ViewModel class for MainActivity.
@@ -35,7 +37,26 @@ class MainViewModel : ViewModel() {
     /**
      * @see Context
      */
-    private var context: Context = HawkApp.context
+    @Inject
+    lateinit var context: Context
+
+    /**
+     * @property fetchWorkspaceInteractor for getting workspaces
+     */
+    @Inject
+    lateinit var fetchWorkspaceInteractor: FetchWorkspacesInteractor
+
+    /**
+     * @property fetchProjectInteractor for getting projects
+     */
+    @Inject
+    lateinit var fetchProjectInteractor: FetchProjectsInteractor
+
+    /**
+     * Show notification if an error occurred
+     */
+    @Inject
+    lateinit var notificationManager: NotificationManager
 
     /**
      * A LiveData of [UiMainViewModel] that should be inserted to the view
@@ -48,16 +69,6 @@ class MainViewModel : ViewModel() {
     private val eventSubject = PublishSubject.create<UiEvent>()
 
     /**
-     * @property fetchWorkspaceInteractor for getting workspaces
-     */
-    private val fetchWorkspaceInteractor = FetchWorkspacesInteractor()
-
-    /**
-     * @property fetchProjectInteractor for getting projects
-     */
-    private val fetchProjectInteractor = FetchProjectsInteractor()
-
-    /**
      * Contain all disposable of sources
      */
     private val disposable = CompositeDisposable()
@@ -66,6 +77,7 @@ class MainViewModel : ViewModel() {
      * Initialization block. Called on creation.
      */
     init {
+        HawkApp.mainComponent.inject(this)
         disposable.addAll(
             subscribeOnData(),
             subscribeOnEvent(),
@@ -109,47 +121,20 @@ class MainViewModel : ViewModel() {
                 },
             fetchProjectInteractor.fetchProjects()
                 .map { projectList ->
-                    projectList.map {
-                        if (it.image.isNullOrBlank()) {
-                            UiProject(
-                                it.id,
-                                it.name,
-                                it.description,
-                                it.image,
-                                SquircleDrawable(
-                                    Utils.createDefaultLogo(
-                                        context,
-                                        it.id,
-                                        it.name,
-                                        R.dimen.project_icon_side
-                                    )
-                                ),
-                                it.unreadCount.toBadge()
-                            )
-                        } else {
-                            UiProject(
-                                it.id,
-                                it.name,
-                                it.description,
-                                it.image,
-                                SquircleDrawable(Picasso.get().load(it.image).get()),
-                                it.unreadCount.toBadge()
-                            )
-                        }
-                    }
+                    projectList.map { it.toUiProject() }
                 }
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { (isFetched, workspaceList, projectList) ->
-                    val title = HawkApp.context.getString(R.string.project_list_default_title)
+                    val title = context.getString(R.string.project_list_default_title)
                     uiModels.value =
                         UiMainViewModel(title, workspaceList, projectList, showLoading = isFetched)
                 },
                 {
                     it.printStackTrace()
-                    NotificationManager.showNotification(
+                    notificationManager.showNotification(
                         NotificationModel(
                             text = it.message ?: "Unknown error in while getting workspace",
                             type = NotificationType.ERROR
@@ -157,6 +142,32 @@ class MainViewModel : ViewModel() {
                     )
                 }
             )
+    }
+
+    /**
+     * Convert from [Project] to [UiProject] to display in the list
+     * @return Ui model to display in the list
+     */
+    private fun Project.toUiProject(): UiProject {
+        return UiProject(
+            id,
+            name,
+            description,
+            image,
+            if (image.isBlank()) {
+                SquircleDrawable(
+                    Utils.createDefaultLogo(
+                        context,
+                        id,
+                        name,
+                        R.dimen.project_icon_side
+                    )
+                )
+            } else {
+                SquircleDrawable(Picasso.get().load(image).get())
+            },
+            unreadCount.toBadge()
+        )
     }
 
     /**

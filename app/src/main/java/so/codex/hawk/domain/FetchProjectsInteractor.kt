@@ -8,12 +8,12 @@ import so.codex.hawk.entity.Project
  * Class for fetching projects
  * from server.
  */
-class FetchProjectsInteractor {
+class FetchProjectsInteractor(private val projectProvider: ProjectProvider) {
     /**
      * Method for fetching projects
      * @return projects
      */
     fun fetchProjects(): Observable<List<Project>> {
-        return ProjectProvider.getProjects()
+        return projectProvider.getProjects()
     }
 }

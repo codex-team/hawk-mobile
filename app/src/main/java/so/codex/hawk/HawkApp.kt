@@ -1,7 +1,9 @@
 package so.codex.hawk
 
 import android.app.Application
-import android.content.Context
+import so.codex.hawk.di.DaggerMainComponent
+import so.codex.hawk.di.MainComponent
+import so.codex.hawk.di.modules.AppModule
 import so.codex.hawk.logging.FileLoggingTree
 import so.codex.hawk.logging.LogcatFormatterImpl
 import timber.log.Timber
@@ -13,7 +15,11 @@ import timber.log.Timber
 class HawkApp : Application() {
 
     companion object {
-        lateinit var context: Context
+        /**
+         * Component that have dependencies graph
+         */
+        lateinit var mainComponent: MainComponent
+            private set
     }
 
     /**
@@ -21,9 +27,9 @@ class HawkApp : Application() {
      */
     override fun onCreate() {
         super.onCreate()
-        context = applicationContext
-        // Initializing the class for working with the session
-        SessionKeeper.init(applicationContext)
+        mainComponent = DaggerMainComponent.builder()
+            .appModule(AppModule(applicationContext))
+            .build()
         // Initializing the class for logging
         Timber.plant(FileLoggingTree(applicationInfo.dataDir, formatter = LogcatFormatterImpl()))
     }

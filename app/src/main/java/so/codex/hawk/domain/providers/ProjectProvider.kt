@@ -5,11 +5,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import so.codex.hawk.entity.Project
 
-object ProjectProvider {
+class ProjectProvider(workspaceProvider: WorkspaceProvider) {
     private val subject: BehaviorSubject<List<Project>> = BehaviorSubject.create()
 
     init {
-        WorkspaceProvider.getWorkspaces()
+        workspaceProvider.getWorkspaces()
             .observeOn(Schedulers.io())
             .map {
                 it.fold(listOf<Project>()) { projects, workspace ->
