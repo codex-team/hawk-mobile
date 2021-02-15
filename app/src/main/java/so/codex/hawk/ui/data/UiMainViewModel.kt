@@ -1,14 +1,16 @@
 package so.codex.hawk.ui.data
 
+import so.codex.hawk.custom.views.search.HawkSearchUiViewModel
+
 /**
  * Common class for representation information of activity
- * @param projects contains list of [UiWorkspace] for inserting in recycler view of workspace
- * @param projects contains list of [UiProject] for inserting in recycler view of projects
+ * @param workspaces contains list of [UiWorkspace] for inserting in recycler view of workspace
  * @param showLoading if need to show loading progress or not
+ * @param searchUiViewModel contain model for updating search view
  */
 data class UiMainViewModel(
     val title: String,
     val workspaces: List<UiWorkspace>,
-    val projects: List<UiProject>,
-    val showLoading: Boolean
+    val showLoading: Boolean,
+    val searchUiViewModel: HawkSearchUiViewModel
 )

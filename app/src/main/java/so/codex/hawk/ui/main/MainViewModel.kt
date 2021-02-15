@@ -11,11 +11,13 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import so.codex.hawk.HawkApp
 import so.codex.hawk.R
 import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.custom.views.badge.UiBadgeViewModel
+import so.codex.hawk.custom.views.search.HawkSearchUiViewModel
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.FetchWorkspacesInteractor
 import so.codex.hawk.entity.Project
@@ -59,6 +61,11 @@ class MainViewModel : ViewModel() {
     lateinit var notificationManager: NotificationManager
 
     /**
+     * A LiveData with list of [UiProject] that should be inserted to the view
+     */
+    private val uiProjects: MutableLiveData<List<UiProject>> = MutableLiveData()
+
+    /**
      * A LiveData of [UiMainViewModel] that should be inserted to the view
      */
     private val uiModels: MutableLiveData<UiMainViewModel> = MutableLiveData()
@@ -67,6 +74,11 @@ class MainViewModel : ViewModel() {
      * Subject of ui event for notify a component of a new event
      */
     private val eventSubject = PublishSubject.create<UiEvent>()
+
+    /**
+     * Subject of change text in search view
+     */
+    private val searchSubject = BehaviorSubject.createDefault("")
 
     /**
      * Contain all disposable of sources
@@ -81,6 +93,7 @@ class MainViewModel : ViewModel() {
         disposable.addAll(
             subscribeOnData(),
             subscribeOnEvent(),
+            subscribeOnProjects()
         )
 
         eventSubject.onNext(UiEvent.Refresh)
@@ -102,6 +115,44 @@ class MainViewModel : ViewModel() {
     }
 
     /**
+     * Subscribe on project list and subject of search text, filter of projects by text with ignoring
+     * @return [Disposable] for dispose of observer from source
+     */
+    private fun subscribeOnProjects(): Disposable {
+        return Observables.combineLatest(
+            fetchProjectInteractor.fetchProjects().distinctUntilChanged(),
+            searchSubject.observeOn(Schedulers.io())
+        )
+            .subscribeOn(Schedulers.io())
+            .map { (projectList, searchText) ->
+                projectList.filter {
+                    it.name.contains(searchText)
+                }
+            }
+            .distinctUntilChanged()
+            .map { projectList ->
+                projectList.map {
+                    it.toUiProject()
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    uiProjects.value = it
+                },
+                {
+                    it.printStackTrace()
+                    notificationManager.showNotification(
+                        NotificationModel(
+                            text = it.message ?: "Unknown error in while getting projects",
+                            type = NotificationType.ERROR
+                        )
+                    )
+                }
+            )
+    }
+
+    /**
      * Subscribe on events from ui like as [UiEvent.Refresh] and data from the source of workspace.
      * Map pair of ui event and workspace to ui model for showing on activity
      *
@@ -118,19 +169,26 @@ class MainViewModel : ViewModel() {
                 }
                 .doAfterNext {
                     eventSubject.onNext(UiEvent.CompleteRefresh)
-                },
-            fetchProjectInteractor.fetchProjects()
-                .map { projectList ->
-                    projectList.map { it.toUiProject() }
                 }
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { (isFetched, workspaceList, projectList) ->
+                { (isFetched, workspaceList) ->
                     val title = context.getString(R.string.project_list_default_title)
                     uiModels.value =
-                        UiMainViewModel(title, workspaceList, projectList, showLoading = isFetched)
+                        UiMainViewModel(
+                            title = title,
+                            workspaces = workspaceList,
+                            searchUiViewModel = HawkSearchUiViewModel(
+                                hint = context.getString(R.string.search_hint),
+                                text = "",
+                                listener = {
+                                    searchSubject.onNext(it)
+                                }
+                            ),
+                            showLoading = isFetched
+                        )
                 },
                 {
                     it.printStackTrace()
@@ -221,6 +279,13 @@ class MainViewModel : ViewModel() {
      */
     fun observeUiModels(): LiveData<UiMainViewModel> {
         return uiModels
+    }
+
+    /**
+     * Provide source of ui project model
+     */
+    fun observeUiProjects(): LiveData<List<UiProject>> {
+        return uiProjects
     }
 
     /**

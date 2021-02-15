@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.drawer
 import kotlinx.android.synthetic.main.activity_main.recycler
+import kotlinx.android.synthetic.main.activity_main.search
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import so.codex.hawk.R
 import so.codex.hawk.ui.data.UiMainViewModel
+import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.ui.main.projectlist.ProjectAdapter
 import timber.log.Timber
 
@@ -46,6 +48,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initUi()
         viewModel.observeUiModels().observe(this, ::handleUiModels)
+        viewModel.observeUiProjects().observe(this, ::handleUiProjects)
+    }
+
+    private fun handleUiProjects(projects: List<UiProject>) {
+        projectAdapter.submitList(projects)
     }
 
     /**
@@ -55,11 +62,12 @@ class MainActivity : AppCompatActivity() {
      */
     private fun handleUiModels(model: UiMainViewModel) {
         toolbar.title = model.title
+        search.update(model.searchUiViewModel)
         if (model.showLoading) {
             // do some staff for showing loading
             Timber.i("show loading")
         } else {
-            projectAdapter.submitList(model.projects)
+            Timber.i("hide loading")
         }
     }
 
