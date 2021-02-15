@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun handleUiModels(model: UiMainViewModel) {
         toolbar.title = model.title
-        search.update(model.searchViewModel)
+        search.update(model.searchUiViewModel)
         if (model.showLoading) {
             // do some staff for showing loading
             Timber.i("show loading")

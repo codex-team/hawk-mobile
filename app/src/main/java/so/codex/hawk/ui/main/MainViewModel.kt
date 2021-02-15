@@ -17,7 +17,7 @@ import so.codex.hawk.HawkApp
 import so.codex.hawk.R
 import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.custom.views.badge.UiBadgeViewModel
-import so.codex.hawk.custom.views.search.HawkSearchViewModel
+import so.codex.hawk.custom.views.search.HawkSearchUiViewModel
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.FetchWorkspacesInteractor
 import so.codex.hawk.entity.Project
@@ -132,8 +132,7 @@ class MainViewModel : ViewModel() {
             .distinctUntilChanged()
             .map { projectList ->
                 projectList.map {
-
-                            it.toUiProject()
+                    it.toUiProject()
                 }
             }
             .observeOn(AndroidSchedulers.mainThread())
@@ -143,7 +142,7 @@ class MainViewModel : ViewModel() {
                 },
                 {
                     it.printStackTrace()
-                    NotificationManager.showNotification(
+                    notificationManager.showNotification(
                         NotificationModel(
                             text = it.message ?: "Unknown error in while getting projects",
                             type = NotificationType.ERROR
@@ -181,8 +180,8 @@ class MainViewModel : ViewModel() {
                         UiMainViewModel(
                             title = title,
                             workspaces = workspaceList,
-                            searchViewModel = HawkSearchViewModel(
-                                hint = HawkApp.context.getString(R.string.search_hint),
+                            searchUiViewModel = HawkSearchUiViewModel(
+                                hint = context.getString(R.string.search_hint),
                                 text = "",
                                 listener = {
                                     searchSubject.onNext(it)

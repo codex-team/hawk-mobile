@@ -56,7 +56,7 @@ class HawkSearchView(context: Context, attrs: AttributeSet) : FrameLayout(contex
      * Update field in view by [model]
      * @param model Model that contain information of search view
      */
-    fun update(model: HawkSearchViewModel) {
+    fun update(model: HawkSearchUiViewModel) {
         queryEditText.setText(model.text)
         queryEditText.hint = model.hint
         textChangeCallback = model.listener
