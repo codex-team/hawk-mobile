@@ -37,6 +37,7 @@
     <color name="navigation_bar">#1A1D26</color>
     <color name="colorMainHeader">#1A1D26</color>
     <color name="colorSelectedWorkspace">#1A1D26</color>
+    <color name="colorHamburger">@color/colorStandardLight</color>
     <!-- Other -->
     <color name="colorDivider">#1CDBE6FF</color>
     <color name="colorRippleEffect">#424556</color>

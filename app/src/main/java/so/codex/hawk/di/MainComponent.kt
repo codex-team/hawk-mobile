@@ -4,6 +4,7 @@ import dagger.Component
 import so.codex.hawk.di.modules.MainModule
 import so.codex.hawk.notification.domain.NotificationContainer
 import so.codex.hawk.ui.login.LoginViewModel
+import so.codex.hawk.ui.main.DrawerViewModel
 import so.codex.hawk.ui.main.MainViewModel
 import so.codex.hawk.ui.splash.SplashViewModel
 import javax.inject.Singleton
@@ -19,6 +20,7 @@ import javax.inject.Singleton
 )
 interface MainComponent {
     fun inject(viewModel: MainViewModel)
+    fun inject(viewModel: DrawerViewModel)
     fun inject(viewModel: SplashViewModel)
     fun inject(container: NotificationContainer)
     fun inject(viewModel: LoginViewModel)
