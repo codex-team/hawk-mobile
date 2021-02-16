@@ -4,6 +4,7 @@ import com.apollographql.apollo.ApolloClient
 import dagger.Module
 import dagger.Provides
 import so.codex.hawk.domain.FetchWorkspacesInteractor
+import so.codex.hawk.domain.providers.ExternalSourceWorkspace
 import so.codex.hawk.domain.providers.ExternalSourceWorkspaceImpl
 import so.codex.hawk.domain.providers.WorkspaceProvider
 import javax.inject.Singleton
@@ -39,7 +40,7 @@ class WorkspaceModule {
 
     @Provides
     @Singleton
-    fun externalSourceCurrentWorkspace(): WorkspaceProvider.ExternalSourceWorkspace {
+    fun externalSourceCurrentWorkspace(): ExternalSourceWorkspace {
         return ExternalSourceWorkspaceImpl()
     }
 }

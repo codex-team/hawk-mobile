@@ -16,4 +16,11 @@ class FetchProjectsInteractor(private val projectProvider: ProjectProvider) {
     fun fetchProjects(): Observable<List<Project>> {
         return projectProvider.getProjects()
     }
+
+    /**
+     * Update data in provider
+     */
+    fun update() {
+        projectProvider.update()
+    }
 }

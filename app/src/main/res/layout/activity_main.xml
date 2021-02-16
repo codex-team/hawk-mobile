@@ -7,44 +7,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/defaultBackground"
-        android:orientation="vertical"
-        tools:context=".ui.main.MainActivity">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/MainToolbar"
-            app:navigationIcon="@drawable/ic_custom_hamburger"
-            tools:title="All projects" />
-
-        <androidx.core.widget.NestedScrollView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/defaultBackground"
+            android:orientation="vertical"
+            tools:context=".ui.main.MainActivity">
 
-            <LinearLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/MainToolbar"
+                app:navigationIcon="@drawable/ic_custom_hamburger"
+                tools:title="All projects" />
+
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <so.codex.hawk.custom.views.search.HawkSearchView
-                    android:id="@+id/search"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/search_view_height"
-                    android:layout_margin="@dimen/margin_default" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/project_recycler"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/project_list_item" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-    </LinearLayout>
+                    android:orientation="vertical">
+
+                    <so.codex.hawk.custom.views.search.HawkSearchView
+                        android:id="@+id/search"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/search_view_height"
+                        android:layout_margin="@dimen/margin_default" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/project_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/project_list_item" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/view_navigation"

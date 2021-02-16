@@ -17,9 +17,9 @@ import so.codex.hawk.HawkApp
 import so.codex.hawk.R
 import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.custom.views.badge.UiBadgeViewModel
-import so.codex.hawk.custom.views.search.HawkSearchViewModel
+import so.codex.hawk.custom.views.search.HawkSearchUiViewModel
 import so.codex.hawk.domain.FetchProjectsInteractor
-import so.codex.hawk.domain.FetchWorkspacesInteractor
+import so.codex.hawk.domain.providers.ExternalSourceWorkspace
 import so.codex.hawk.entity.Project
 import so.codex.hawk.extensions.domain.Utils
 import so.codex.hawk.notification.domain.NotificationManager
@@ -27,8 +27,8 @@ import so.codex.hawk.notification.model.NotificationModel
 import so.codex.hawk.notification.model.NotificationType
 import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.data.UiProject
-import so.codex.hawk.ui.data.UiWorkspace
 import so.codex.hawk.utils.ShortNumberUtils
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -42,11 +42,6 @@ class MainViewModel : ViewModel() {
     @Inject
     lateinit var context: Context
 
-    /**
-     * @property fetchWorkspaceInteractor for getting workspaces
-     */
-    @Inject
-    lateinit var fetchWorkspaceInteractor: FetchWorkspacesInteractor
 
     /**
      * @property fetchProjectInteractor for getting projects
@@ -60,6 +55,9 @@ class MainViewModel : ViewModel() {
     @Inject
     lateinit var notificationManager: NotificationManager
 
+    @Inject
+    lateinit var externalSourceWorkspace: ExternalSourceWorkspace
+
     /**
      * A LiveData with list of [UiProject] that should be inserted to the view
      */
@@ -68,7 +66,12 @@ class MainViewModel : ViewModel() {
     /**
      * A LiveData of [UiMainViewModel] that should be inserted to the view
      */
-    private val uiModels: MutableLiveData<UiMainViewModel> = MutableLiveData()
+    private val uiMainData: MutableLiveData<UiMainViewModel> = MutableLiveData()
+
+    /**
+     * A LiveData of [HawkSearchUiViewModel] that should be inserted to the view
+     */
+    private val searchUiViewModel: MutableLiveData<HawkSearchUiViewModel> = MutableLiveData()
 
     /**
      * Subject of ui event for notify a component of a new event
@@ -85,17 +88,27 @@ class MainViewModel : ViewModel() {
      */
     private val disposable = CompositeDisposable()
 
+    private val defaultTitle: String by lazy {
+        context.getString(R.string.project_list_default_title)
+    }
+
     /**
      * Initialization block. Called on creation.
      */
     init {
         HawkApp.mainComponent.inject(this)
         disposable.addAll(
-            subscribeOnData(),
+            subscribeOnMainData(),
             subscribeOnEvent(),
             subscribeOnProjects()
         )
-
+        searchUiViewModel.value = HawkSearchUiViewModel(
+            hint = context.getString(R.string.search_hint),
+            text = "",
+            listener = {
+                searchSubject.onNext(it)
+            }
+        )
         eventSubject.onNext(UiEvent.Refresh)
     }
 
@@ -105,13 +118,16 @@ class MainViewModel : ViewModel() {
      * @return [Disposable] for dispose of observer from source
      */
     private fun subscribeOnEvent(): Disposable {
-        return eventSubject.subscribe { event ->
-            when (event) {
-                is UiEvent.Refresh -> {
-                    fetchWorkspaceInteractor.update()
+        return eventSubject
+            .observeOn(Schedulers.io())
+            .subscribe { event ->
+                Timber.e("New ui event = $event")
+                when (event) {
+                    is UiEvent.Refresh -> {
+                        fetchProjectInteractor.update()
+                    }
                 }
             }
-        }
     }
 
     /**
@@ -124,24 +140,19 @@ class MainViewModel : ViewModel() {
             searchSubject.observeOn(Schedulers.io())
         )
             .subscribeOn(Schedulers.io())
+            .distinctUntilChanged()
             .map { (projectList, searchText) ->
                 projectList.filter {
                     it.name.contains(searchText)
-                }
-            }
-            .distinctUntilChanged()
-            .map { projectList ->
-                projectList.map {
-                    it.toUiProject()
-                }
+                }.map { it.toUiProject() }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                {
-                    uiProjects.value = it
+                { projectsList ->
+                    uiProjects.value = projectsList
                 },
                 {
-                    it.printStackTrace()
+                    Timber.e(it)
                     notificationManager.showNotification(
                         NotificationModel(
                             text = it.message ?: "Unknown error in while getting projects",
@@ -152,69 +163,72 @@ class MainViewModel : ViewModel() {
             )
     }
 
-    /**
-     * Subscribe on events from ui like as [UiEvent.Refresh] and data from the source of workspace.
-     * Map pair of ui event and workspace to ui model for showing on activity
-     *
-     * @return [Disposable] for dispose of observer from source
-     */
-    private fun subscribeOnData(): Disposable {
+    private fun subscribeOnMainData(): Disposable {
         return Observables.combineLatest(
-            getRefreshedSubject(),
-            fetchWorkspaceInteractor.fetchWorkspaces()
-                .map {
-                    it.map { workspace ->
-                        UiWorkspace(
-                            workspace.id,
-                            workspace.name,
-                            SquircleDrawable(
-                                if (workspace.image.isBlank()) {
-                                    Utils.createDefaultLogo(
-                                        context,
-                                        workspace.id,
-                                        workspace.name,
-                                        R.dimen.workspace_image_side
-                                    )
-                                } else {
-                                    Picasso.get().load(workspace.image).get()
-                                }
-                            )
-                        )
-                    }
-                }
-                .doAfterNext {
-                    eventSubject.onNext(UiEvent.CompleteRefresh)
-                }
+            getRefreshObservable(),
+            externalSourceWorkspace.selectedWorkspaceObserve()
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { (isFetched, workspaceList) ->
-                    val title = context.getString(R.string.project_list_default_title)
-                    uiModels.value =
-                        UiMainViewModel(
-                            title = title,
-                            workspaces = workspaceList,
-                            searchUiViewModel = HawkSearchUiViewModel(
-                                hint = context.getString(R.string.search_hint),
-                                text = "",
-                                listener = {
-                                    searchSubject.onNext(it)
-                                }
-                            ),
-                            showLoading = isFetched
-                        )
-                },
-                {
-                    it.printStackTrace()
-                    notificationManager.showNotification(
-                        NotificationModel(
-                            text = it.message ?: "Unknown error in while getting workspace",
-                            type = NotificationType.ERROR
-                        )
-                    )
-                }
-            )
+            .subscribe { (isFetched, selectedWorkspace) ->
+                uiMainData.value = UiMainViewModel(
+                    title =
+                    if (externalSourceWorkspace.isWorkspaceSelected()) {
+                        selectedWorkspace.name
+                    } else {
+                        defaultTitle
+                    },
+                    showLoading = isFetched
+                )
+            }
+    }
+
+    private fun getRefreshObservable(): Observable<Boolean> {
+        return eventSubject
+            .observeOn(Schedulers.io())
+            .filter { event ->
+                event is UiEvent.Refresh || event is UiEvent.CompleteRefresh
+            }.map { refreshEvent ->
+                refreshEvent is UiEvent.Refresh
+            }
+    }
+
+    /**
+     * Submit ui event to event source
+     *
+     * @param event is [UiEvent] for handle some of the action
+     */
+    fun submitEvent(event: UiEvent) {
+        eventSubject.onNext(event)
+    }
+
+    /**
+     * Dispose of all sources
+     */
+    override fun onCleared() {
+        super.onCleared()
+        disposable.dispose()
+    }
+
+    /**
+     * Provide source of model
+     */
+    fun observeUiMainData(): LiveData<UiMainViewModel> {
+        return uiMainData
+    }
+
+    /**
+     * Provide source of ui project model
+     */
+    fun observeUiProjects(): LiveData<List<UiProject>> {
+        return uiProjects
+    }
+
+    /**
+     * Provide source of model
+     */
+    fun observeSearchUiViewModel(): LiveData<HawkSearchUiViewModel> {
+        return searchUiViewModel
     }
 
     /**
@@ -255,52 +269,6 @@ class MainViewModel : ViewModel() {
             ShortNumberUtils.convert(this.toLong()),
             this.toLong()
         )
-    }
-
-    /**
-     * Get source of ui event and map if ui events is [UiEvent.Refresh]
-     *
-     * @return Observable of Boolean, if we receive ui event for refresh data then source contains
-     * true else false
-     */
-    private fun getRefreshedSubject(): Observable<Boolean> {
-        return eventSubject
-            .filter { event ->
-                event is UiEvent.Refresh || event is UiEvent.CompleteRefresh
-            }.map { refreshEvent ->
-                refreshEvent is UiEvent.Refresh
-            }
-    }
-
-    /**
-     * Submit ui event to event source
-     *
-     * @param event is [UiEvent] for handle some of the action
-     */
-    fun submitEvent(event: UiEvent) {
-        eventSubject.onNext(event)
-    }
-
-    /**
-     * Dispose of all sources
-     */
-    override fun onCleared() {
-        super.onCleared()
-        disposable.dispose()
-    }
-
-    /**
-     * Provide source of model
-     */
-    fun observeUiModels(): LiveData<UiMainViewModel> {
-        return uiModels
-    }
-
-    /**
-     * Provide source of ui project model
-     */
-    fun observeUiProjects(): LiveData<List<UiProject>> {
-        return uiProjects
     }
 
     /**

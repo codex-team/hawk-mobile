@@ -34,7 +34,7 @@ class WorkspaceProvider @Inject constructor(
      * Subscribe on main observable for sending and handling api response
      */
     init {
-        fetchWorks()
+        fetchWorkspace()
     }
 
     /**
@@ -42,7 +42,7 @@ class WorkspaceProvider @Inject constructor(
      *
      * @return workspaces without projects inside
      */
-    fun getWorkspacesCut(): Observable<List<WorkspaceCut>> {
+    fun getWorkspacesWithoutProjects(): Observable<List<WorkspaceCut>> {
         return responseSource
             .subscribeOn(Schedulers.io())
             .mapNotNull {
@@ -59,6 +59,7 @@ class WorkspaceProvider @Inject constructor(
      */
     fun getWorkspaces(): Observable<List<Workspace>> {
         return responseSource.hide()
+            .observeOn(Schedulers.io())
     }
 
     /**
@@ -71,7 +72,7 @@ class WorkspaceProvider @Inject constructor(
     /**
      * Fetch workspaces and put them in [responseSource]
      */
-    private fun fetchWorks() {
+    private fun fetchWorkspace() {
         updateSubject.switchMap {
             client.rxQuery(WorkspacesQuery())
                 .subscribeOn(Schedulers.io())

@@ -14,7 +14,7 @@ class FetchWorkspacesInteractor(private val provider: WorkspaceProvider) {
      * @return cut workspaces
      */
     fun fetchWorkspaces(): Observable<List<WorkspaceCut>> {
-        return provider.getWorkspacesCut()
+        return provider.getWorkspacesWithoutProjects()
     }
 
     /**
