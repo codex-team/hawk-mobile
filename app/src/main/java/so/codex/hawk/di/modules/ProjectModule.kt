@@ -19,8 +19,11 @@ class ProjectModule {
      */
     @Singleton
     @Provides
-    fun projectProvider(workspaceProvider: WorkspaceProvider): ProjectProvider {
-        return ProjectProvider(workspaceProvider)
+    fun projectProvider(
+        workspaceProvider: WorkspaceProvider,
+        source: WorkspaceProvider.ExternalSourceWorkspace
+    ): ProjectProvider {
+        return ProjectProvider(workspaceProvider,source)
     }
 
     /**

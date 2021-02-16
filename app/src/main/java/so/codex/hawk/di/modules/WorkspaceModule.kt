@@ -4,6 +4,7 @@ import com.apollographql.apollo.ApolloClient
 import dagger.Module
 import dagger.Provides
 import so.codex.hawk.domain.FetchWorkspacesInteractor
+import so.codex.hawk.domain.providers.ExternalSourceWorkspaceImpl
 import so.codex.hawk.domain.providers.WorkspaceProvider
 import javax.inject.Singleton
 
@@ -20,7 +21,9 @@ class WorkspaceModule {
      */
     @Singleton
     @Provides
-    fun workspaceProvider(client: ApolloClient): WorkspaceProvider {
+    fun workspaceProvider(
+        client: ApolloClient
+    ): WorkspaceProvider {
         return WorkspaceProvider(client)
     }
 
@@ -32,5 +35,11 @@ class WorkspaceModule {
     @Provides
     fun fetchInteractor(provider: WorkspaceProvider): FetchWorkspacesInteractor {
         return FetchWorkspacesInteractor(provider)
+    }
+
+    @Provides
+    @Singleton
+    fun externalSourceCurrentWorkspace(): WorkspaceProvider.ExternalSourceWorkspace {
+        return ExternalSourceWorkspaceImpl()
     }
 }
