@@ -3,6 +3,7 @@ package so.codex.hawk.di.modules
 import dagger.Module
 import dagger.Provides
 import so.codex.hawk.domain.FetchProjectsInteractor
+import so.codex.hawk.domain.providers.ExternalSourceWorkspace
 import so.codex.hawk.domain.providers.ProjectProvider
 import so.codex.hawk.domain.providers.WorkspaceProvider
 import javax.inject.Singleton
@@ -21,9 +22,9 @@ class ProjectModule {
     @Provides
     fun projectProvider(
         workspaceProvider: WorkspaceProvider,
-        source: WorkspaceProvider.ExternalSourceWorkspace
+        source: ExternalSourceWorkspace
     ): ProjectProvider {
-        return ProjectProvider(workspaceProvider,source)
+        return ProjectProvider(workspaceProvider, source)
     }
 
     /**

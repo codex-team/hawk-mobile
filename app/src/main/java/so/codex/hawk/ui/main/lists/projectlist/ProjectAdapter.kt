@@ -1,4 +1,4 @@
-package so.codex.hawk.ui.main.projectlist
+package so.codex.hawk.ui.main.lists.projectlist
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +11,12 @@ import kotlinx.android.synthetic.main.project_list_item.view.icon
 import kotlinx.android.synthetic.main.project_list_item.view.name
 import so.codex.hawk.R
 import so.codex.hawk.ui.data.UiProject
+import so.codex.hawk.ui.main.lists.DiffItemCallback
 
 /**
  * Adapter for projects list.
  */
-class ProjectAdapter : ListAdapter<UiProject, ProjectAdapter.ViewHolder>(ProjectCallback()) {
+class ProjectAdapter : ListAdapter<UiProject, ProjectAdapter.ViewHolder>(DiffItemCallback<UiProject>()) {
 
     /**
      * ViewHolder creation method
