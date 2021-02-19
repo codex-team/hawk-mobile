@@ -15,4 +15,4 @@ data class UiProject(
     val image: String = "",
     val imageDrawable: SquircleDrawable,
     val badgeModel: UiBadgeViewModel = UiBadgeViewModel()
-):HasId
+) : HasId

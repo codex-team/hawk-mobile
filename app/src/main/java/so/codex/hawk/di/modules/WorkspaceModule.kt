@@ -38,6 +38,10 @@ class WorkspaceModule {
         return FetchWorkspacesInteractor(provider)
     }
 
+    /**
+     * Provide external source with workspace
+     * @return [ExternalSourceWorkspace]
+     */
     @Provides
     @Singleton
     fun externalSourceCurrentWorkspace(): ExternalSourceWorkspace {

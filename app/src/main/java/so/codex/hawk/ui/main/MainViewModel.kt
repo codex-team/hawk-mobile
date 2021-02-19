@@ -21,6 +21,7 @@ import so.codex.hawk.custom.views.search.HawkSearchUiViewModel
 import so.codex.hawk.domain.FetchProjectsInteractor
 import so.codex.hawk.domain.providers.ExternalSourceWorkspace
 import so.codex.hawk.entity.Project
+import so.codex.hawk.entity.WorkspaceCut
 import so.codex.hawk.extensions.domain.Utils
 import so.codex.hawk.notification.domain.NotificationManager
 import so.codex.hawk.notification.model.NotificationModel
@@ -42,7 +43,6 @@ class MainViewModel : ViewModel() {
     @Inject
     lateinit var context: Context
 
-
     /**
      * @property fetchProjectInteractor for getting projects
      */
@@ -55,6 +55,9 @@ class MainViewModel : ViewModel() {
     @Inject
     lateinit var notificationManager: NotificationManager
 
+    /**
+     * @property externalSourceWorkspace to get information about the selected workspace.
+     */
     @Inject
     lateinit var externalSourceWorkspace: ExternalSourceWorkspace
 
@@ -88,6 +91,9 @@ class MainViewModel : ViewModel() {
      */
     private val disposable = CompositeDisposable()
 
+    /**
+     * Standard title for the project list screen.
+     */
     private val defaultTitle: String by lazy {
         context.getString(R.string.project_list_default_title)
     }
@@ -113,6 +119,36 @@ class MainViewModel : ViewModel() {
     }
 
     /**
+     * Provide source of model
+     */
+    fun observeUiMainData(): LiveData<UiMainViewModel> {
+        return uiMainData
+    }
+
+    /**
+     * Provide source of ui project model
+     */
+    fun observeUiProjects(): LiveData<List<UiProject>> {
+        return uiProjects
+    }
+
+    /**
+     * Provide source of model
+     */
+    fun observeSearchUiViewModel(): LiveData<HawkSearchUiViewModel> {
+        return searchUiViewModel
+    }
+
+    /**
+     * Submit ui event to event source
+     *
+     * @param event is [UiEvent] for handle some of the action
+     */
+    fun submitEvent(event: UiEvent) {
+        eventSubject.onNext(event)
+    }
+
+    /**
      * Subscribe on events from ui and handle it
      *
      * @return [Disposable] for dispose of observer from source
@@ -131,7 +167,8 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Subscribe on project list and subject of search text, filter of projects by text with ignoring
+     * Subscribe on project list and subject of search text,
+     * filter of projects by text with ignoring.
      * @return [Disposable] for dispose of observer from source
      */
     private fun subscribeOnProjects(): Disposable {
@@ -163,6 +200,10 @@ class MainViewModel : ViewModel() {
             )
     }
 
+    /**
+     * Subscription to basic screen information (title, load information).
+     * @return [Disposable] for dispose of observer from source
+     */
     private fun subscribeOnMainData(): Disposable {
         return Observables.combineLatest(
             getRefreshObservable(),
@@ -172,17 +213,15 @@ class MainViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { (isFetched, selectedWorkspace) ->
                 uiMainData.value = UiMainViewModel(
-                    title =
-                    if (externalSourceWorkspace.isWorkspaceSelected()) {
-                        selectedWorkspace.name
-                    } else {
-                        defaultTitle
-                    },
+                    title = getCurrentTitle(selectedWorkspace),
                     showLoading = isFetched
                 )
             }
     }
 
+    /**
+     * Subscription to a flag with notification of an attempt to refresh information.
+     */
     private fun getRefreshObservable(): Observable<Boolean> {
         return eventSubject
             .observeOn(Schedulers.io())
@@ -194,12 +233,16 @@ class MainViewModel : ViewModel() {
     }
 
     /**
-     * Submit ui event to event source
+     * Method for determining the display title.
      *
-     * @param event is [UiEvent] for handle some of the action
+     * @return title
      */
-    fun submitEvent(event: UiEvent) {
-        eventSubject.onNext(event)
+    private fun getCurrentTitle(selectedWorkspace: WorkspaceCut): String {
+        return if (externalSourceWorkspace.isWorkspaceSelected()) {
+            selectedWorkspace.name
+        } else {
+            defaultTitle
+        }
     }
 
     /**
@@ -208,27 +251,6 @@ class MainViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         disposable.dispose()
-    }
-
-    /**
-     * Provide source of model
-     */
-    fun observeUiMainData(): LiveData<UiMainViewModel> {
-        return uiMainData
-    }
-
-    /**
-     * Provide source of ui project model
-     */
-    fun observeUiProjects(): LiveData<List<UiProject>> {
-        return uiProjects
-    }
-
-    /**
-     * Provide source of model
-     */
-    fun observeSearchUiViewModel(): LiveData<HawkSearchUiViewModel> {
-        return searchUiViewModel
     }
 
     /**
