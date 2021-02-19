@@ -16,14 +16,16 @@ import so.codex.hawk.ui.main.lists.DiffItemCallback
 /**
  * Adapter for projects list.
  */
-class ProjectAdapter : ListAdapter<UiProject, ProjectAdapter.ViewHolder>(DiffItemCallback<UiProject>()) {
+class ProjectAdapter :
+    ListAdapter<UiProject, ProjectAdapter.ViewHolder>(DiffItemCallback<UiProject>()) {
 
     /**
      * ViewHolder creation method
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.project_list_item, parent, false)
+        val view = LayoutInflater
+            .from(parent.context)
+            .inflate(R.layout.project_list_item, parent, false)
         return ViewHolder(view)
     }
 

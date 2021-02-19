@@ -1,8 +1,6 @@
 package so.codex.hawk.ui.main
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -14,10 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.swipeToRefresh
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.activity_main.view_navigation
 import kotlinx.android.synthetic.main.activity_main.workspace_recycler
-import kotlinx.android.synthetic.main.main_header.user_icon
-import kotlinx.android.synthetic.main.main_header.username
 import so.codex.hawk.R
-import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.data.UiProject
 import so.codex.hawk.ui.data.UiWorkspace
@@ -71,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         initUi()
         mainViewModel.observeUiMainData().observe(this, ::handleUiModels)
         mainViewModel.observeUiProjects().observe(this, ::handleUiProjects)
-        mainViewModel.observeSearchUiViewModel().observe(this){
+        mainViewModel.observeSearchUiViewModel().observe(this) {
             search.update(it)
         }
         drawerViewModel.observeUiWorkspace().observe(this, ::handleUiWorkspaces)
@@ -82,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleUiWorkspaces(workspaces: List<UiWorkspace>) {
-       workspaceAdapter.submitList(workspaces)
+        workspaceAdapter.submitList(workspaces)
     }
 
     /**
@@ -108,18 +103,19 @@ class MainActivity : AppCompatActivity() {
         initToolbar()
         initDrawer()
         swipeToRefresh.setOnRefreshListener {
-            //Debug version
+            // Debug version
             mainViewModel.submitEvent(MainViewModel.UiEvent.Refresh)
-            swipeToRefresh.postDelayed({
-                swipeToRefresh.isRefreshing = false
-            }, 1000)
+            swipeToRefresh.postDelayed(
+                {
+                    swipeToRefresh.isRefreshing = false
+                },
+                1000
+            )
         }
-
     }
 
-
     /**
-     * init custom toolbar
+     * Init custom toolbar.
      */
     private fun initToolbar() {
         setSupportActionBar(toolbar)
@@ -131,6 +127,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Init drawer with navigation view.
+     */
     private fun initDrawer() {
         // This needs for show icon without black tint
         view_navigation.itemIconTintList = null

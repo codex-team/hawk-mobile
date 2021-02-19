@@ -39,6 +39,9 @@ class DrawerViewModel : ViewModel() {
     @Inject
     lateinit var fetchWorkspaceInteractor: FetchWorkspacesInteractor
 
+    /**
+     * @property externalSourceWorkspace for transmitting information about the selected workspace.
+     */
     @Inject
     lateinit var externalSourceWorkspace: ExternalSourceWorkspace
 
@@ -71,9 +74,11 @@ class DrawerViewModel : ViewModel() {
             .subscribe(
                 {
                     uiWorkspace.value = it
-                }, {
+                },
+                {
                     Timber.e(it)
-                })
+                }
+            )
     }
 
     override fun onCleared() {

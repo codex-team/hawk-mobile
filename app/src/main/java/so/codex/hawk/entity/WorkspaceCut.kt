@@ -1,7 +1,5 @@
 package so.codex.hawk.entity
 
-import so.codex.hawk.ui.main.lists.HasId
-
 /**
  * The same class as [Workspace]
  * but without projects

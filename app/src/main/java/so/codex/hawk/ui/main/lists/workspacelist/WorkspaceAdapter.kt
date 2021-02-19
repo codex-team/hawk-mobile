@@ -13,7 +13,7 @@ import so.codex.hawk.R
 import so.codex.hawk.ui.data.UiWorkspace
 import so.codex.hawk.ui.main.lists.DiffItemCallback
 
-class WorkspaceAdapter() :
+class WorkspaceAdapter :
     ListAdapter<UiWorkspace, WorkspaceAdapter.ViewHolder>(DiffItemCallback<UiWorkspace>()) {
 
     /**

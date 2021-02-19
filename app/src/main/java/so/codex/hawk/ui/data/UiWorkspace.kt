@@ -4,7 +4,9 @@ import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.ui.main.lists.HasId
 
 /**
- * Representation of model for showing information on Workspace item in the recycler view
+ * Representation of model for showing information on Workspace item in the recycler view.
+ *
+ * @param onClick lambda expression that will be called when a click on workspace is made.
  */
 data class UiWorkspace(
     override val id: String,
@@ -12,7 +14,7 @@ data class UiWorkspace(
     val imageDrawable: SquircleDrawable,
     val isSelected: Boolean = false,
     val onClick: () -> Unit
-):HasId {
+) : HasId {
     /**
      * Yes, I know that these methods are generated automatically for data classes.
      * I just need a different behavior since there is no sane way to compare onClick
@@ -21,15 +23,15 @@ data class UiWorkspace(
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is UiWorkspace) return false
         if (this === other) return true
-        return id == other.id
-            && workspaceName == other.workspaceName
-            && isSelected == other.isSelected
+        return id == other.id &&
+            workspaceName == other.workspaceName &&
+            isSelected == other.isSelected
     }
 
     /**
      * @see equals
      */
     override fun hashCode(): Int {
-        return id.hashCode() + workspaceName.hashCode()+ isSelected.hashCode()
+        return id.hashCode() + workspaceName.hashCode() + isSelected.hashCode()
     }
 }
