@@ -10,7 +10,17 @@ query workspaces($ids: [ID] = []) {
             name,
             image,
             unreadCount,
-            description
+            description,
+            recentEvents(limit: 1) {
+                events {
+                    id
+                    groupHash
+                    payload {
+                        timestamp
+                        title
+                    }
+                }
+            }
         }
     }
 }

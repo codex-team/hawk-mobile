@@ -15,5 +15,5 @@ data class Workspace(
     val image: String = "",
     val description: String = "",
     val balance: Long = 0,
-    val projects: List<Project> = listOf()
+    val projects: List<Project> = listOf(),
 )

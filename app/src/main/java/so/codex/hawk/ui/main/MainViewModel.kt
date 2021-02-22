@@ -261,7 +261,7 @@ class MainViewModel : ViewModel() {
         return UiProject(
             id,
             name,
-            description,
+            lastEvent,
             image,
             if (image.isBlank()) {
                 SquircleDrawable(
