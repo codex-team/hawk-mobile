@@ -29,8 +29,6 @@
     <dimen name="radius_default">8dp</dimen>
     <dimen name="radius_10">10dp</dimen>
 
-    <dimen name="project_icon_side">36dp</dimen>
-
     <!-- Other -->
     <dimen name="default_border">1dp</dimen>
     <dimen name="min_btn_width">110dp</dimen>
@@ -47,7 +45,10 @@
     <dimen name="hawk_search_view_padding">10dp</dimen>
     <dimen name="search_view_height">36dp</dimen>
 
-    <!-- Main drawer header -->
+    <!-- Main activity -->
+    <dimen name="project_icon_side">36dp</dimen>
+
+    <!-- Main drawer -->
     <dimen name="user_image_side">32dp</dimen>
     <dimen name="workspace_image_side">32dp</dimen>
 

@@ -12,6 +12,7 @@ import dagger.Module
         ProjectModule::class,
         AppModule::class,
         LoginModule::class,
+        UserModule::class
     ]
 )
 interface MainModule
