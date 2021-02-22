@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.project_list_item.view.badge_count
-import kotlinx.android.synthetic.main.project_list_item.view.description
+import kotlinx.android.synthetic.main.project_list_item.view.last_event_title
 import kotlinx.android.synthetic.main.project_list_item.view.icon
 import kotlinx.android.synthetic.main.project_list_item.view.name
 import so.codex.hawk.R
@@ -42,12 +42,12 @@ class ProjectAdapter :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val iconImageView = itemView.icon
         private val titleTextView = itemView.name
-        private val descriptionTextView = itemView.description
+        private val lastEventTextView = itemView.last_event_title
         private val badgeView = itemView.badge_count
 
         fun bind(item: UiProject) {
             titleTextView.text = item.name
-            descriptionTextView.text = item.description
+            lastEventTextView.text = item.lastEvent.title
             badgeView.update(item.badgeModel)
             iconImageView.setImageDrawable(item.imageDrawable)
             badgeView.update(item.badgeModel)

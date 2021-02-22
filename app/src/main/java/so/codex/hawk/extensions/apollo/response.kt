@@ -4,6 +4,7 @@ import com.apollographql.apollo.api.Response
 import so.codex.hawk.RefreshMutation
 import so.codex.hawk.SessionKeeper
 import so.codex.hawk.WorkspacesQuery
+import so.codex.hawk.entity.Event
 import so.codex.hawk.entity.Project
 import so.codex.hawk.entity.Workspace
 import so.codex.hawk.entity.auth.RefreshResponse
@@ -54,6 +55,16 @@ fun WorkspacesQuery.Project.toProject(): Project {
         name,
         description ?: "",
         image ?: "",
-        unreadCount
+        unreadCount,
+        recentEvents?.events?.get(0)?.toEvent()?:Event()
+    )
+}
+
+fun WorkspacesQuery.Event.toEvent(): Event {
+    return Event(
+        id,
+        payload.title,
+        groupHash,
+        payload.timestamp
     )
 }

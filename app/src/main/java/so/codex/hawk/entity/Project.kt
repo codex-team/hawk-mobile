@@ -13,5 +13,6 @@ data class Project(
     val name: String = "",
     val description: String = "",
     val image: String = "",
-    val unreadCount: Int = 0
+    val unreadCount: Int = 0,
+    val lastEvent: Event = Event()
 )

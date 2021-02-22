@@ -2,6 +2,7 @@ package so.codex.hawk.ui.data
 
 import so.codex.hawk.custom.views.SquircleDrawable
 import so.codex.hawk.custom.views.badge.UiBadgeViewModel
+import so.codex.hawk.entity.Event
 import so.codex.hawk.ui.main.lists.HasId
 
 /**
@@ -11,7 +12,7 @@ import so.codex.hawk.ui.main.lists.HasId
 data class UiProject(
     override val id: String,
     val name: String,
-    val description: String,
+    val lastEvent: Event,
     val image: String = "",
     val imageDrawable: SquircleDrawable,
     val badgeModel: UiBadgeViewModel = UiBadgeViewModel()
