@@ -1,4 +1,4 @@
-query userInfo{
+query userData{
     me{
         id
         email

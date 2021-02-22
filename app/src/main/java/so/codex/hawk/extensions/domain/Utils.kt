@@ -108,8 +108,8 @@ object Utils {
      */
     fun createDefaultLogo(
         context: Context,
-        projectId: String,
-        projectName: String,
+        itemId: String,
+        itemName: String,
         logoSideId: Int
     ): Bitmap {
         val side = context.resources.getDimensionPixelSize(logoSideId)
@@ -118,7 +118,7 @@ object Utils {
             side,
             Bitmap.Config.ARGB_8888
         )
-        val abbreviationName = getAbbreviationFromString(projectName)
+        val abbreviationName = getAbbreviationFromString(itemName)
         val canvas = Canvas(defaultIcon!!)
         val fontPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             textSize = 14f * context.resources.displayMetrics.density + 0.5f
@@ -128,7 +128,7 @@ object Utils {
         val bounds = Rect()
         fontPaint.getTextBounds(abbreviationName, 0, abbreviationName.length, bounds)
         fontPaint.textAlign = Paint.Align.LEFT
-        canvas.drawColor(getColorById(projectId))
+        canvas.drawColor(getColorById(itemId))
         val centerX = side / 2f - bounds.exactCenterX()
         val centerY = side.toFloat() / 2f - bounds.exactCenterY()
         canvas.drawText(abbreviationName, centerX, centerY, fontPaint)

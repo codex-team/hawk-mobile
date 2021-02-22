@@ -12,9 +12,12 @@ import kotlinx.android.synthetic.main.activity_main.swipeToRefresh
 import kotlinx.android.synthetic.main.activity_main.toolbar
 import kotlinx.android.synthetic.main.activity_main.view_navigation
 import kotlinx.android.synthetic.main.activity_main.workspace_recycler
+import kotlinx.android.synthetic.main.main_header.user_icon
+import kotlinx.android.synthetic.main.main_header.username
 import so.codex.hawk.R
 import so.codex.hawk.ui.data.UiMainViewModel
 import so.codex.hawk.ui.data.UiProject
+import so.codex.hawk.ui.data.UiUser
 import so.codex.hawk.ui.data.UiWorkspace
 import so.codex.hawk.ui.main.lists.projectlist.ProjectAdapter
 import so.codex.hawk.ui.main.lists.workspacelist.WorkspaceAdapter
@@ -70,14 +73,11 @@ class MainActivity : AppCompatActivity() {
             search.update(it)
         }
         drawerViewModel.observeUiWorkspace().observe(this, ::handleUiWorkspaces)
+        drawerViewModel.observeUiUserData().observe(this, ::handleUiUserData)
     }
 
     private fun handleUiProjects(projects: List<UiProject>) {
         projectAdapter.submitList(projects)
-    }
-
-    private fun handleUiWorkspaces(workspaces: List<UiWorkspace>) {
-        workspaceAdapter.submitList(workspaces)
     }
 
     /**
@@ -92,6 +92,15 @@ class MainActivity : AppCompatActivity() {
         } else {
             Timber.i("show result")
         }
+    }
+
+    private fun handleUiWorkspaces(workspaces: List<UiWorkspace>) {
+        workspaceAdapter.submitList(workspaces)
+    }
+
+    private fun handleUiUserData(uiUser: UiUser) {
+        username.text = uiUser.name
+        user_icon.setImageDrawable(uiUser.image)
     }
 
     /**
