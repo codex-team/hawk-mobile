@@ -156,8 +156,9 @@ class MainViewModel : ViewModel() {
     private fun subscribeOnEvent(): Disposable {
         return eventSubject
             .observeOn(Schedulers.io())
+            .skip(1)
             .subscribe { event ->
-                Timber.e("New ui event = $event")
+                Timber.i("New ui event = $event")
                 when (event) {
                     is UiEvent.Refresh -> {
                         fetchProjectInteractor.update()

@@ -56,7 +56,7 @@ fun WorkspacesQuery.Project.toProject(): Project {
         description ?: "",
         image ?: "",
         unreadCount,
-        recentEvents?.events?.get(0)?.toEvent()?:Event()
+        recentEvents?.events?.get(0)?.toEvent() ?: Event()
     )
 }
 
