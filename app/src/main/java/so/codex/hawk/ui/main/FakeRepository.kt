@@ -1,5 +1,6 @@
 package so.codex.hawk.ui.main
 
+import so.codex.hawk.entity.Event
 import so.codex.hawk.entity.Project
 import so.codex.hawk.entity.WorkspaceCut
 
@@ -20,56 +21,64 @@ object FakeRepository {
                 "Hawk",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 fakeImageUrlOne,
-                7
+                7,
+                Event()
             ),
             Project(
                 "b",
                 "Project B",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                77
+                77,
+                Event()
             ),
             Project(
                 "c",
                 "Project C",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 fakeImageUrlTwo,
-                777
+                777,
+                Event()
             ),
             Project(
                 "d",
                 "Project D",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 fakeImageUrlThree,
-                7777
+                7777,
+                Event()
             ),
             Project(
                 "f",
                 "Project F",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                77777
+                77777,
+                Event()
             ),
             Project(
                 "1",
                 "Project 1",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 fakeImageUrlOne,
-                1234567
+                1234567,
+                Event()
             ),
             Project(
                 "5",
                 "Project 5",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                1234567
+                1234567,
+                Event()
             ),
             Project(
                 "8",
                 "Project 8",
                 "TypeError: Cannot read property 'indexOf'. Use getProperty().",
                 "",
-                11
+                11,
+                Event()
             )
         )
     }
