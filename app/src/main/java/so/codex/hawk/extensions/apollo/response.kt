@@ -37,8 +37,8 @@ fun WorkspacesQuery.Workspace.toWorkspace(): Workspace {
         name ?: "",
         image ?: "",
         description ?: "",
-        balance.toString().toLong(),
-        projects?.map {
+        balance?.toString()?.toLong() ?: 0,
+        projects?.mapNotNull {
             it.toProject()
         } ?: emptyList()
     )
@@ -51,12 +51,12 @@ fun WorkspacesQuery.Workspace.toWorkspace(): Workspace {
  */
 fun WorkspacesQuery.Project.toProject(): Project {
     return Project(
-        id,
-        name,
+        id ?: "",
+        name ?: "",
         description ?: "",
         image ?: "",
-        unreadCount,
-        recentEvents?.events?.get(0)?.toEvent() ?: Event(title = "No one catcher connected")
+        unreadCount ?: 0,
+        recentEvents?.events?.get(0)?.toEvent() ?: Event.NO_LAST_EVENT
     )
 }
 
