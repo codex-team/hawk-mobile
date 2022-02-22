@@ -1,4 +1,4 @@
-# Hawk Android
+# Hawk Android (Work in progress)
 This is a mobile client for the [Hawk](https://hawk.so) errors monitoring system
 
 The app is written in Kotlin
